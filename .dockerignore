@@ -1,0 +1,27 @@
+# The biggest one — node_modules can be 500MB+.
+# Without this, Docker sends it to the daemon on every build even though
+# npm ci reinstalls everything fresh inside the container anyway.
+node_modules/
+
+# Vite build output — gets rebuilt inside Docker by npm run build.
+dist/
+
+# Git history — irrelevant inside a container
+.git/
+.gitignore
+
+# IntelliJ / VSCode project files
+.idea/
+.vscode/
+
+# Secrets — never bake env vars into an image
+.env
+*.env
+
+# Logs and test coverage output
+*.log
+logs/
+coverage/
+
+# Documentation
+*.md

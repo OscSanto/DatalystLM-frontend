@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<script src="./app.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,600;1,700;1,900&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F7F2E6;color:#141414;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#141414;text-decoration:none;transition:all 0.2s ease}a:hover{color:#B4530F}
+button{font-family:inherit;cursor:pointer;transition:all 0.2s ease}
+@media (max-width: 920px){
+[data-r="root"]{min-width:0 !important}
+[data-r="bg"]{display:none !important}
+[data-r="hdr"]{padding:0 20px !important;height:64px !important;gap:16px !important}
+[data-r="hdr"] img{height:38px !important}
+[data-r="dots"]{display:none !important}
+[data-r="main"]{grid-template-columns:1fr !important;gap:40px !important;padding:36px 20px 70px !important}
+[data-r="main"] h1{font-size:46px !important}
+[data-r="cards"]{grid-template-columns:1fr !important}
+[data-r="diffs"]{flex-wrap:wrap !important}
+[data-r="diffs"] button{flex:1 !important;padding:14px 10px !important}
+[data-r="cta"]{font-size:20px !important;padding:18px 24px !important}
+}
+</style>
+</helmet>
+<div data-r="root" style="min-width: 1100px; min-height: 100vh; position: relative; overflow: clip; display: flex; flex-direction: column">
+
+<div data-r="bg" style="position:absolute;inset:0;pointer-events:none;z-index:0">
+  <div style="position:absolute;right:0;top:110px;width:56px;height:340px;background:#F0A500"></div>
+  <div style="position:absolute;right:0;top:310px;width:90px;height:300px;background-image:radial-gradient(#C9B98F 1.6px, transparent 1.6px);background-size:9px 9px;-webkit-mask-image:linear-gradient(to bottom,transparent,black 30%,transparent);mask-image:linear-gradient(to bottom,transparent,black 30%,transparent)"></div>
+  <div style="position:absolute;left:0;bottom:60px;width:120px;height:240px;background-image:radial-gradient(#C9B98F 1.6px, transparent 1.6px);background-size:9px 9px;-webkit-mask-image:radial-gradient(ellipse at left center,black 40%,transparent 75%);mask-image:radial-gradient(ellipse at left center,black 40%,transparent 75%)"></div>
+  <div style="position:absolute;left:100px;bottom:110px;font-family:'Playfair Display',serif;font-weight:900;font-size:120px;line-height:0.6;color:#141414">“</div>
+  <div style="position:absolute;left:118px;bottom:40px;width:1.5px;height:70px;background:#141414"></div>
+  <div style="position:absolute;right:40px;bottom:10px;font-family:'Playfair Display',serif;font-weight:900;font-size:120px;line-height:0.6;color:#141414">“</div>
+  <div style="position:absolute;right:150px;bottom:34px;width:60px;height:70px;background-image:radial-gradient(#C9B98F 1.6px, transparent 1.6px);background-size:9px 9px"></div>
+</div>
+
+<header style="background:#FFFDF7;border-bottom:1px solid #E3DCCB;position:sticky;top:0;z-index:50">
+  <div data-r="hdr" style="max-width:1360px;margin:0 auto;padding:0 40px;height:72px;display:flex;align-items:center;justify-content:space-between;gap:32px">
+    <a href="/" style="display:inline-flex;align-items:center"><img src="assets/logo-datalystlm.png" alt="DatalystLM — Voice. Insight. Impact." style="height:46px;display:block"></a>
+    <div style="display:flex;align-items:center;gap:28px">
+      <div data-r="dots" style="width:52px;height:30px;background-image:radial-gradient(#141414 1.5px, transparent 1.5px);background-size:10px 10px"></div>
+      <a href="/#practice" onMouseEnter="{{ hovNavOn }}" onMouseLeave="{{ hovNavOff }}" style="position:relative;overflow:hidden;background:#141414;color:#FFFDF7;padding:12px 32px 12px 22px;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:10px;border-radius:8px" style-hover="{&quot;background&quot;:&quot;#2B2B2B&quot;,&quot;color&quot;:&quot;#FFFDF7&quot;,&quot;transform&quot;:&quot;translateY(-2px)&quot;}"><span style="{{ ctaNavText }}">Start Practicing <span style="color:#F0A500">→</span></span><span style="{{ ctaNavStrip }}"></span></a>
+    </div>
+  </div>
+</header>
+
+<section data-r="main" style="max-width:1360px;margin:0 auto;padding:64px 40px 150px;display:grid;grid-template-columns:1fr 1.35fr;gap:70px;align-items:start;position:relative;z-index:1;flex:1;width:100%;box-sizing:border-box">
+  <div>
+    <div style="display:inline-block;background:#F0A500;color:#141414;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.1em;padding:7px 12px;text-transform:uppercase">Voice practice. Real confidence.</div>
+    <h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:76px;line-height:1.02;letter-spacing:-0.02em;margin:28px 0 0;text-wrap:balance">What do you want to <em style="color:#E09000;font-weight:700">practice?</em></h1>
+    <div style="display:flex;margin-top:34px;width:160px;height:4px"><span style="flex:2.2;background:#141414"></span><span style="flex:1;background:#F0A500"></span></div>
+    <p style="font-size:18px;line-height:1.55;font-weight:500;color:#45423A;margin:28px 0 0;max-width:380px">Pick a topic, choose a difficulty, and start speaking with confidence.</p>
+  </div>
+
+  <div style="display:flex;flex-direction:column">
+    <div data-r="cards" style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+      <div onClick="{{ pick0 }}" style="{{ card0 }}">
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <span style="width:72px;height:72px;border-radius:50%;background:#CFE3F2;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#141414" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="5" r="2.1"></circle><circle cx="5" cy="12" r="2.1"></circle><circle cx="19" cy="12" r="2.1"></circle><circle cx="12" cy="19" r="2.1"></circle><path d="M10.4 6.6 6.6 10.4M13.6 6.6l3.8 3.8M6.6 13.6l3.8 3.8M17.4 13.6l-3.8 3.8"></path></svg></span>
+          <div style="flex:1">
+            <div style="font-weight:700;font-size:19px;letter-spacing:-0.01em">Machine Learning</div>
+            <div style="{{ desc0 }}">Classification, regression, overfitting, neural nets</div>
+          </div>
+        </div>
+        <div style="text-align:right;font-size:20px;margin-top:6px"><span style="{{ arrow0 }}">→</span></div>
+        <sc-if value="{{ sel0 }}" hint-placeholder-val="{{ false }}"><div style="height:5px;background:#3A3A3A;border-radius:99px;margin-top:10px;overflow:hidden"><div style="width:42%;height:100%;background:#F0A500"></div></div></sc-if>
+      </div>
+      <div onClick="{{ pick1 }}" style="{{ card1 }}">
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <span style="width:72px;height:72px;border-radius:50%;background:#CBE7CE;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#141414" stroke-width="1.5" stroke-linecap="round"><ellipse cx="12" cy="5.5" rx="7" ry="2.8"></ellipse><path d="M5 5.5v13c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8v-13"></path><path d="M5 12c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8"></path></svg></span>
+          <div style="flex:1">
+            <div style="font-weight:700;font-size:19px;letter-spacing:-0.01em">SQL &amp; Databases</div>
+            <div style="{{ desc1 }}">Joins, indexes, window functions, query optimization</div>
+          </div>
+        </div>
+        <div style="text-align:right;font-size:20px;margin-top:6px"><span style="{{ arrow1 }}">→</span></div>
+        <sc-if value="{{ sel1 }}" hint-placeholder-val="{{ false }}"><div style="height:5px;background:#3A3A3A;border-radius:99px;margin-top:10px;overflow:hidden"><div style="width:42%;height:100%;background:#F0A500"></div></div></sc-if>
+      </div>
+      <div onClick="{{ pick2 }}" style="{{ card2 }}">
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <span style="width:72px;height:72px;border-radius:50%;background:#D9CBEE;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#141414" stroke-width="1.5" stroke-linecap="round"><path d="M3 19h18"></path><path d="M4 19c4 0 5-12 8-12s4 12 8 12"></path></svg></span>
+          <div style="flex:1">
+            <div style="font-weight:700;font-size:19px;letter-spacing:-0.01em">Statistics</div>
+            <div style="{{ desc2 }}">Distributions, hypothesis testing, A/B testing</div>
+          </div>
+        </div>
+        <div style="text-align:right;font-size:20px;margin-top:6px"><span style="{{ arrow2 }}">→</span></div>
+        <sc-if value="{{ sel2 }}" hint-placeholder-val="{{ true }}"><div style="height:5px;background:#3A3A3A;border-radius:99px;margin-top:10px;overflow:hidden"><div style="width:42%;height:100%;background:#F0A500"></div></div></sc-if>
+      </div>
+      <div onClick="{{ pick3 }}" style="{{ card3 }}">
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <span style="width:72px;height:72px;border-radius:50%;background:#F6D4B8;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#141414" stroke-width="1.5" stroke-linecap="round"><path d="M8.5 7 4 12l4.5 5M15.5 7 20 12l-4.5 5"></path></svg></span>
+          <div style="flex:1">
+            <div style="font-weight:700;font-size:19px;letter-spacing:-0.01em">Python</div>
+            <div style="{{ desc3 }}">Pandas, NumPy, data wrangling, OOP patterns</div>
+          </div>
+        </div>
+        <div style="text-align:right;font-size:20px;margin-top:6px"><span style="{{ arrow3 }}">→</span></div>
+        <sc-if value="{{ sel3 }}" hint-placeholder-val="{{ false }}"><div style="height:5px;background:#3A3A3A;border-radius:99px;margin-top:10px;overflow:hidden"><div style="width:42%;height:100%;background:#F0A500"></div></div></sc-if>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:18px;margin-top:38px">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;letter-spacing:0.08em">DIFFICULTY</span>
+      <span style="flex:1;height:1.5px;background:#C9C1AC"></span>
+    </div>
+    <div data-r="diffs" style="display:flex;gap:16px;margin-top:18px">
+      <button onClick="{{ diff0 }}" style="{{ diffS0 }}">Random</button>
+      <button onClick="{{ diff1 }}" style="{{ diffS1 }}">Easy</button>
+      <button onClick="{{ diff2 }}" style="{{ diffS2 }}">Medium</button>
+      <button onClick="{{ diff3 }}" style="{{ diffS3 }}">Hard</button>
+    </div>
+
+    <a href="Interview Practice.dc.html" data-r="cta" onClick="{{ startPractice }}" onMouseEnter="{{ hovCtaOn }}" onMouseLeave="{{ hovCtaOff }}" style="position:relative;margin-top:34px;background:#141414;color:#FFFDF7;padding:22px 32px;font-size:26px;font-weight:700;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;border-radius:12px;overflow:hidden" style-hover="{&quot;background&quot;:&quot;#2B2B2B&quot;,&quot;color&quot;:&quot;#FFFDF7&quot;,&quot;transform&quot;:&quot;translateY(-2px)&quot;}"><span style="{{ ctaMainText }}">Start Practice Session <span style="color:#F0A500">→</span></span><span style="{{ ctaMainStrip }}"></span></a>
+  </div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultTopic&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Statistics&quot;,&quot;options&quot;:[&quot;Machine Learning&quot;,&quot;SQL &amp; Databases&quot;,&quot;Statistics&quot;,&quot;Python&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Selection&quot;},&quot;defaultDifficulty&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Random&quot;,&quot;options&quot;:[&quot;Random&quot;,&quot;Easy&quot;,&quot;Medium&quot;,&quot;Hard&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Selection&quot;}}">
+class Component extends DCLogic {
+  state = { topic: null, diff: null, hovNav: false, hovCta: false };
+  // Backend enum values, index-aligned with the cards / difficulty buttons
+  TOPIC_ENUM = ['ML', 'SQL', 'STATISTICS', 'PYTHON'];
+  DIFF_ENUM  = [null, 'EASY', 'MEDIUM', 'HARD']; // Random -> no difficulty param
+  selection() {
+    const names = ['Machine Learning', 'SQL & Databases', 'Statistics', 'Python'];
+    const diffs = ['Random', 'Easy', 'Medium', 'Hard'];
+    const topic = this.state.topic ?? Math.max(0, names.indexOf(this.props.defaultTopic ?? 'Statistics'));
+    const diff  = this.state.diff  ?? Math.max(0, diffs.indexOf(this.props.defaultDifficulty ?? 'Random'));
+    return { topic, diff };
+  }
+  startPractice(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const DL = window.DL;
+    if (DL && !DL.token()) { DL.goLogin(); return; } // sign in first, then come back
+    const { topic, diff } = this.selection();
+    const params = new URLSearchParams({ topic: this.TOPIC_ENUM[topic] });
+    if (this.DIFF_ENUM[diff]) params.set('difficulty', this.DIFF_ENUM[diff]);
+    window.location.href = 'Interview Practice.dc.html?' + params.toString();
+  }
+  renderVals() {
+    const strip = (on, w) => ({
+      position: 'absolute', top: 0, right: 0, bottom: 0, width: w + 'px',
+      backgroundColor: '#F0A500',
+      backgroundImage: 'radial-gradient(#141414 1.3px, transparent 1.3px)', backgroundSize: '5px 5px',
+      transform: on ? 'translateX(0)' : 'translateX(110%)', transition: 'transform 0.28s cubic-bezier(0.22,1,0.36,1)',
+    });
+    const text = (on, shift) => ({
+      display: 'inline-flex', alignItems: 'center', gap: '10px',
+      transform: on ? 'translateX(-' + shift + 'px)' : 'translateX(0)', transition: 'transform 0.28s cubic-bezier(0.22,1,0.36,1)',
+    });
+    const { topic, diff } = this.selection();
+    const vals = {
+      hovNavOn: () => this.setState({ hovNav: true }), hovNavOff: () => this.setState({ hovNav: false }),
+      hovCtaOn: () => this.setState({ hovCta: true }), hovCtaOff: () => this.setState({ hovCta: false }),
+      ctaNavStrip: strip(this.state.hovNav, 24), ctaNavText: text(this.state.hovNav, 8),
+      ctaMainStrip: strip(this.state.hovCta, 34), ctaMainText: text(this.state.hovCta, 12),
+      startPractice: (e) => this.startPractice(e),
+    };
+    for (let i = 0; i < 4; i++) {
+      const sel = topic === i;
+      vals['pick' + i] = () => this.setState({ topic: i });
+      vals['sel' + i] = sel;
+      vals['card' + i] = {
+        background: sel ? '#141414' : '#FFFDF7', color: sel ? '#FFFDF7' : '#141414',
+        border: sel ? '1px solid #141414' : '1px solid #DDD5C2', borderRadius: '12px',
+        padding: '26px 26px 20px', cursor: 'pointer', display: 'flex', flexDirection:
