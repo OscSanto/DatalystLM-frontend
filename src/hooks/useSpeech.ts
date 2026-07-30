@@ -17,7 +17,7 @@ export function useSpeech(): SpeechResult {
   const [isListening, setIsListening] = useState(false);
   const [confidence, setConfidence]   = useState(0);
 
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<any>(null);
   const startTimeRef   = useRef<number>(0);
   const pauseCountRef  = useRef(0);
 
@@ -29,7 +29,7 @@ export function useSpeech(): SpeechResult {
   const start = useCallback(() => {
     if (!supported) return;
 
-    const recognition: SpeechRecognition = new SpeechRecognitionAPI();
+    const recognition: any = new SpeechRecognitionAPI();
     recognition.lang            = "en-US";
     recognition.interimResults  = false; // only final results
     recognition.maxAlternatives = 1;
@@ -41,7 +41,7 @@ export function useSpeech(): SpeechResult {
       pauseCountRef.current = 0;
     };
 
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
+    recognition.onresult = (event: any) => {
       let newText = "";
       let latestConfidence = 0;
       // resultIndex = first NEW result in this event — avoids re-processing old ones
@@ -62,7 +62,7 @@ export function useSpeech(): SpeechResult {
       pauseCountRef.current += 1;
     };
 
-    recognition.onerror = (e: SpeechRecognitionErrorEvent) => {
+    recognition.onerror = (e: any) => {
       console.error("Speech recognition error:", e.error);
       setIsListening(false);
     };
