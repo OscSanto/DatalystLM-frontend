@@ -7,19 +7,8 @@ import RegisterPage  from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import PracticePage  from "./pages/PracticePage";
 import HistoryPage   from "./pages/HistoryPage";
-
-// The landing page is now the Vox-style redesign (public/DatalystLM v2.dc.html),
-// served at "/" by the vox-landing plugin in vite.config.ts. If the SPA ever
-// navigates to "/" client-side (e.g. the "*" fallback), force a full page load
-// so the server can serve the static landing page instead.
-function LandingPage() {
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("token")) return; // OAuth2 callback — handled by App's effect
-    window.location.replace("/");
-  }, []);
-  return null;
-}
+import Navbar        from "./components/Navbar";
+import Hero          from "./components/Hero";
 
 export default function App() {
   const { token, username, isAuthenticated, saveAuth, logout } = useAuth();
@@ -43,7 +32,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         {/* Public */}
-        <Route path="/"        element={<LandingPage />} />
+        <Route path="/"        element={<><Navbar /><Hero /></>} />
         <Route path="/login"   element={
           isAuthenticated
             ? <Navigate to="/dashboard" replace />
