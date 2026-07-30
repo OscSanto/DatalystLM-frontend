@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy lock files first, before source code.
 # Docker caches this layer separately — npm ci only re-runs when package*.json changes.
 # Without this, every source code change would trigger a full dependency re-download.
-COPY package*.json .
+COPY package*.json ./
 
 # npm ci (not npm install):
 # - Uses package-lock.json exactly — no version resolution, fully deterministic
