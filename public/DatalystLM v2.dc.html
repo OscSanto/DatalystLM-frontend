@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,600;1,700;1,900&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
-body{margin:0;background:#F7F2E6;color:#141414;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body{margin:0;overflow-x:hidden;background:#F7F2E6;color:#141414;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#141414;text-decoration:none}a:hover{color:#B4530F}
 button{font-family:inherit;cursor:pointer;transition:all 0.2s ease}
 a{transition:all 0.2s ease}
@@ -58,7 +58,7 @@ a{transition:all 0.2s ease}
 }
 </style>
 </helmet>
-<div data-r="root" style="min-width: 1100px; position: relative; overflow: clip">
+<div data-r="root" style="min-width: 0; position: relative; overflow: clip">
 
 <div data-r="bg" style="position: absolute; inset: 0; pointer-events: none; z-index: 0; left: 3px; top: -10px; height: 5628px">
   <div style="position: absolute; left: 0; top: 130px; bottom: 430px; width: 64px">
@@ -95,7 +95,7 @@ a{transition:all 0.2s ease}
     </nav>
     <div style="display:flex;align-items:center;gap:18px">
       <a href="/login" data-r="signin" style="font-size:15px;font-weight:500">Sign in</a>
-      <a href="Topic Selection.dc.html" onMouseEnter="{{ hovNavOn }}" onMouseLeave="{{ hovNavOff }}" style="position:relative;overflow:hidden;background:#141414;color:#FFFDF7;padding:12px 32px 12px 22px;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:10px;border-radius:8px" style-hover="{&quot;background&quot;:&quot;#2B2B2B&quot;,&quot;color&quot;:&quot;#FFFDF7&quot;,&quot;transform&quot;:&quot;translateY(-2px)&quot;}"><span style="{{ ctaNavText }}">Start Practice Session <span style="color:#F0A500">→</span></span><span style="{{ ctaNavStrip }}"></span></a>
+      <a href="/dashboard" onMouseEnter="{{ hovNavOn }}" onMouseLeave="{{ hovNavOff }}" style="position:relative;overflow:hidden;background:#141414;color:#FFFDF7;padding:12px 32px 12px 22px;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:10px;border-radius:8px" style-hover="{&quot;background&quot;:&quot;#2B2B2B&quot;,&quot;color&quot;:&quot;#FFFDF7&quot;,&quot;transform&quot;:&quot;translateY(-2px)&quot;}"><span style="{{ ctaNavText }}">Start Practice Session <span style="color:#F0A500">→</span></span><span style="{{ ctaNavStrip }}"></span></a>
     </div>
   </div>
 </header>
@@ -107,7 +107,7 @@ a{transition:all 0.2s ease}
     <h1 style="font-family: 'Playfair Display',serif; font-weight: 900; font-size: 76px; line-height: 1.0; letter-spacing: -0.02em; margin: 26px 0 0; text-wrap: balance">Ace your data science interview — <em style="color:#E09000;font-weight:700">out loud</em></h1>
     <p style="font-size: 18px; line-height: 1.55; font-weight: 500; color: #45423A; margin: 26px 0 0; max-width: 480px; text-transform: none; font-style: normal">Practice answering real interview questions with your voice. Get instant AI feedback on content, accuracy, and delivery.</p>
     <div style="display: flex; gap: 14px; margin-top: 32px">
-      <a href="Topic Selection.dc.html" onMouseEnter="{{ hovHeroOn }}" onMouseLeave="{{ hovHeroOff }}" style="position:relative;overflow:hidden;background:#141414;color:#FFFDF7;padding:16px 40px 16px 26px;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:10px;border-radius:8px" style-hover="{&quot;background&quot;:&quot;#2B2B2B&quot;,&quot;color&quot;:&quot;#FFFDF7&quot;,&quot;transform&quot;:&quot;translateY(-2px)&quot;}"><span style="{{ ctaHeroText }}">Start Practicing Free <span style="color:#F0A500">→</span></span><span style="{{ ctaHeroStrip }}"></span></a>
+      <a href="/dashboard" onMouseEnter="{{ hovHeroOn }}" onMouseLeave="{{ hovHeroOff }}" style="position:relative;overflow:hidden;background:#141414;color:#FFFDF7;padding:16px 40px 16px 26px;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:10px;border-radius:8px" style-hover="{&quot;background&quot;:&quot;#2B2B2B&quot;,&quot;color&quot;:&quot;#FFFDF7&quot;,&quot;transform&quot;:&quot;translateY(-2px)&quot;}"><span style="{{ ctaHeroText }}">Start Practicing Free <span style="color:#F0A500">→</span></span><span style="{{ ctaHeroStrip }}"></span></a>
       <a href="#how" style="background:#FFFDF7;border:1px solid #C9C1AC;padding:16px 26px;font-size:16px;font-weight:600;display:inline-flex;align-items:center;gap:10px" style-hover="{&quot;borderColor&quot;:&quot;#141414&quot;,&quot;transform&quot;:&quot;translateY(-2px)&quot;}"><span style="font-size:12px">▶</span> See how it works</a>
     </div>
     <div data-r="stats" style="display: flex; margin-top: 40px; border-top: 1px solid #E3DCCB; padding-top: 22px">
@@ -145,7 +145,7 @@ a{transition:all 0.2s ease}
 </section>
 
 <!-- PRACTICE PANEL -->
-<section id="practice" data-r="practice" style="max-width: 1419px; margin: 0 auto; padding: 0 40px 84px; width: 1299px; height: 507px; display: block; position: relative; padding-bottom: 0px">
+<section id="practice" data-r="practice" style="max-width: 1419px; margin: 0 auto; padding: 0 40px 84px;  height: 507px; display: block; position: relative; padding-bottom: 0px">
   <div data-r="deco" style="position:absolute;right:-52px;top:-90px;width:64px;height:360px;background:#F0A500"></div>
   <div data-r="deco" style="position:absolute;right:-52px;top:270px;width:64px;height:230px;background-image:radial-gradient(#C9B98F 1.6px, transparent 1.6px);background-size:9px 9px;-webkit-mask-image:linear-gradient(to bottom,black 30%,transparent);mask-image:linear-gradient(to bottom,black 30%,transparent)"></div>
   <div style="background:#FFFDF7;border:1px solid #DDD5C2;border-radius:12px;overflow:hidden;box-shadow:0 2px 0 rgba(20,20,20,0.04)">
@@ -413,7 +413,7 @@ a{transition:all 0.2s ease}
         <h2 style="font-family:'Playfair Display',serif;font-weight:900;font-size:48px;line-height:1.08;margin:14px 0 0;max-width:640px">Every topic data science interviews cover</h2>
         <p style="font-size:16px;line-height:1.6;font-weight:500;color:#45423A;margin:18px 0 0;max-width:400px">Practice the concepts that show up most in real interviews — with intelligent feedback that helps you improve fast.</p>
       </div>
-      <a href="Topic Selection.dc.html" style="background:#FFFDF7;border:1.5px solid #141414;border-radius:8px;padding:14px 24px;font-size:15px;font-weight:600;white-space:nowrap;margin-top:40px" style-hover="{&quot;background&quot;:&quot;#141414&quot;,&quot;color&quot;:&quot;#FFFDF7&quot;,&quot;transform&quot;:&quot;translateY(-2px)&quot;}">Start Practicing →</a>
+      <a href="/dashboard" style="background:#FFFDF7;border:1.5px solid #141414;border-radius:8px;padding:14px 24px;font-size:15px;font-weight:600;white-space:nowrap;margin-top:40px" style-hover="{&quot;background&quot;:&quot;#141414&quot;,&quot;color&quot;:&quot;#FFFDF7&quot;,&quot;transform&quot;:&quot;translateY(-2px)&quot;}">Start Practicing →</a>
     </div></div>
   <div data-r="cards3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:38px">
     <div style="background:#FFFDF7;border:1px solid #DDD5C2;border-left:5px solid #F0A500;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:18px">
@@ -537,7 +537,7 @@ a{transition:all 0.2s ease}
         <div style="display:flex;gap:10px"><span style="color:#2E7D46;font-weight:700">✓</span>Claude feedback on every answer</div>
         <div style="display:flex;gap:10px"><span style="color:#2E7D46;font-weight:700">✓</span>Voice analytics &amp; scoring</div>
       </div>
-      <a href="Topic Selection.dc.html" style="display:block;text-align:center;background:#141414;color:#FFFDF7;padding:15px;font-size:16px;font-weight:600" style-hover="{&quot;background&quot;:&quot;#2B2B2B&quot;,&quot;color&quot;:&quot;#FFFDF7&quot;,&quot;transform&quot;:&quot;translateY(-2px)&quot;}">Start Practicing Free</a>
+      <a href="/dashboard" style="display:block;text-align:center;background:#141414;color:#FFFDF7;padding:15px;font-size:16px;font-weight:600" style-hover="{&quot;background&quot;:&quot;#2B2B2B&quot;,&quot;color&quot;:&quot;#FFFDF7&quot;,&quot;transform&quot;:&quot;translateY(-2px)&quot;}">Start Practicing Free</a>
     </div>
     <div style="background:#F3EDDD;border:1px solid #DDD5C2;padding:32px">
       <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:26px;color:#55524A">Pro</div>
