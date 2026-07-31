@@ -66,7 +66,7 @@ export default function LoginPage({ onAuth }: Props) {
           {/* OAuth buttons */}
           <div style={{ display: "grid", gap: ".75rem", marginBottom: "1.5rem" }}>
             <a
-              href="http://localhost:8080/oauth2/authorization/google"
+              href="/oauth2/authorization/google"
               className="btn btn--secondary"
               style={{ width: "100%", justifyContent: "center", gap: ".6rem", textDecoration: "none" }}
             >
@@ -74,7 +74,7 @@ export default function LoginPage({ onAuth }: Props) {
               Continue with Google
             </a>
             <a
-              href="http://localhost:8080/oauth2/authorization/github"
+              href="/oauth2/authorization/github"
               className="btn btn--secondary"
               style={{ width: "100%", justifyContent: "center", gap: ".6rem", textDecoration: "none" }}
             >

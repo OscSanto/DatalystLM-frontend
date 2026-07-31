@@ -7,8 +7,6 @@ import RegisterPage  from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import PracticePage  from "./pages/PracticePage";
 import HistoryPage   from "./pages/HistoryPage";
-import Navbar        from "./components/Navbar";
-import Hero          from "./components/Hero";
 
 export default function App() {
   const { token, username, isAuthenticated, saveAuth, logout } = useAuth();
@@ -31,8 +29,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public */}
-        <Route path="/"        element={<><Navbar /><Hero /></>} />
+        {/* Public — "/" is served as landing.html directly by nginx, never reaches React */}
+        <Route path="/"        element={null} />
         <Route path="/login"   element={
           isAuthenticated
             ? <Navigate to="/dashboard" replace />

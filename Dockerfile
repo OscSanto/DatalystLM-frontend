@@ -22,7 +22,7 @@ COPY . .
 
 # Vite builds the React app into /app/dist.
 # Output: optimised, minified JS/CSS bundles ready to serve as static files.
-RUN npm run build
+RUN npm run build && mv "/app/dist/DatalystLM v2.dc.html" /app/dist/landing.html
 
 # ── Stage 2: Run ──────────────────────────────────────────────────────────────
 # Tiny nginx image — no Node, no npm, no source code, no build tools.
