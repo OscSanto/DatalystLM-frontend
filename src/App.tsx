@@ -30,7 +30,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* "/" served as Front.dc.html by voxLanding — React never sees it */}
+        {/* "/" — nginx serves Front.dc.html directly (see nginx.conf location = /) */}
+        {/* OAuth2 callbacks arrive as /?token=xxx — nginx passes those to index.html */}
         <Route path="/" element={null} />
 
         {/* Login / Register */}
