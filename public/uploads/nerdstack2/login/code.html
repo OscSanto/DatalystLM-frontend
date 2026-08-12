@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign In | ApexVoice DatalystLM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Hanken+Grotesk:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#eff4ff",
+                    "surface": "#f8f9ff",
+                    "tertiary-fixed-dim": "#b3d17a",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-secondary": "#ffffff",
+                    "secondary": "#0051d5",
+                    "on-secondary-fixed": "#00174b",
+                    "secondary-fixed-dim": "#b4c5ff",
+                    "on-surface-variant": "#45464d",
+                    "on-surface": "#0b1c30",
+                    "surface-dim": "#cbdbf5",
+                    "secondary-fixed": "#dbe1ff",
+                    "primary-fixed": "#dae2fd",
+                    "on-primary": "#ffffff",
+                    "outline": "#76777d",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container": "#e5eeff",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#fefcff",
+                    "tertiary": "#000000",
+                    "on-tertiary-fixed": "#131f00",
+                    "surface-bright": "#f8f9ff",
+                    "on-tertiary-fixed-variant": "#364e03",
+                    "background": "#f8f9ff",
+                    "on-primary-container": "#7c839b",
+                    "inverse-surface": "#213145",
+                    "surface-container-high": "#dce9ff",
+                    "primary-fixed-dim": "#bec6e0",
+                    "on-primary-fixed": "#131b2e",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-container": "#131b2e",
+                    "error-container": "#ffdad6",
+                    "outline-variant": "#c6c6cd",
+                    "surface-variant": "#d3e4fe",
+                    "primary": "#000000",
+                    "inverse-primary": "#bec6e0",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#ceee93",
+                    "surface-tint": "#565e74",
+                    "on-error": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#0b1c30",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed-variant": "#003ea8",
+                    "secondary-container": "#316bf3",
+                    "tertiary-container": "#131f00",
+                    "on-tertiary-container": "#718d3e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "16px",
+                    "margin-mobile": "20px",
+                    "gutter": "24px",
+                    "base": "4px",
+                    "md": "24px",
+                    "margin-desktop": "64px",
+                    "xs": "8px",
+                    "xl": "80px",
+                    "lg": "48px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "body-md": ["Inter"],
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "label-sm": ["Inter"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .soft-shadow {
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+        .bento-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(0, 81, 213, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col md:flex-row">
+<!-- Left Panel: Branding & Ambient Visuals (Desktop Only) -->
+<aside class="hidden md:flex relative w-1/2 bg-primary-container items-center justify-center overflow-hidden p-margin-desktop">
+
+<div class="relative z-10 max-w-lg text-on-primary">
+<div class="mb-lg">
+<span class="font-headline-md text-headline-md font-bold text-on-secondary">ApexVoice</span>
+<span class="text-on-secondary-fixed-variant font-bold ml-1">DatalystLM</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-white mb-md">Practice out loud.<br/>Land the role.</h1>
+<p class="font-body-lg text-body-lg text-on-primary-fixed-variant max-w-md">
+                Real-world interview simulations powered by voice analysis and specialized AI feedback. Master your pitch, refine your technical answers, and gain institutional confidence.
+            </p>
+<div class="mt-xl p-md bg-surface-container-highest/10 backdrop-blur-md rounded-xl border border-white/10 soft-shadow">
+<div class="flex items-center gap-xs mb-sm">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-label-sm font-label-sm uppercase tracking-wider">ML</span>
+<span class="bg-primary/20 text-white px-2 py-0.5 rounded text-label-sm font-label-sm uppercase tracking-wider">Medium</span>
+<div class="ml-auto flex items-center gap-1 text-on-primary-fixed-variant">
+<span class="material-symbols-outlined text-[18px]">timer</span>
+<span class="font-label-sm text-label-sm">0:60</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-sm">What is overfitting and how do you prevent it?</h3>
+<div class="flex flex-wrap gap-2">
+<span class="text-label-sm text-on-primary-fixed-variant bg-white/5 px-2 py-1 rounded">overfitting</span>
+<span class="text-label-sm text-on-primary-fixed-variant bg-white/5 px-2 py-1 rounded">regularization</span>
+<span class="text-label-sm text-on-primary-fixed-variant bg-white/5 px-2 py-1 rounded">dropout</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Right Panel: Sign In Form -->
+<main class="flex-1 flex flex-col items-center justify-center p-margin-mobile md:p-margin-desktop bg-surface relative">
+<div class="bento-glow"></div>
+<div class="w-full max-w-[440px] relative z-10">
+<!-- Mobile Header -->
+<div class="md:hidden flex flex-col items-center mb-lg">
+<div class="flex items-center mb-xs">
+<span class="font-headline-md text-headline-md font-extrabold text-primary">ApexVoice</span>
+<span class="text-secondary font-bold ml-1">DatalystLM</span>
+</div>
+</div>
+<!-- Sign In Content -->
+<div class="text-center md:text-left mb-xl">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Welcome back :)</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Sign in with your email and password to continue.</p>
+</div>
+<!-- Social Logins -->
+<div class="grid grid-cols-1 gap-sm mb-lg">
+<button class="flex items-center justify-center gap-xs w-full h-12 bg-surface-container-lowest border border-outline-variant rounded-full font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors active:scale-95 duration-200">
+<img alt="Google" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpo_f0gaIbD6kjJEICIUTqwH4FwbdtDFaMHpEIoLcbHZ3ASBctsxUOdI87pQNarp6cH9s982QPVWRjf7fhZfKdfYmiaQOfQUS6TZEYzDDslVn1jT6iRMr-zrByBOH8ACd3osxV4sB0_erxm8FjYlgNaNXHzNAfz3OR8h48Rcqo_3-lpLXSMZkaRpll7Q-aSFdIKif1SPNtnh2ke9cKNiu5U4fSuKKtBM1ieKhD5b_2FhhpOwBh9XCR"/>
+                    Continue with Google
+                </button>
+<button class="flex items-center justify-center gap-xs w-full h-12 bg-surface-container-lowest border border-outline-variant rounded-full font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors active:scale-95 duration-200">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+                    Continue with GitHub
+                </button>
+</div>
+<!-- Separator -->
+<div class="relative flex items-center gap-sm mb-lg">
+<div class="flex-grow h-px bg-outline-variant"></div>
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-widest bg-surface px-2">or sign in with email</span>
+<div class="flex-grow h-px bg-outline-variant"></div>
+</div>
+<!-- Form Fields -->
+<form class="space-y-md">
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface" for="email">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant text-[20px]">mail</span>
+<input class="w-full h-12 pl-12 pr-4 bg-surface-container-low border-none rounded-xl font-body-md text-body-md focus:ring-2 focus:ring-secondary focus:bg-white transition-all outline-none" id="email" placeholder="you@example.com" type="email"/>
+</div>
+</div>
+<div class="space-y-xs">
+<div class="flex justify-between items-center">
+<label class="font-label-md text-label-md text-on-surface" for="password">Password</label>
+<a class="text-label-sm font-label-sm text-secondary hover:underline" href="#">Forgot password?</a>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant text-[20px]">lock</span>
+<input class="w-full h-12 pl-12 pr-4 bg-surface-container-low border-none rounded-xl font-body-md text-body-md focus:ring-2 focus:ring-secondary focus:bg-white transition-all outline-none" id="password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<div class="pt-sm space-y-sm">
+<button class="w-full h-12 bg-primary text-on-primary rounded-full font-label-md text-label-md hover:opacity-90 active:scale-[0.98] transition-all soft-shadow" type="submit">
+                        Sign In
+                    </button>
+<button class="w-full h-12 bg-white border border-outline-variant text-on-surface rounded-full font-label-md text-label-md hover:bg-surface-container active:scale-[0.98] transition-all" type="button">
+                        Create Account
+                    </button>
+</div>
+</form>
+<footer class="mt-lg text-center">
+<p class="font-label-md text-label-md text-on-surface-variant">
+                    Don't have an account? <a class="text-secondary font-bold hover:underline" href="#">Sign up free</a>
+</p>
+</footer>
+</div>
+<!-- Decorative element (background pattern) -->
+<div class="absolute bottom-0 right-0 w-64 h-64 opacity-5 pointer-events-none">
+<svg fill="none" height="256" viewbox="0 0 256 256" width="256" xmlns="http://www.w3.org/2000/svg">
+<circle cx="256" cy="256" fill="url(#paint0_radial_signin)" r="256"></circle>
+<defs>
+<radialgradient cx="0" cy="0" gradienttransform="translate(256 256) rotate(90) scale(256)" gradientunits="userSpaceOnUse" id="paint0_radial_signin" r="1">
+<stop stop-color="#0051d5"></stop>
+<stop offset="1" stop-color="#0051d5" stop-opacity="0"></stop>
+</radialgradient>
+</defs>
+</svg>
+</div>
+</main>
+<!-- Optional: Micro-interaction script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.querySelector('.material-symbols-outlined').style.color = '#0051d5';
+                });
+                input.addEventListener('blur', () => {
+                    input.parentElement.querySelector('.material-symbols-outlined').style.color = '#c6c6cd';
+                });
+            });
+        });
+    </script>
+</body></html>

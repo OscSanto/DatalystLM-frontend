@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./app.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f8f9ff;color:#0b1c30;font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
+.msi{font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;display:inline-block;line-height:1;letter-spacing:normal;white-space:nowrap;direction:ltr}
+.msi-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.25}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes riseIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.94)}to{opacity:1;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){*{animation:none !important}}
+@keyframes pulsewave{0%,100%{transform:scaleY(0.5);opacity:0.5}50%{transform:scaleY(1.4);opacity:1}}
+</style>
+</helmet>
+<div data-screen-label="Front" style="min-height:100vh">
+<header style="position:fixed;top:0;left:0;right:0;z-index:50;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 64px;backdrop-filter:blur(16px);background:rgba(248,249,255,0.85);box-shadow:0 1px 3px rgba(15,23,42,0.06)">
+  <a href="Front.dc.html" style="display:flex;align-items:center"><img alt="DatalystLM" src="assets/logo-datalystlm.png" style="height:44px;width:auto;object-fit:contain"></a>
+  <nav style="display:flex;gap:32px">
+    <a href="#demo" style="font-size:14px;line-height:20px;letter-spacing:0.01em;font-weight:500;color:#45464d" style-hover="color:#0051d5">Demo</a>
+    <a href="#stories" style="font-size:14px;line-height:20px;letter-spacing:0.01em;font-weight:500;color:#45464d" style-hover="color:#0051d5">Stories</a>
+    <a href="#library" style="font-size:14px;line-height:20px;letter-spacing:0.01em;font-weight:500;color:#45464d" style-hover="color:#0051d5">Library</a>
+    <a href="#pricing" style="font-size:14px;line-height:20px;letter-spacing:0.01em;font-weight:500;color:#45464d" style-hover="color:#0051d5">Pricing</a>
+  </nav>
+  <div style="display:flex;align-items:center;gap:12px">
+    <sc-if value="{{ loggedOut }}">
+      <div style="display:flex;align-items:center;gap:12px">
+        <a href="/login" style="font-size:14px;font-weight:500;letter-spacing:0.01em;color:#45464d;padding:8px 16px;border-radius:9999px" style-hover="background:#e5eeff;color:#0b1c30">Login</a>
+        <a href="/login" style="background:#000000;color:#ffffff;padding:10px 24px;border-radius:9999px;font-size:14px;font-weight:700;letter-spacing:0.01em;box-shadow:0 2px 6px rgba(15,23,42,0.15)" style-hover="opacity:0.9;color:#ffffff">Register</a>
+      </div>
+    </sc-if>
+    <sc-if value="{{ loggedIn }}">
+      <div style="position:relative;display:flex;align-items:center">
+        <button data-useravatar="true" onClick="{{ toggleMenu }}" aria-haspopup="true" style="width:40px;height:40px;border-radius:9999px;background:#131b2e;color:#ffffff;display:flex;align-items:center;justify-content:center;font-family:'Hanken Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.02em;cursor:pointer;flex-shrink:0;border:none">{{ initials }}</button>
+        <div data-usermenu="true" style="{{ menuStyle }}">
+          <div style="padding:6px 8px">
+            <a href="Selection.dc.html" style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;color:#45464d;text-decoration:none" style-hover="background:#eff4ff;color:#0051d5"><span class="msi" style="font-size:20px">mic</span>Start Practicing</a>
+          </div>
+          <div style="padding:6px 8px;border-top:1px solid #e5eeff">
+            <button onClick="{{ signOut }}" style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;color:#ba1a1a;width:100%;border:none;background:none;cursor:pointer;text-align:left" style-hover="background:#fff3f2"><span class="msi" style="font-size:20px">logout</span>Sign Out</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</header>
+<main style="padding-top:64px">
+  <section style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1280px; margin: 0 auto; padding: 80px 64px; min-height: 600px; padding-top: 60px; padding-bottom: 60px">
+    <div>
+      <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:9999px;background:#dbe1ff;color:#00174b;margin-bottom:32px;opacity:0;animation:riseIn 0.7s cubic-bezier(0.4,0,0.2,1) 0.05s forwards">
+        <span class="msi msi-fill" style="font-size:18px">stars</span>
+        <span style="font-size:12px;line-height:16px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em">Voice-first interview practice</span>
+      </div>
+      <h1 style="font-family:'Hanken Grotesk',sans-serif;font-size:56px;line-height:64px;font-weight:600;letter-spacing:-0.02em;color:#0b1c30;margin:0 0 24px">
+        <span style="display: inline; opacity: 0; animation: riseIn 0.8s cubic-bezier(0.4,0,0.2,1) 0.18s forwards">Ace your data science interview —</span>
+        <span style="display:inline-block;color:#0051d5;opacity:0;animation:riseIn 0.8s cubic-bezier(0.4,0,0.2,1) 0.42s forwards">out loud.</span>
+      </h1>
+      <p style="font-size:18px;line-height:28px;color:#45464d;margin:0 0 40px;max-width:560px;text-wrap:pretty;opacity:0;animation:riseIn 0.8s cubic-bezier(0.4,0,0.2,1) 0.6s forwards">The world's first AI voice coach for data professionals. Practice real-time technical scenarios with industry grade feedback.</p>
+      <div style="display:flex;gap:16px;opacity:0;animation:riseIn 0.8s cubic-bezier(0.4,0,0.2,1) 0.76s forwards">
+        <a href="/login" style="background:#000000;color:#ffffff;padding:16px 40px;border-radius:9999px;font-size:14px;font-weight:700;letter-spacing:0.01em;box-shadow:0 8px 20px rgba(15,23,42,0.2)" style-hover="opacity:0.9;color:#ffffff">Start Your First Session</a>
+        <a href="#demo" style="background:#f8f9ff;border:1px solid #76777d;color:#0b1c30;padding:16px 40px;border-radius:9999px;font-size:14px;font-weight:700;letter-spacing:0.01em" style-hover="background:#e5eeff;color:#0b1c30">Watch Demo</a>
+      </div>
+    </div>
+    <div style="position:relative;opacity:0;animation:scaleIn 0.9s cubic-bezier(0.4,0,0.2,1) 0.5s forwards">
+      <div style="border-radius:16px;overflow:hidden;box-shadow:0 24px 48px rgba(15,23,42,0.18);border:4px solid #ffffff;aspect-ratio:1;max-width:480px;margin:0 auto">
+        <img alt="Professional woman practicing interview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6Vs68IizlGl5-mVyR21V_T_fW3vGjZGOBxEWp8sDK0mhlG7WfKcIloJnlhVTxBGO0DzJs4hZ560yZIYSU6t2jIFtRxb5WVLf48lIcHTm1veNGU7_lHsN1Qmi18xjTPdwOeTJjmSNOocwiIzLYTyLonBxXZbTUzgPtLVXnp2hbpqqeLtHS6ahPWr6KeC6S4AorE1IFYmm6ul1KQMKbK1Dtl54jgjDBZza03cVCSubU1uCNBQovuMyH" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+    </div>
+  </section>
+  <section style="padding: 24px 0 40px; position: relative; overflow: hidden; padding-top: 40px; background-color: #FDFDFF">
+    <div style="position:absolute;left:0;top:0;bottom:0;width:120px;z-index:2;background:linear-gradient(90deg,#f8f9ff,rgba(248,249,255,0));pointer-events:none"></div>
+    <div style="position:absolute;right:0;top:0;bottom:0;width:120px;z-index:2;background:linear-gradient(270deg,#f8f9ff,rgba(248,249,255,0));pointer-events:none"></div>
+    <div style="display:flex;width:max-content;animation:marquee 45s linear infinite">
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="Python" src="https://cdn.simpleicons.org/python/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">Python</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="PostgreSQL" src="https://cdn.simpleicons.org/postgresql/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">PostgreSQL</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="MySQL" src="https://cdn.simpleicons.org/mysql/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">MySQL</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="Redis" src="https://cdn.simpleicons.org/redis/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">Redis</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="pandas" src="https://cdn.simpleicons.org/pandas/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">pandas</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="NumPy" src="https://cdn.simpleicons.org/numpy/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">NumPy</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="scikit-learn" src="https://cdn.simpleicons.org/scikitlearn/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">scikit-learn</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="PyTorch" src="https://cdn.simpleicons.org/pytorch/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">PyTorch</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="TensorFlow" src="https://cdn.simpleicons.org/tensorflow/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">TensorFlow</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="Apache Spark" src="https://cdn.simpleicons.org/apachespark/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">Apache Spark</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="Snowflake" src="https://cdn.simpleicons.org/snowflake/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">Snowflake</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="Databricks" src="https://cdn.simpleicons.org/databricks/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">Databricks</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="" src="https://cdn.simpleicons.org/python/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">Python</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="" src="https://cdn.simpleicons.org/postgresql/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">PostgreSQL</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="" src="https://cdn.simpleicons.org/mysql/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">MySQL</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="" src="https://cdn.simpleicons.org/redis/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">Redis</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="" src="https://cdn.simpleicons.org/pandas/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">pandas</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="" src="https://cdn.simpleicons.org/numpy/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">NumPy</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="" src="https://cdn.simpleicons.org/scikitlearn/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">scikit-learn</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="" src="https://cdn.simpleicons.org/pytorch/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">PyTorch</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="" src="https://cdn.simpleicons.org/tensorflow/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">TensorFlow</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="" src="https://cdn.simpleicons.org/apachespark/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">Apache Spark</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="" src="https://cdn.simpleicons.org/snowflake/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">Snowflake</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:0 36px;flex-shrink:0;opacity:0.55"><img alt="" src="https://cdn.simpleicons.org/databricks/76777d" style="height:30px;width:auto;display:block"><span style="font-size:15px;font-weight:600;color:#76777d;white-space:nowrap">Databricks</span></div>
+    </div>
+  </section>
+  <section id="demo" style="padding: 80px 64px; background: #f8f9ff; padding-top: 65px; padding-bottom: 65px">
+    <div style="max-width:896px;margin:0 auto">
+      <div style="text-align:center;margin-bottom:40px">
+        <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:48px;line-height:56px;font-weight:600;letter-spacing:-0.01em;margin:0 0 16px">Experience the Workflow</h2>
+        <p style="font-size:18px;line-height:28px;color:#45464d;margin:0">See how the AI analyzes your verbal response in real time.</p>
+      </div>
+      <div style="position:relative;border-radius:32px;box-shadow:0 24px 48px rgba(15,23,42,0.18);overflow:hidden;min-height:580px;display:flex;flex-direction:column">
+        <div style="{{ liveStyle }}">
+          <div style="margin-bottom:32px">
+            <div style="display:inline-flex;align-items:center;gap:8px;color:#0051d5;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">
+              <span style="width:8px;height:8px;border-radius:9999px;background:#ba1a1a;animation:blink 1.4s infinite"></span>Live Interview Session
+            </div>
+            <h3 style="font-family:'Hanken Grotesk',sans-serif;font-size:30px;line-height:38px;font-weight:500;color:#0b1c30;margin:0">"What is overfitting and how do you prevent it?"</h3>
+          </div>
+          <div style="flex:1;background:#ffffff;border-radius:16px;border:1px solid #dce9ff;padding:24px;margin-bottom:32px">
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px">
+              <div style="display:flex;align-items:flex-end;gap:4px;height:32px">
+                <div style="width:4px;background:#0051d5;border-radius:9999px;height:16px;transform-origin:bottom;animation:pulsewave 1.2s ease-in-out infinite"></div>
+                <div style="width:4px;background:#0051d5;border-radius:9999px;height:32px;transform-origin:bottom;animation:pulsewave 1.2s ease-in-out infinite 0.15s"></div>
+                <div style="width:4px;background:#0051d5;border-radius:9999px;height:24px;transform-origin:bottom;animation:pulsewave 1.2s ease-in-out infinite 0.3s"></div>
+                <div style="width:4px;background:#0051d5;border-radius:9999px;height:30px;transform-origin:bottom;animation:pulsewave 1.2s ease-in-out infinite 0.45s"></div>
+                <div style="width:4px;background:#0051d5;border-radius:9999px;height:20px;transform-origin:bottom;animation:pulsewave 1.2s ease-in-out infinite 0.6s"></div>
+                <div style="width:4px;background:#0051d5;border-radius:9999px;height:28px;transform-origin:bottom;animation:pulsewave 1.2s ease-in-out infinite 0.75s"></div>
+              </div>
+              <span style="color:#45464d;font-size:14px;font-weight:500;letter-spacing:0.01em">Listening…</span>
+            </div>
+            <p style="color:#0b1c30;font-size:18px;line-height:30px;margin:0;min-height:150px">{{ typed }}<span style="width:6px;height:20px;background:#0051d5;display:inline-block;margin-left:4px;vertical-align:-3px;animation:blink 1s infinite"></span></p>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:40px;height:40px;border-radius:9999px;background:#dce9ff;display:flex;align-items:center;justify-content:center"><span class="msi" style="color:#0051d5;font-size:20px">mic</span></div>
+              <span style="color:#45464d;font-size:14px">Audio input detected</span>
+            </div>
+            <button onClick="{{ skip }}" style="background:none;border:none;color:#76777d;font-family:Inter,sans-serif;font-size:12px;text-decoration:underline;text-underline-offset:4px;cursor:pointer" style-hover="color:#0b1c30">Skip animation</button>
+          </div>
+        </div>
+        <div style="{{ resultsStyle }}">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px">
+            <div>
+              <h3 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;line-height:32px;font-weight:500;margin:0 0 4px">Session Analysis</h3>
+              <p style="color:#45464d;font-size:14px;margin:0">Reviewing: Machine Learning Fundamentals</p>
+            </div>
+            <div style="background:#0051d5;color:#ffffff;padding:8px 16px;border-radius:12px;text-align:center">
+              <p style="font-size:10px;text-transform:uppercase;font-weight:700;letter-spacing:-0.01em;opacity:0.8;margin:0 0 4px">Score</p>
+              <p style="font-size:24px;font-weight:700;margin:0;line-height:1">84<span style="font-size:14px;opacity:0.6">/100</span></p>
+            </div>
+          </div>
+          <div style="background:#ffffff;border:1px solid #c6c6cd;border-radius:16px;padding:16px 24px;margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:12px;font-weight:600;color:#45464d;text-transform:uppercase;letter-spacing:0.1em">Concept mastery · keyword hit rate</span>
+              <span style="font-size:13px;font-weight:700">75%</span>
+            </div>
+            <div style="width:100%;height:8px;background:#dce9ff;border-radius:9999px;overflow:hidden"><div style="height:100%;width:75%;background:#0051d5;border-radius:9999px"></div></div>
+          </div>
+          <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+            <div style="background:#131b2e;padding:20px 24px;border-radius:16px;color:#ffffff;display:flex;flex-direction:column">
+              <p style="font-size:12px;font-weight:600;color:#b4c5ff;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 12px">AI Feedback Summary</p>
+              <p style="flex:1;font-size:14px;line-height:22px;margin:0 0 16px">"Great definition of noise vs. signal. You correctly identified L1/L2 regularization. For a perfect score, mention how cross-validation helps detect overfitting early."</p>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;padding-top:12px;border-top:1px solid rgba(255,255,255,0.12)"><span class="msi" style="font-size:16px;color:#0051d5">trending_up</span>Communication: Clear &amp; Concise</div>
+            </div>
+            <div style="background:#ffffff;padding:20px 24px;border-radius:16px;border:1px solid #c6c6cd;display:flex;flex-direction:column">
+              <p style="font-size:12px;font-weight:600;color:#45464d;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 12px">Key Concepts Mentioned</p>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start">
+                <span style="padding:4px 12px;background:#ceee93;color:#131f00;border-radius:9999px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px"><span class="msi" style="font-size:14px">check</span>Generalization</span>
+                <span style="padding:4px 12px;background:#ceee93;color:#131f00;border-radius:9999px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px"><span class="msi" style="font-size:14px">check</span>Regularization</span>
+                <span style="padding:4px 12px;background:#ceee93;color:#131f00;border-radius:9999px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px"><span class="msi" style="font-size:14px">check</span>High Variance</span>
+                <span style="padding:4px 12px;background:#d3e4fe;color:#45464d;border-radius:9999px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px"><span class="msi" style="font-size:14px">close</span>Cross-Validation</span>
+              </div>
+              <div style="margin-top:auto;padding-top:16px;display:flex;gap:24px">
+                <div><span style="font-family:'Hanken Grotesk',sans-serif;font-size:20px;font-weight:600">3</span><span style="font-size:11px;color:#45464d;margin-left:4px">hit</span></div>
+                <div><span style="font-family:'Hanken Grotesk',sans-serif;font-size:20px;font-weight:600;color:#93000a">1</span><span style="font-size:11px;color:#45464d;margin-left:4px">missed</span></div>
+                <div><span style="font-family:'Hanken Grotesk',sans-serif;font-size:20px;font-weight:600">58s</span><span style="font-size:11px;color:#45464d;margin-left:4px">spoken</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:auto;display:flex;gap:16px">
+            <button onClick="{{ toInsights }}" style="flex:1;background:#000000;color:#ffffff;border:none;padding:16px 32px;border-radius:12px;font-family:Inter,sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(15,23,42,0.2);display:flex;align-items:center;justify-content:center;gap:8px" style-hover="opacity:0.9">Full Analysis Report<span class="msi" style="font-size:20px">arrow_forward</span></button>
+            <button onClick="{{ restart }}" style="border:1px solid #c6c6cd;background:transparent;color:#45464d;padding:16px 32px;border-radius:12px;font-family:Inter,sans-serif;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer" style-hover="background:#ffffff"><span class="msi" style="font-size:20px">replay</span>Watch Demo Again</button>
+          </div>
+        </div>
+        <div style="{{ insightsStyle }}">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px">
+            <div>
+              <h3 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;line-height:32px;font-weight:500;margin:0 0 4px">Sarah J. <span style="color:#0051d5;font-weight:500">· Data Scientist</span></h3>
+              <p style="color:#45464d;font-size:14px;margin:0">Full analysis report — Machine Learning Fundamentals</p>
+            </div>
+            <div style="background:#ceee93;color:#131f00;padding:8px 16px;border-radius:12px;text-align:center">
+              <p style="font-size:10px;text-transform:uppercase;font-weight:700;opacity:0.7;margin:0 0 2px">Percentile</p>
+              <p style="font-size:24px;font-weight:700;margin:0;line-height:1">87<span style="font-size:13px;opacity:0.6">th</span></p>
+            </div>
+          </div>
+          <div style="background:#ffffff;padding:20px 24px;border-radius:16px;border:1px solid #c6c6cd;margin-bottom:16px">
+            <p style="font-size:12px;font-weight:600;color:#45464d;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 4px">How your answer landed vs. 1,284 candidates</p>
+            <svg viewBox="0 0 640 104" style="width:100%;height:auto;display:block">
+              <line x1="20" y1="84" x2="620" y2="84" stroke="#c6c6cd" stroke-width="1"></line>
+              <path d="M20 84 C170 84 200 26 320 26 C440 26 470 84 620 84 Z" fill="rgba(0,81,213,0.12)"></path>
+              <path d="M20 84 C170 84 200 26 320 26 C440 26 470 84 620 84" fill="none" stroke="#0051d5" stroke-width="2.5"></path>
+              <line x1="320" y1="26" x2="320" y2="84" stroke="#76777d" stroke-width="1" stroke-dasharray="4 4"></line>
+              <text x="320" y="100" text-anchor="middle" style="font-size:11px;fill:#76777d;font-family:Inter,sans-serif">Mean 71</text>
+              <line x1="470" y1="22" x2="470" y2="84" stroke="#131b2e" stroke-width="2"></line>
+              <circle cx="470" cy="56" r="5.5" fill="#131b2e" stroke="#ffffff" stroke-width="2"></circle>
+              <rect x="437" y="4" width="66" height="20" rx="10" fill="#131b2e"></rect>
+              <text x="470" y="18" text-anchor="middle" style="font-size:11px;font-weight:600;fill:#ffffff;font-family:Inter,sans-serif">You · 84</text>
+              <text x="20" y="100" style="font-size:11px;fill:#76777d;font-family:Inter,sans-serif">30</text>
+              <text x="620" y="100" text-anchor="end" style="font-size:11px;fill:#76777d;font-family:Inter,sans-serif">100</text>
+            </svg>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+            <div style="background:#ffffff;padding:20px 24px;border-radius:16px;border:1px solid #c6c6cd">
+              <p style="font-size:12px;font-weight:600;color:#45464d;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 12px;display:flex;align-items:center;gap:6px"><span class="msi msi-fill" style="font-size:16px;color:#b3d17a">lightbulb</span>Ideal Answer</p>
+              <p style="font-size:14px;line-height:22px;color:#45464d;margin:0;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden">Overfitting is high variance: the model fits noise instead of signal, so training error keeps falling while validation error rises. Prevent it with L1/L2 regularization, cross-validation, early stopping, more data, dropout, or a simpler model…</p>
+            </div>
+            <div style="background:#ffffff;padding:20px 24px;border-radius:16px;border:1px solid #c6c6cd">
+              <p style="font-size:12px;font-weight:600;color:#45464d;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 12px;display:flex;align-items:center;gap:6px"><span class="msi" style="font-size:16px;color:#0051d5">graphic_eq</span>Voice Analytics</p>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 16px">
+                <div>
+                  <div style="display:flex;align-items:baseline;gap:6px"><span style="font-family:'Hanken Grotesk',sans-serif;font-size:22px;font-weight:600">142</span><span style="font-size:11px;color:#45464d">wpm</span></div>
+                  <span style="font-size:10px;color:#364e03;font-weight:700">Optimal range</span>
+                </div>
+                <div>
+                  <div style="display:flex;align-items:baseline;gap:6px"><span style="font-family:'Hanken Grotesk',sans-serif;font-size:22px;font-weight:600">3</span><span style="font-size:11px;color:#45464d">fillers</span></div>
+                  <span style="font-size:10px;color:#364e03;font-weight:700">Excellent control</span>
+                </div>
+                <div>
+                  <div style="display:flex;align-items:baseline;gap:6px"><span style="font-family:'Hanken Grotesk',sans-serif;font-size:22px;font-weight:600">78%</span><span style="font-size:11px;color:#45464d">confidence</span></div>
+                  <span style="font-size:10px;color:#45464d">Steady tone</span>
+                </div>
+                <div>
+                  <div style="display:flex;align-items:baseline;gap:6px"><span style="font-family:'Hanken Grotesk',sans-serif;font-size:22px;font-weight:600">3</span><span style="font-size:11px;color:#45464d">pauses</span></div>
+                  <span style="font-size:10px;color:#45464d">Ideal: 2–4</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: -10px; display: flex; gap: 16px; margin-bottom: -10px; padding-top: 0px; padding-bottom: 0px">
+            <button onClick="{{ back }}" style="border:1px solid #c6c6cd;background:transparent;color:#45464d;padding:16px 32px;border-radius:12px;font-family:Inter,sans-serif;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#ffffff"><span class="msi" style="font-size:20px">arrow_back</span>Back to summary</button>
+            <a href="/login" style="flex:1;background:#000000;color:#ffffff;padding:16px 32px;border-radius:12px;font-size:14px;font-weight:700;text-align:center;box-shadow:0 8px 20px rgba(15,23,42,0.2)" style-hover="opacity:0.9;color:#ffffff">Try it with your own answer</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="topics" style="background:#ffffff;padding:80px 64px">
+    <div style="max-width: 1280px; margin: 0px auto;">
+      <div style="text-align:center;margin-bottom:64px">
+        <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:48px;line-height:56px;font-weight:600;letter-spacing:-0.01em;margin:0 0 16px">Master Everything</h2>
+        <p style="font-size:18px;line-height:28px;color:#45464d;max-width:640px;margin:0 auto">Engineered by elite interviewers and data leaders to replicate the actual pressure of a corporate interview.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+        <div data-reveal="up" data-reveal-delay="200" style="padding: 32px; border-radius: 12px; background: #f8f9ff; box-shadow: 12px 20px 3px -7px rgba(15,23,42,0.08); border: 1px solid #e5eeff; transition: transform 0.3s; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px" style-hover="transform:translateY(-8px)">
+          <img alt="" src="assets/icon-speak.png" style="width: 48px; height: 48px; display: block; margin-bottom: 0px; animation: float 4s ease-in-out infinite">
+          <h3 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;line-height:32px;font-weight:500;margin:0 0 16px">Speak Naturally</h3>
+          <p style="font-size:16px;line-height:24px;color:#45464d;margin:0">No typing. Our low-latency voice engine handles technical nuance, mathematical definitions, and complex jargon in real-time.</p>
+        </div><div data-reveal="up" data-reveal-delay="200" style="padding: 32px; border-radius: 12px; background: #f8f9ff; box-shadow:12px 20px 3px -7px rgba(15,23,42,0.08); border: 1px solid #e5eeff; transition: transform 0.3s; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px" style-hover="transform:translateY(-8px)">
+          <img alt="" src="assets/icon-questions.png" style="display: block; margin-bottom: 0px; height: 48px; width: 48px; animation: float 4s ease-in-out infinite 1.2s">
+          <h3 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;line-height:32px;font-weight:500;margin:0 0 16px">Real Questions</h3>
+          <p style="font-size:16px;line-height:24px;color:#45464d;margin:0">Dynamic pool of 5,000+ technical questions covering Deep Learning, SQL Optimization, and Applied Statistics.</p>
+        </div>
+        <div data-reveal="up" data-reveal-delay="200" style="padding: 32px; border-radius: 12px; background: #f8f9ff; box-shadow:12px 20px 3px -7px rgba(15,23,42,0.08); border: 1px solid #e5eeff; transition: transform 0.3s; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px" style-hover="transform:translateY(-8px)">
+          <img alt="" src="assets/icon-feedback.png" style="width: 48px; height: 48px; display: block; margin-bottom: 0px; animation: float 4s ease-in-out infinite 0.6s">
+          <h3 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;line-height:32px;font-weight:500;margin:0 0 16px">AI Feedback</h3>
+          <p style="font-size:16px;line-height:24px;color:#45464d;margin:0">Instant diagnostics on your technical accuracy, communication clarity, and confidence levels after every response.</p>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+  <section style="padding:80px 64px;background:#eff4ff">
+    <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center">
+      <div>
+        <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:48px;line-height:56px;font-weight:600;letter-spacing:-0.01em;margin:0 0 24px">Get Graded like a Real Interview</h2>
+        <p style="font-size:18px;line-height:28px;color:#45464d;margin:0 0 32px">Every answer is scored on two axes: what you said, and how you said it. You see the concepts you hit, the ones you missed, and the delivery habits that undercut an otherwise strong answer.</p>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px">
+          <li style="display: flex; align-items: center; gap: 12px; justify-content: flex-start"><span class="msi" style="color:#718d3e;font-size:36px;line-height:1">check_circle</span><span style="font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 20px">Concept coverage against a model answer - keyword hit rate</span></li>
+          <li style="display: flex; align-items: center; gap: 12px"><span class="msi" style="color:#718d3e;font-size:36px;line-height:1">check_circle</span><span style="font-size:14px;font-weight:500;letter-spacing:0.01em;line-height:20px">Voice analytics: pace, filler words, confidence, and pause patterns</span></li>
+          <li style="display: flex; align-items: center; gap: 12px"><span class="msi" style="color:#718d3e;font-size:36px;line-height:1">check_circle</span><span style="font-size:14px;font-weight:500;letter-spacing:0.01em;line-height:20px">Percentile ranking against peers who answered the same question</span></li>
+        </ul>
+      </div>
+      <div data-reveal="right" data-reveal-delay="0" style="padding:32px;border-radius:16px;background:#ffffff;border:1px solid #c6c6cd;box-shadow:12px 20px 3px -7px rgba(15,23,42,0.08)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px">
+          <h4 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;line-height:32px;font-weight:500;margin:0">Session Analytics</h4>
+          <div style="padding:4px 12px;background:#0051d5;color:#ffffff;border-radius:9999px;font-size:12px;font-weight:700">LATEST</div>
+        </div>
+        <div style="margin-bottom:24px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:14px;font-weight:500;color:#45464d">Concept Mastery (Keyword Hit Rate)</span>
+            <span style="font-size:14px;font-weight:700;color:#000000">88%</span>
+          </div>
+          <div style="width:100%;background:#dce9ff;height:8px;border-radius:9999px;overflow:hidden"><div style="background:#000000;height:100%;width:88%;border-radius:9999px"></div></div>
+        </div>
+        <div style="margin-bottom:24px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:14px;font-weight:500;color:#45464d">Delivery &amp; Clarity</span>
+            <span style="font-size:14px;font-weight:700;color:#0051d5">76%</span>
+          </div>
+          <div style="width:100%;background:#dce9ff;height:8px;border-radius:9999px;overflow:hidden"><div style="background:#0051d5;height:100%;width:76%;border-radius:9999px"></div></div>
+        </div>
+        <p style="font-size:11px;font-weight:700;color:#45464d;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 12px;display:flex;align-items:center;gap:6px"><span class="msi" style="font-size:16px;color:#0051d5">graphic_eq</span>Voice Analytics</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">
+          <div style="padding:14px 16px;background:#f8f9ff;border-radius:12px;border:1px solid #c6c6cd">
+            <p style="font-size:11px;color:#45464d;margin:0 0 4px;text-transform:uppercase;font-weight:700">Words Per Min</p>
+            <p style="font-size:22px;font-weight:700;color:#0051d5;margin:0">142</p>
+            <p style="font-size:10px;color:#364e03;margin:4px 0 0;display:flex;align-items:center;gap:2px;font-weight:700"><span class="msi" style="font-size:12px">trending_up</span>Optimal 130–160</p>
+          </div>
+          <div style="padding:14px 16px;background:#f8f9ff;border-radius:12px;border:1px solid #c6c6cd">
+            <p style="font-size:11px;color:#45464d;margin:0 0 4px;text-transform:uppercase;font-weight:700">Filler Words</p>
+            <p style="font-size:22px;font-weight:700;color:#0b1c30;margin:0">3</p>
+            <p style="font-size:10px;color:#364e03;margin:4px 0 0;font-weight:700">Excellent control</p>
+          </div>
+          <div style="padding:14px 16px;background:#f8f9ff;border-radius:12px;border:1px solid #c6c6cd">
+            <p style="font-size:11px;color:#45464d;margin:0 0 4px;text-transform:uppercase;font-weight:700">Confidence</p>
+            <p style="font-size:22px;font-weight:700;color:#0b1c30;margin:0">78%</p>
+            <p style="font-size:10px;color:#45464d;margin:4px 0 0">Steady, even tone</p>
+          </div>
+          <div style="padding:14px 16px;background:#f8f9ff;border-radius:12px;border:1px solid #c6c6cd">
+            <p style="font-size:11px;color:#45464d;margin:0 0 4px;text-transform:uppercase;font-weight:700">Long Pauses</p>
+            <p style="font-size:22px;font-weight:700;color:#0b1c30;margin:0">3</p>
+            <p style="font-size:10px;color:#45464d;margin:4px 0 0">Ideal: 2–4</p>
+          </div>
+        </div>
+        <div style="padding-top:20px;border-top:1px solid #c6c6cd;display:flex;align-items:flex-end;justify-content:space-between;gap:24px">
+          <div>
+            <p style="font-size:11px;font-weight:700;color:#45464d;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 6px">Final Session Score</p>
+            <p style="font-family:'Hanken Grotesk',sans-serif;font-size:56px;font-weight:600;letter-spacing:-0.03em;line-height:1;color:#0b1c30;margin:0">92<span style="font-size:20px;font-weight:500;color:#76777d;letter-spacing:0">/100</span></p>
+          </div>
+          <div style="flex:1;max-width:260px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:11px;color:#45464d;width:78px;flex-shrink:0">Content</span>
+              <span style="flex:1;height:3px;background:#dce9ff;border-radius:9999px;overflow:hidden"><span style="display:block;width:94%;height:100%;background:#0b1c30"></span></span>
+              <span style="font-size:11px;font-weight:700;color:#0b1c30;width:20px;text-align:right">94</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:11px;color:#45464d;width:78px;flex-shrink:0">Delivery</span>
+              <span style="flex:1;height:3px;background:#dce9ff;border-radius:9999px;overflow:hidden"><span style="display:block;width:89%;height:100%;background:#0b1c30"></span></span>
+              <span style="font-size:11px;font-weight:700;color:#0b1c30;width:20px;text-align:right">89</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:11px;color:#45464d;width:78px;flex-shrink:0">Structure</span>
+              <span style="flex:1;height:3px;background:#dce9ff;border-radius:9999px;overflow:hidden"><span style="display:block;width:91%;height:100%;background:#0b1c30"></span></span>
+              <span style="font-size:11px;font-weight:700;color:#0b1c30;width:20px;text-align:right">91</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="library" style="padding:80px 64px;background:#ffffff">
+    
+  <div style="max-width:1280px;margin:0 auto">
+      <div style="text-align:center;margin-bottom:48px">
+        <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:48px;line-height:56px;font-weight:600;letter-spacing:-0.01em;margin:0 0 16px">Browse the question library</h2>
+        <p style="font-size:18px;line-height:28px;color:#45464d;margin:0 auto;max-width:640px">Every topic breaks into subcategories, and every subcategory into questions you answer out loud. Here's a slice of it.</p>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:32px;flex-wrap:wrap">
+        <sc-for list="{{ libTabs }}" as="tb" hint-placeholder-count="4">
+          <button onClick="{{ tb.go }}" style="{{ tb.style }}">{{ tb.name }}</button>
+        </sc-for>
+      </div>
+      <div style="max-width:1040px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:24px 32px;align-items:start">
+        <sc-for list="{{ libGroups }}" as="g" hint-placeholder-count="4">
+          <div style="border:1px solid #dce9ff;border-radius:14px;padding:20px 24px;background:#ffffff">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px">
+              <h3 style="font-family:'Hanken Grotesk',sans-serif;font-size:18px;line-height:24px;font-weight:600;margin:0">{{ g.name }}</h3>
+              <span style="font-size:11px;font-weight:700;color:#45464d;background:#dce9ff;padding:3px 10px;border-radius:9999px;white-space:nowrap">{{ g.count }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ g.items }}" as="q">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span class="msi" style="font-size:16px;color:#0051d5">mic</span>
+                  <span style="font-size:14px;line-height:20px;color:#0b1c30">{{ q }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <p style="text-align:center;margin:32px 0 0"><a href="/login" style="font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:6px">See the full library<span class="msi" style="font-size:18px">arrow_forward</span></a></p>
+    </div></section>
+  <section style="padding:80px 64px;background:#eff4ff">
+    <div style="max-width:1280px;margin:0 auto">
+      <div style="text-align:center;margin-bottom:48px">
+        <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:48px;line-height:56px;font-weight:600;letter-spacing:-0.01em;margin:0 0 16px">Who it's for</h2>
+        <p style="font-size:18px;line-height:28px;color:#45464d;margin:0 auto;max-width:640px">The gap between knowing the answer and saying it well looks different depending on where you are.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1120px;margin:0 auto">
+        <div data-reveal="up" data-reveal-delay="0" style="background:#ffffff;border-radius:16px;padding:32px;border:1px solid #c6c6cd;box-shadow:12px 20px 3px -7px rgba(15,23,42,0.08)">
+          <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#0051d5">New grad</span>
+          <h3 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;line-height:32px;font-weight:500;margin:8px 0 12px">You know the theory.</h3>
+          <p style="font-size:15px;line-height:24px;color:#45464d;margin:0 0 20px">Coursework rewards written answers. Interviews don't. Build the reps so the definition comes out clean under pressure.</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px">
+            <li style="display:flex;gap:10px;align-items:flex-start"><span class="msi" style="font-size:18px;color:#718d3e">check</span><span style="font-size:14px;line-height:20px">Fundamentals across ML, SQL, and stats</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start"><span class="msi" style="font-size:18px;color:#718d3e">check</span><span style="font-size:14px;line-height:20px">Filler-word and pacing feedback</span></li>
+          </ul>
+        </div>
+        <div data-reveal="up" data-reveal-delay="250" style="background:#ffffff;border-radius:16px;padding:32px;border:1px solid #c6c6cd;box-shadow:12px 20px 3px -7px rgba(15,23,42,0.08)">
+          <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#0051d5">Career switcher</span>
+          <h3 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;line-height:32px;font-weight:500;margin:8px 0 12px">You can do the work.</h3>
+          <p style="font-size:15px;line-height:24px;color:#45464d;margin:0 0 20px">Self-taught knowledge has gaps you can't see. The keyword coverage report shows exactly which terms you never reach for.</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px">
+            <li style="display:flex;gap:10px;align-items:flex-start"><span class="msi" style="font-size:18px;color:#718d3e">check</span><span style="font-size:14px;line-height:20px">Missed-concept tracking per answer</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start"><span class="msi" style="font-size:18px;color:#718d3e">check</span><span style="font-size:14px;line-height:20px">Model answers to compare against</span></li>
+          </ul>
+        </div>
+        <div data-reveal="up" data-reveal-delay="500" style="background:#ffffff;border-radius:16px;padding:32px;border:1px solid #c6c6cd;box-shadow:12px 20px 3px -7px rgba(15,23,42,0.08)">
+          <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#0051d5">Senior IC</span>
+          <h3 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;line-height:32px;font-weight:500;margin:8px 0 12px">You've been heads-down for years.</h3>
+          <p style="font-size:15px;line-height:24px;color:#45464d;margin:0 0 20px">Deep expertise, rusty explanation. Practice compressing what you know into a two-minute answer a panel can follow.</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px">
+            <li style="display:flex;gap:10px;align-items:flex-start"><span class="msi" style="font-size:18px;color:#718d3e">check</span><span style="font-size:14px;line-height:20px">Hard questions and edge-case follow-ups</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start"><span class="msi" style="font-size:18px;color:#718d3e">check</span><span style="font-size:14px;line-height:20px">Clarity scoring, not just correctness</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="stories" style="padding: 80px 64px; color: #0b1c30; background-color: #ffffff">
+    <div style="max-width:1280px;margin:0 auto">
+      <div style="text-align:center;margin-bottom:64px">
+        <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:48px;line-height:56px;font-weight:600;letter-spacing:-0.01em;margin:0 0 16px;color:#0b1c30">Success Stories</h2>
+        <p style="font-size:18px;line-height:28px;color:#45464d;margin:0 auto;max-width:640px">From mock sessions to dream offers at institutional leaders.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:1040px;margin:0 auto">
+        <div style="display:flex;flex-direction:column;padding:40px;border-radius:16px;background:#ffffff;border:1px solid #0b1c30;transition:background 0.3s" style-hover="background:#f8f9ff">
+          <div style="display:flex;gap:4px;color:#0051d5;margin-bottom:32px"><span class="msi msi-fill">star</span><span class="msi msi-fill">star</span><span class="msi msi-fill">star</span><span class="msi msi-fill">star</span><span class="msi msi-fill">star</span></div>
+          <p style="flex:1;font-size:20px;line-height:32px;font-style:italic;margin:0 0 40px;color:#0b1c30">"DatalystLM was the bridge between my technical knowledge and my ability to communicate it to partners. I landed a Senior DS role at Goldman within 3 weeks."</p>
+          <div style="display:flex;align-items:center;gap:16px;padding-top:24px;border-top:1px solid #c6c6cd">
+            <div style="width:48px;height:48px;border-radius:9999px;overflow:hidden;border:2px solid #0051d5"><img alt="Marcus Chen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKkrG650T-9AqQZSGJzLeckJbO66-XJi0W_UXsdsdch7qRBXnuveiFZqj3cy79fnsw63Khf2xD1lfQx_zCdr5opxogKcUV7iuqJl11s8lu3cldyhAgj9LzI7PxaGrz8Qpc-rEIZfHzYulSDe9nZgGYQgw4U0q0ThN4yMj9o_A44y_b3EtXD0CaOmoINurSvV3-EmASYjX2dDI1BuIKGqa3mUDRDxjQxO1gxISVn89X9GfFE9EDjDzp" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+            <div>
+              <p style="font-size:14px;font-weight:700;margin:0;color:#0b1c30">Marcus Chen</p>
+              <p style="font-size:12px;color:#45464d;margin:2px 0 0">Senior Data Scientist @ Goldman Sachs</p>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;padding:40px;border-radius:16px;background:#ffffff;border:1px solid #0b1c30;transition:background 0.3s" style-hover="background:#f8f9ff">
+          <div style="display:flex;gap:4px;color:#0051d5;margin-bottom:32px"><span class="msi msi-fill">star</span><span class="msi msi-fill">star</span><span class="msi msi-fill">star</span><span class="msi msi-fill">star</span><span class="msi msi-fill">star</span></div>
+          <p style="flex:1;font-size:20px;line-height:32px;font-style:italic;margin:0 0 40px;color:#0b1c30">"The AI coach's feedback on my statistical explanations was incredibly precise. It caught nuances that even my human mentors missed."</p>
+          <div style="display:flex;align-items:center;gap:16px;padding-top:24px;border-top:1px solid #c6c6cd">
+            <div style="width:48px;height:48px;border-radius:9999px;overflow:hidden;border:2px solid #0051d5"><img alt="Sarah Jenkins" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwem27T0KK5JSH2RB5SQ-Suovxksb07JFKuBq3PaV7UmdP-YXBPWVST8n9DfqK5Hu8OZLD8dE38ndveEQWc-edVJAxnShbfBsm_6zsjofIcrQyw0nqRDPzTfrSacisO23WJt3oUX-daZx8rnyapv1YE5Udqw2RMFqSKzrIrrirSu0TckWv3I720mddWJgsFqAf85RkTOMH_m6hNI9HxFCvsVmve4J_Ox_93QAJa4MxVJAQjxu5ZRKf" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+            <div>
+              <p style="font-size:14px;font-weight:700;margin:0;color:#0b1c30">Sarah Jenkins</p>
+              <p style="font-size:12px;color:#45464d;margin:2px 0 0">Machine Learning Engineer @ Meta</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="pricing" style="padding:80px 64px;background:#eff4ff;text-align:center">
+    <div style="max-width:1152px;margin:0 auto">
+      <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:48px;line-height:56px;font-weight:600;letter-spacing:-0.01em;margin:0 0 24px">Ready to apex your career?</h2>
+      <p style="font-size:18px;line-height:28px;color:#45464d;margin:0 0 48px">Flexible plans for every stage of your job hunt. High-impact coaching for elite professionals.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:896px;margin:0 auto">
+        <div data-reveal="up" data-reveal-delay="0" style="padding:40px;border-radius:16px;background:#ffffff;border:2px solid #0051d5;box-shadow:12px 20px 3px -7px rgba(15,23,42,0.08);display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden">
+          <div style="position:absolute;top:16px;right:-35px;background:#0051d5;color:#ffffff;padding:4px 40px;transform:rotate(45deg);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em">Available</div>
+          <span style="font-size:12px;font-weight:700;color:#0051d5;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px">Free Plan</span>
+          <div style="display:flex;align-items:flex-end;gap:4px;margin-bottom:32px"><span style="font-size:48px;font-weight:700;color:#0b1c30">$0</span><span style="color:#45464d;padding-bottom:8px">/ month</span></div>
+          <ul style="list-style:none;margin:0 0 40px;padding:0;text-align:left;display:flex;flex-direction:column;gap:16px;width:100%">
+            <li style="display:flex;align-items:center;gap:12px"><span class="msi" style="color:#0051d5">check</span><span style="font-size:16px">Unlimited voice practice</span></li>
+            <li style="display:flex;align-items:center;gap:12px"><span class="msi" style="color:#0051d5">check</span><span style="font-size:16px">All topics (ML, SQL, Stats)</span></li>
+            <li style="display:flex;align-items:center;gap:12px"><span class="msi" style="color:#0051d5">check</span><span style="font-size:16px">Full AI feedback engine</span></li>
+          </ul>
+          <a href="/login" style="display:block;width:100%;box-sizing:border-box;background:#0051d5;color:#ffffff;padding:16px 0;border-radius:9999px;font-size:14px;font-weight:700;margin-top:auto;box-shadow:0 8px 20px rgba(0,81,213,0.3)" style-hover="opacity:0.9;color:#ffffff">Start Practicing</a>
+        </div>
+        <div data-reveal="up" data-reveal-delay="350" style="padding:40px;border-radius:16px;background:#f8f9ff;border:1px solid #c6c6cd;display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden">
+          <div style="position:absolute;top:16px;right:-35px;background:#c6c6cd;color:#45464d;padding:4px 40px;transform:rotate(45deg);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em">Waitlist</div>
+          <span style="font-size:12px;font-weight:700;color:#76777d;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px">Pro Plan</span>
+          <div style="display:flex;align-items:flex-end;gap:4px;margin-bottom:32px"><span style="font-size:48px;font-weight:700;color:#76777d">$TBD</span></div>
+          <ul style="list-style:none;margin:0 0 40px;padding:0;text-align:left;display:flex;flex-direction:column;gap:16px;width:100%">
+            <li style="display:flex;align-items:center;gap:12px"><span class="msi" style="color:#c6c6cd">check</span><span style="font-size:16px;color:#76777d">Full session history</span></li>
+            <li style="display:flex;align-items:center;gap:12px"><span class="msi" style="color:#c6c6cd">check</span><span style="font-size:16px;color:#76777d">Progress dashboards</span></li>
+            <li style="display:flex;align-items:center;gap:12px"><span class="msi" style="color:#c6c6cd">check</span><span style="font-size:16px;color:#76777d">Company-specific sets</span></li>
+            <li style="display:flex;align-items:center;gap:12px"><span class="msi" style="color:#c6c6cd">check</span><span style="font-size:16px;color:#76777d">Mock interview mode</span></li>
+          </ul>
+          <a href="/login" style="display:block;width:100%;box-sizing:border-box;background:transparent;border:1px solid #c6c6cd;color:#76777d;padding:16px 0;border-radius:9999px;font-size:14px;font-weight:700;margin-top:auto" style-hover="border-color:#0051d5;color:#0051d5">Join Waitlist</a>
+        </div>
+      </div>
+      <p style="font-size:12px;color:#45464d;margin-top:40px">Trusted by professionals at top tech firms globally.</p>
+    </div>
+  </section>
+</main>
+<footer style="background:#f8f9ff;padding:48px 64px;border-top:1px solid #d3e4fe">
+  <div style="max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:40px">
+    <div style="max-width:320px">
+      <img alt="DatalystLM" src="assets/logo-datalystlm.png" style="height:32px;margin-bottom:16px">
+      <p style="color:#45464d;font-size:14px;line-height:20px;margin:0">Professional AI coaching for elite data science roles. Built for professionals, by professionals.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:40px">
+      <div>
+        <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Product</h4>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:14px">
+          <li><a href="#topics" style="color:#45464d" style-hover="color:#0051d5">Features</a></li>
+          <li><a href="#pricing" style="color:#45464d" style-hover="color:#0051d5">Pricing</a></li>
+          <li><a href="/login" style="color:#45464d" style-hover="color:#0051d5">Beta Program</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Resources</h4>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:14px">
+          <li><a href="#" style="color:#45464d" style-hover="color:#0051d5">Interview Guide</a></li>
+          <li><a href="#stories" style="color:#45464d" style-hover="color:#0051d5">Case Studies</a></li>
+          <li><a href="#" style="color:#45464d" style-hover="color:#0051d5">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:14px;font-weight:700;margin:0 0 16px">Company</h4>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:14px">
+          <li><a href="#" style="color:#45464d" style-hover="color:#0051d5">About Us</a></li>
+          <li><a href="#" style="color:#45464d" style-hover="color:#0051d5">Privacy</a></li>
+          <li><a href="#" style="color:#45464d" style-hover="color:#0051d5">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:1280px;margin:64px auto 0;padding-top:32px;border-top:1px solid #d3e4fe">
+    <p style="font-size:12px;color:#45464d;margin:0">© 2026 DatalystLM Intelligence Systems. All rights reserved.</p>
+  </div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { chars: 0, done: false, started: false, insights: false, lib: 'Machine Learning' };
+  LIBRARY = {
+    'Machine Learning': [
+      { name: 'Bias, Variance & Generalization', count: '42 questions', items: ['Overfitting vs. underfitting', 'The bias-variance tradeoff', 'L1 vs. L2 regularization'] },
+      { name: 'Ensembles & Tree Methods', count: '31 questions', items: ['Random Forest vs. XGBoost', 'How bagging reduces variance', 'Gradient boosting intuition'] },
+      { name: 'Deep Learning Foundations', count: '38 questions', items: ['Backpropagation deep-dive', 'Dropout & batch normalization', 'Vanishing gradients'] },
+      { name: 'Model Evaluation', count: '29 questions', items: ['Precision vs. recall tradeoffs', 'Reading a PR curve', 'Choosing a metric for imbalance'] }
+    ],
+    'SQL & Databases': [
+      { name: 'Joins & Set Logic', count: '34 questions', items: ['Inner vs. outer joins', 'Self-joins & anti-joins', 'When a join duplicates rows'] },
+      { name: 'Window Functions', count: '26 questions', items: ['RANK vs. DENSE_RANK', 'Running totals with frames', 'Partitioned aggregates'] },
+      { name: 'Indexing & Query Plans', count: '22 questions', items: ['When an index hurts', 'Reading an EXPLAIN plan', 'Composite index ordering'] },
+      { name: 'Schema Design', count: '19 questions', items: ['Normalization tradeoffs', 'Star vs. snowflake schema', 'Slowly changing dimensions'] }
+    ],
+    'Statistics': [
+      { name: 'Distributions & Sampling', count: '27 questions', items: ['Central limit theorem in practice', 'Skew, kurtosis & outliers', 'Bootstrapping a confidence interval'] },
+      { name: 'Hypothesis Testing', count: '31 questions', items: ['Type I vs. Type II error', 'Multiple comparisons correction', 'What a p-value is not'] },
+      { name: 'A/B Testing', count: '24 questions', items: ['Power & sample size', 'Novelty effects & peeking', 'Choosing a guardrail metric'] },
+      { name: 'Causal Inference', count: '16 questions', items: ['Correlation vs. causation', 'Difference-in-differences', 'Instrumental variables'] }
+    ],
+    'Python': [
+      { name: 'pandas Fundamentals', count: '33 questions', items: ['groupby, agg & transform', 'merge vs. join vs. concat', 'Reshaping with pivot & melt'] },
+      { name: 'Data Cleaning', count: '25 questions', items: ['Imputation strategies', 'Dtypes & memory optimization', 'Detecting duplicate records'] },
+      { name: 'Performance', count: '18 questions', items: ['Vectorization vs. apply()', 'When to leave pandas', 'Chunked processing'] },
+      { name: 'Code Structure', count: '21 questions', items: ['Classes for data pipelines', 'Testing analysis code', 'Reproducible notebooks'] }
+    ]
+  };
+  TEXT = "Overfitting occurs when a machine learning model learns the noise in the training data rather than the underlying pattern. This typically results in high variance. To prevent it, we can use techniques like L1 or L2 regularization, which add a penalty term to the cost function to discourage overly complex models. Another common approach is using cross-validation to ensure the model generalizes well to unseen data.";
+  componentDidMount() {
+    // OAuth2 callback — Spring redirects to / with ?token=&username= after Google/GitHub login
+    const params = new URLSearchParams(window.location.search);
+    const oauthToken = params.get('token');
+    const oauthUser  = params.get('username');
+    if (oauthToken && oauthUser) {
+      window.DL.saveAuth(oauthToken, decodeURIComponent(oauthUser));
+      window.history.replaceState({}, '', window.location.pathname);
+      window.location.replace('./Selection.dc.html');
+      return;
+    }
+
+    // (no redirect for authenticated users — let them view the landing page freely)
+
+    // Auth state for nav
+    this.setState({ loggedIn: window.DL.isAuthenticated() });
+    this._menuClick = e => {
+      if (!this.state.menuOpen) return;
+      if (e.target.closest('[data-useravatar]')) return;
+      const menu = document.querySelector('[data-usermenu]');
+      if (menu && !menu.contains(e.target)) this.setState({ menuOpen: false });
+    };
+    this._menuKey = e => { if (e.key === 'Escape' && this.state.menuOpen) this.setState({ menuOpen: false }); };
+    document.addEventListener('click', this._menuClick, { capture: true });
+    document.addEventListener('keydown', this._menuKey);
+
+    this.setupReveals();
+    const el = document.getElementById('demo');
+    if (!el || !('IntersectionObserver' in window)) { this.type(); return; }
+    this.obs = new IntersectionObserver(es => {
+      if (es[0].isIntersecting && !this.state.started) { this.type(); this.obs.disconnect(); }
+    }, { threshold: 0.35 });
+    this.obs.observe(el);
+  }
+  setupReveals() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const nodes = Array.from(document.querySelectorAll('[data-reveal]'));
+    if (!nodes.length || !('IntersectionObserver' in window)) return;
+    const offsets = { up: '0,32px', right: '40px,0', left: '-40px,0' };
+    nodes.forEach(n => {
+      const [x, y] = (offsets[n.dataset.reveal] || offsets.up).split(',');
+      n.style.opacity = '0';
+      n.style.transform = `translate(${x},${y})`;
+      n.style.transition = `opacity 0.7s cubic-bezier(0.4,0,0.2,1) ${n.dataset.revealDelay || 0}ms, transform 0.7s cubic-bezier(0.4,0,0.2,1) ${n.dataset.revealDelay || 0}ms`;
+    });
+    this.revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translate(0,0)';
+        this.revealObs.unobserve(e.target);
+      });
+    }, { threshold: 0.15 });
+    nodes.forEach(n => this.revealObs.observe(n));
+  }
+  componentWillUnmount() {
+    if (this._menuClick) document.removeEventListener('click', this._menuClick, { capture: true });
+    if (this._menuKey) document.removeEventListener('keydown', this._menuKey);
+    if (this.revealObs) this.revealObs.disconnect(); clearInterval(this.tick); if (this.obs) this.obs.disconnect(); clearTimeout(this.to); clearTimeout(this.to2); }
+  type() {
+    this.setState({ started: true, chars: 0, done: false, insights: false });
+    clearInterval(this.tick);
+    this.tick = setInterval(() => {
+      const n = this.state.chars + 2;
+      if (n >= this.TEXT.length) {
+        clearInterval(this.tick);
+        this.setState({ chars: this.TEXT.length });
+        this.to = setTimeout(() => {
+          this.setState({ done: true });
+          this.to2 = setTimeout(() => { if (!this.state.insights) this.setState({ insights: true }); }, 4000);
+        }, 3000);
+      } else this.setState({ chars: n });
+    }, 27);
+  }
+  renderVals() {
+    const { chars, done, insights } = this.state;
+    const panel = 'position:absolute;inset:0;padding:40px 48px;box-sizing:border-box;display:flex;flex-direction:column;transition:opacity 0.6s cubic-bezier(0.4,0,0.2,1),transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+    const showResults = done && !insights;
+    const at = (on, off) => `opacity:${on ? 1 : 0};transform:translateX(${on ? 0 : off}px);pointer-events:${on ? 'auto' : 'none'}`;
+    const mOpen = !!this.state.menuOpen;
+    const menuDropBase = 'position:absolute;top:calc(100% + 8px);right:0;min-width:200px;background:#ffffff;border:1px solid #e5eeff;border-radius:12px;box-shadow:0 8px 24px rgba(15,23,42,0.15);z-index:200;overflow:hidden;transition:opacity 0.15s,transform 0.15s';
+    return {
+      // — Auth nav
+      loggedIn: !!this.state.loggedIn,
+      loggedOut: !this.state.loggedIn,
+      initials: (() => {
+        const f = localStorage.getItem('datalystlm_first') || 'J';
+        const l = localStorage.getItem('datalystlm_last') || 'S';
+        return l ? f.charAt(0).toUpperCase() + '.' + l.charAt(0).toUpperCase() : f.charAt(0).toUpperCase();
+      })(),
+      menuOpen: mOpen,
+      toggleMenu: () => this.setState({ menuOpen: !this.state.menuOpen }),
+      menuStyle: mOpen
+        ? `${menuDropBase};opacity:1;pointer-events:auto;transform:translateY(0)`
+        : `${menuDropBase};opacity:0;pointer-events:none;transform:translateY(-8px)`,
+      signOut: () => { window.DL.clearToken(); this.setState({ loggedIn: false, menuOpen: false }); },
+      // — Demo + library
+      libTabs: Object.keys(this.LIBRARY).map(name => ({
+        name,
+        go: () => this.setState({ lib: name }),
+        style: `padding:8px 18px;border-radius:9999px;cursor:pointer;font-family:Inter,sans-serif;font-size:13px;letter-spacing:0.01em;border:1px solid ${name === this.state.lib ? '#0051d5' : '#c6c6cd'};background:${name === this.state.lib ? '#0051d5' : '#ffffff'};color:${name === this.state.lib ? '#ffffff' : '#45464d'};font-weight:${name === this.state.lib ? 700 : 500};transition:all 0.2s`
+      })),
+      libGroups: this.LIBRARY[this.state.lib],
+      typed: this.TEXT.slice(0, chars),
+      liveStyle: `${panel};background:#eff4ff;${at(!done, -24)}`,
+      resultsStyle: `${panel};background:#eff4ff;${at(showResults, insights ? -40 : 40)}`,
+      insightsStyle: `${panel};background:#eff4ff;${at(insights, 40)}`,
+      skip: () => {
+        clearInterval(this.tick); clearTimeout(this.to); clearTimeout(this.to2);
+        this.setState({ chars: this.TEXT.length, done: true });
+        this.to2 = setTimeout(() => { if (!this.state.insights) this.setState({ insights: true }); }, 4000);
+      },
+      toInsights: () => { clearTimeout(this.to2); this.setState({ insights: true }); },
+      back: () => { clearTimeout(this.to2); this.setState({ insights: false }); },
+      restart: () => { clearTimeout(this.to2); this.type(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

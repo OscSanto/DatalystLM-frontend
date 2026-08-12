@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Practice Session | ApexVoice</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#718d3e",
+                    "on-background": "#0b1c30",
+                    "tertiary-fixed": "#ceee93",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "surface-container": "#e5eeff",
+                    "on-tertiary-fixed-variant": "#364e03",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#131f00",
+                    "secondary-fixed-dim": "#b4c5ff",
+                    "on-surface": "#0b1c30",
+                    "surface-bright": "#f8f9ff",
+                    "surface-variant": "#d3e4fe",
+                    "secondary": "#0051d5",
+                    "background": "#f8f9ff",
+                    "on-tertiary-fixed": "#131f00",
+                    "inverse-primary": "#bec6e0",
+                    "tertiary-fixed-dim": "#b3d17a",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#131b2e",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "primary": "#000000",
+                    "inverse-on-surface": "#eaf1ff",
+                    "tertiary": "#000000",
+                    "outline": "#76777d",
+                    "on-primary-fixed": "#131b2e",
+                    "primary-fixed": "#dae2fd",
+                    "secondary-container": "#316bf3",
+                    "surface": "#f8f9ff",
+                    "on-error-container": "#93000a",
+                    "surface-container-low": "#eff4ff",
+                    "on-secondary-fixed": "#00174b",
+                    "primary-fixed-dim": "#bec6e0",
+                    "error-container": "#ffdad6",
+                    "surface-container-high": "#dce9ff",
+                    "secondary-fixed": "#dbe1ff",
+                    "outline-variant": "#c6c6cd",
+                    "on-surface-variant": "#45464d",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-dim": "#cbdbf5",
+                    "inverse-surface": "#213145",
+                    "on-secondary-container": "#fefcff",
+                    "surface-tint": "#565e74",
+                    "on-primary-container": "#7c839b",
+                    "on-secondary-fixed-variant": "#003ea8",
+                    "on-error": "#ffffff",
+                    "surface-container-lowest": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "80px",
+                    "sm": "16px",
+                    "md": "24px",
+                    "margin-mobile": "20px",
+                    "margin-desktop": "64px",
+                    "lg": "48px",
+                    "base": "4px",
+                    "xs": "8px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f8f9ff;
+            color: #0b1c30;
+            -webkit-font-smoothing: antialiased;
+        }
+        .soft-shadow {
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+        .mic-animation {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-body-md text-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 backdrop-blur-xl bg-surface/80 dark:bg-surface-dim/80 shadow-sm flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16">
+<div class="flex items-center gap-xs cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary text-[28px]" style="font-variation-settings: 'FILL' 1;">voice_selection</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">ApexVoice</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex items-center gap-md">
+<span class="font-label-md text-label-md text-secondary font-bold cursor-pointer transition-opacity hover:opacity-80">Sessions</span>
+<span class="font-label-md text-label-md text-on-surface-variant cursor-pointer transition-opacity hover:opacity-80">Coach</span>
+<span class="font-label-md text-label-md text-on-surface-variant cursor-pointer transition-opacity hover:opacity-80">Insights</span>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-container cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a corporate executive in a modern office, soft natural lighting, high-end photography style, clean and sharp focus, matching the institutional tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJdIgGh1AdSFXmlrPhNIg18zdbAWJFwQaLjYlvGI-4kkTUKWvs-fWuMBARR2JjYqe5-iyWC42ArErsC34mwdGMY95neH3Hd4dO--4bIoVJfRABopZloK-94BQdbUuK5m90HhR194TNxlLWTko26KTFLANnH0dIDyF4ND7-8kwGk9Btf40KAtpfijNDts4WriEVwmb8XCSRwWxa8ALo2CBVGWeS1flet3ek22EiWIhRhAur_WkdT7dI"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-[1280px] mx-auto w-full">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Question Section (Left/Top) -->
+<section class="md:col-span-12 lg:col-span-8 flex flex-col gap-sm">
+<div class="flex items-center gap-xs">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full font-label-sm text-label-sm">ACTIVE SESSION</span>
+<span class="text-outline font-label-md text-label-md">02:45 remaining</span>
+</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background tracking-tight">
+                    What is overfitting and how do you prevent it?
+                </h2>
+<!-- Live Transcription Bento Card -->
+<div class="bg-surface-container-lowest rounded-xl soft-shadow p-md md:p-lg min-h-[320px] flex flex-col border border-surface-container">
+<div class="flex justify-between items-center mb-md">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-error animate-pulse"></div>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Live Transcription</span>
+</div>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-colors">fullscreen</span>
+</div>
+<div class="flex-grow overflow-y-auto">
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed">
+                            "So, overfitting happens when a machine learning model learns the training data too well, including the noise and outliers... <span class="bg-secondary/10 text-secondary border-b-2 border-secondary font-medium">um</span>, this results in poor performance on new data. To prevent it, we can use techniques like regularization, which adds a penalty to the complexity of the model, or <span class="bg-secondary/10 text-secondary border-b-2 border-secondary font-medium">you know</span>, cross-validation to ensure the model generalizes well..."
+                        </p>
+<div class="mt-md h-px bg-surface-container"></div>
+<p class="mt-md font-body-lg text-body-lg text-outline italic">
+                            Listening for next response...
+                        </p>
+</div>
+<!-- Sound Wave Visualizer (Micro-interaction) -->
+<div class="mt-lg flex items-end gap-1 h-12 justify-center">
+<div class="w-1.5 bg-secondary/40 rounded-full h-4 animate-[bounce_1.2s_infinite]"></div>
+<div class="w-1.5 bg-secondary/60 rounded-full h-8 animate-[bounce_1s_infinite]"></div>
+<div class="w-1.5 bg-secondary rounded-full h-12 animate-[bounce_0.8s_infinite]"></div>
+<div class="w-1.5 bg-secondary/70 rounded-full h-6 animate-[bounce_1.1s_infinite]"></div>
+<div class="w-1.5 bg-secondary/50 rounded-full h-10 animate-[bounce_0.9s_infinite]"></div>
+<div class="w-1.5 bg-secondary/80 rounded-full h-7 animate-[bounce_1.3s_infinite]"></div>
+<div class="w-1.5 bg-secondary/40 rounded-full h-5 animate-[bounce_1s_infinite]"></div>
+</div>
+</div>
+</section>
+<!-- Metrics & Checklist Sidebar (Right) -->
+<aside class="md:col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- Performance Metrics -->
+<div class="bg-surface-container-high rounded-xl p-md border border-surface-container flex flex-col gap-md">
+<h3 class="font-label-md text-label-md text-on-surface-variant font-bold uppercase tracking-widest">Real-time Metrics</h3>
+<div class="grid grid-cols-2 gap-sm">
+<div class="bg-surface-container-lowest p-sm rounded-lg soft-shadow flex flex-col items-center justify-center text-center">
+<span class="text-secondary font-headline-md text-headline-md font-bold">142</span>
+<span class="text-outline font-label-sm text-label-sm">WORDS / MIN</span>
+</div>
+<div class="bg-surface-container-lowest p-sm rounded-lg soft-shadow flex flex-col items-center justify-center text-center">
+<span class="text-error font-headline-md text-headline-md font-bold">4</span>
+<span class="text-outline font-label-sm text-label-sm">FILLER WORDS</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-sm rounded-lg soft-shadow flex items-center justify-between">
+<span class="text-on-surface font-label-md text-label-md">Engagement Score</span>
+<div class="flex items-center gap-1">
+<div class="w-2 h-4 bg-secondary rounded-sm"></div>
+<div class="w-2 h-4 bg-secondary rounded-sm"></div>
+<div class="w-2 h-4 bg-secondary rounded-sm"></div>
+<div class="w-2 h-4 bg-secondary/20 rounded-sm"></div>
+<div class="w-2 h-4 bg-secondary/20 rounded-sm"></div>
+</div>
+</div>
+</div>
+<!-- Checklist -->
+<div class="bg-surface-container-lowest rounded-xl p-md soft-shadow border border-surface-container flex flex-col gap-md">
+<h3 class="font-label-md text-label-md text-on-surface-variant font-bold uppercase tracking-widest">Key Concepts Checklist</h3>
+<ul class="flex flex-col gap-sm">
+<li class="flex items-start gap-sm p-sm rounded-lg bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold">Definition of Overfitting</span>
+<span class="text-outline font-label-sm text-label-sm">Explained noise vs data signal</span>
+</div>
+</li>
+<li class="flex items-start gap-sm p-sm rounded-lg bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold">Regularization</span>
+<span class="text-outline font-label-sm text-label-sm">Mentioned L1/L2 penalties</span>
+</div>
+</li>
+<li class="flex items-start gap-sm p-sm rounded-lg border border-dashed border-outline-variant opacity-60">
+<span class="material-symbols-outlined text-outline">circle</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Data Augmentation</span>
+<span class="text-outline font-label-sm text-label-sm">Pending explanation</span>
+</div>
+</li>
+<li class="flex items-start gap-sm p-sm rounded-lg border border-dashed border-outline-variant opacity-60">
+<span class="material-symbols-outlined text-outline">circle</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Early Stopping</span>
+<span class="text-outline font-label-sm text-label-sm">Pending explanation</span>
+</div>
+</li>
+</ul>
+</div>
+</aside>
+</div>
+</main>
+<!-- Interaction Dock (Floating / Fixed Bottom) -->
+<div class="fixed bottom-0 left-0 w-full z-50">
+<div class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop pb-6 pt-2">
+<div class="bg-primary-container text-on-primary-container rounded-full soft-shadow p-2 flex items-center justify-between gap-md">
+<!-- Session Info -->
+<div class="hidden md:flex items-center gap-md pl-6">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-primary-container/60 uppercase">Topic</span>
+<span class="font-label-md text-label-md text-white">Machine Learning Fundamentals</span>
+</div>
+<div class="w-px h-8 bg-on-primary-container/20"></div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-primary-container/60 uppercase">Difficulty</span>
+<span class="font-label-md text-label-md text-tertiary-fixed">Intermediate</span>
+</div>
+</div>
+<!-- Control Center -->
+<div class="flex items-center gap-sm mx-auto md:mx-0">
+<button class="w-12 h-12 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">pause</span>
+</button>
+<button class="px-8 py-3 bg-secondary text-white rounded-full font-label-md text-label-md font-bold flex items-center gap-xs active:scale-95 transition-all shadow-lg hover:brightness-110" id="stop-btn">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">stop</span>
+                        Stop &amp; Get Feedback
+                    </button>
+<button class="w-12 h-12 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">refresh</span>
+</button>
+</div>
+<!-- Mic Status (Mobile Focus) -->
+<div class="hidden md:flex pr-6 items-center gap-xs">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center mic-animation">
+<span class="material-symbols-outlined text-on-secondary-container text-[20px]">mic</span>
+</div>
+<span class="font-label-md text-label-md text-on-primary-container">Mic active</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Mobile Bottom Nav (Suppressed on practice screen as per task focusing on the session) -->
+<!-- However, the design system requires a check. Here we suppress to prioritize canvas for Task-Focused journey. -->
+<script>
+        // Micro-interaction for the stop button
+        document.getElementById('stop-btn').addEventListener('click', function() {
+            this.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Analyzing...';
+            this.classList.add('opacity-80');
+            setTimeout(() => {
+                alert('Practice session ended. Generating deep insights...');
+                location.reload();
+            }, 1500);
+        });
+
+        // Atmospheric text highlight simulation
+        const highlightKeywords = () => {
+            const container = document.querySelector('.leading-relaxed');
+            const keywords = ['overfitting', 'regularization', 'cross-validation', 'model'];
+            let html = container.innerHTML;
+            keywords.forEach(word => {
+                const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                html = html.replace(regex, `<span class="text-secondary font-medium">${word}</span>`);
+            });
+            // Avoiding re-inserting since we already have styled spans in HTML for "um"
+        };
+        // highlightKeywords();
+    </script>
+</body></html>

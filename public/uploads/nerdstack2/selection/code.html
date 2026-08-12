@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ApexVoice | Topic Selection</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "secondary": "#0051d5",
+                        "on-tertiary-fixed": "#131f00",
+                        "tertiary-fixed-dim": "#b3d17a",
+                        "background": "#f8f9ff",
+                        "outline-variant": "#c6c6cd",
+                        "primary-fixed": "#dae2fd",
+                        "inverse-primary": "#bec6e0",
+                        "surface-bright": "#f8f9ff",
+                        "surface": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "on-secondary-container": "#fefcff",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-secondary-fixed": "#00174b",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#e5eeff",
+                        "on-background": "#0b1c30",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-tertiary-fixed-variant": "#364e03",
+                        "secondary-container": "#316bf3",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#dbe1ff",
+                        "primary-fixed-dim": "#bec6e0",
+                        "primary": "#000000",
+                        "outline": "#76777d",
+                        "inverse-surface": "#213145",
+                        "surface-tint": "#565e74",
+                        "surface-dim": "#cbdbf5",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#131b2e",
+                        "tertiary": "#000000",
+                        "error": "#ba1a1a",
+                        "on-surface": "#0b1c30",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "on-tertiary-container": "#718d3e",
+                        "on-primary-container": "#7c839b",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "surface-container-high": "#dce9ff",
+                        "on-surface-variant": "#45464d",
+                        "tertiary-fixed": "#ceee93",
+                        "surface-variant": "#d3e4fe",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#131f00",
+                        "primary-container": "#131b2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "lg": "48px",
+                        "base": "4px",
+                        "gutter": "24px",
+                        "xl": "80px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "sm": "16px",
+                        "md": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #f8f9ff; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+        }
+        .active-selection {
+            border: 2px solid #0051d5;
+            background: #eff4ff;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-background min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 backdrop-blur-xl bg-surface/80 shadow-sm flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white overflow-hidden cursor-pointer active:scale-95 transition-transform">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist high-contrast corporate headshot of a professional user, styled for an institutional tech platform with soft neutral lighting and a blurred office background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1IGa0_0-cbtGK3jBP83O2jwH56du53JQjE3Hvwpn7wjkPBMWG5kmrPInNr4vDCp-PN3t69qWJeRaxCjJ9RUdV-u3MgHsaKghrha4vAz-K18yxUdU4NSkTHBu6Cv2fmoQ_I4cKm0_541DDPz_-7ZQl3Q7N7HiDAWSvfZV8H5GU23uhhOHcftTn0RUOpx3ly2eToAbc2IYaJbPEuYpLyqytG0ScFtpClzxewoVNUZE7a_hJcEP7VAcX"/>
+</div>
+<span class="font-headline-md text-headline-md font-bold text-primary">ApexVoice</span>
+</div>
+<nav class="hidden md:flex gap-md">
+<a class="font-label-md text-label-md text-secondary font-bold hover:opacity-80 transition-opacity" href="#">Sessions</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:opacity-80 transition-opacity" href="#">Coach</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:opacity-80 transition-opacity" href="#">Insights</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:opacity-80 transition-opacity" href="#">History</a>
+</nav>
+<div class="cursor-pointer active:scale-95 transition-transform hover:opacity-80">
+<span class="material-symbols-outlined text-primary">settings</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-[1280px] mx-auto">
+<!-- Hero Section -->
+<section class="mb-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div class="max-w-xl">
+<div class="inline-block bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm px-3 py-1 rounded-full mb-base">
+                        VOICE PRACTICE. REAL CONFIDENCE.
+                    </div>
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mt-2">
+                        What do you want to <span class="italic text-secondary">practice?</span>
+</h1>
+<p class="font-body-md text-on-surface-variant mt-sm">
+                        Select a core competency to refine your technical communication and master high-stakes interview scenarios.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Bento Grid for Topics -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-xl">
+<!-- Machine Learning -->
+<button class="glass-card p-md rounded-xl flex flex-col items-start text-left group" onclick="selectTopic(this, 'ml')">
+<div class="w-12 h-12 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">hub</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary">Machine Learning</h3>
+<p class="font-label-md text-label-md text-on-surface-variant mt-xs">Classification, regression, overfitting, neural nets</p>
+<div class="mt-auto pt-md self-end opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-secondary">arrow_forward</span>
+</div>
+</button>
+<!-- SQL & Databases -->
+<button class="glass-card p-md rounded-xl flex flex-col items-start text-left group" onclick="selectTopic(this, 'sql')">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">database</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary">SQL &amp; Databases</h3>
+<p class="font-label-md text-label-md text-on-surface-variant mt-xs">Joins, indexes, window functions, query optimization</p>
+<div class="mt-auto pt-md self-end opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-secondary">arrow_forward</span>
+</div>
+</button>
+<!-- Statistics -->
+<button class="glass-card p-md rounded-xl flex flex-col items-start text-left group" onclick="selectTopic(this, 'stats')">
+<div class="w-12 h-12 rounded-xl bg-primary-fixed text-on-primary-fixed flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">query_stats</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary">Statistics</h3>
+<p class="font-label-md text-label-md text-on-surface-variant mt-xs">Distributions, hypothesis testing, A/B testing</p>
+<div class="mt-auto pt-md self-end opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-secondary">arrow_forward</span>
+</div>
+</button>
+<!-- Python -->
+<button class="glass-card p-md rounded-xl flex flex-col items-start text-left group" onclick="selectTopic(this, 'python')">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest text-on-surface flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">code</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary">Python</h3>
+<p class="font-label-md text-label-md text-on-surface-variant mt-xs">Pandas, NumPy, data wrangling, OOP patterns</p>
+<div class="mt-auto pt-md self-end opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-secondary">arrow_forward</span>
+</div>
+</button>
+</section>
+<!-- Dynamic Content Area -->
+<div class="hidden animate-in fade-in duration-500" id="subtopics-container">
+<div class="flex items-center justify-between mb-md border-b border-outline-variant/30 pb-4">
+<h2 class="font-headline-md text-headline-md text-primary" id="selected-topic-title">Machine Learning Modules</h2>
+<div class="flex gap-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Filter by:</span>
+<button class="font-label-sm text-label-sm px-3 py-1 rounded-full bg-surface-container hover:bg-surface-container-high transition-colors">All</button>
+<button class="font-label-sm text-label-sm px-3 py-1 rounded-full bg-surface-container hover:bg-surface-container-high transition-colors">Easy</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Module Item 1 -->
+<div class="glass-card p-sm rounded-xl flex items-center justify-between cursor-pointer hover:bg-white/90">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<h4 class="font-body-md font-semibold text-primary">Random Forest vs. XGBoost</h4>
+<div class="flex items-center gap-xs mt-1">
+<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-[10px] uppercase tracking-wider font-bold">Easy</span>
+<span class="text-label-sm text-on-surface-variant text-[12px]">• Completed 2 days ago</span>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+<!-- Module Item 2 -->
+<div class="glass-card p-sm rounded-xl flex items-center justify-between cursor-pointer hover:bg-white/90" onclick="selectQuestion(this)">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-sm">radio_button_unchecked</span>
+</div>
+<div>
+<h4 class="font-body-md font-semibold text-primary">The Bias-Variance Tradeoff</h4>
+<div class="flex items-center gap-xs mt-1">
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] uppercase tracking-wider font-bold">Medium</span>
+<span class="text-label-sm text-on-surface-variant text-[12px]">• Not started</span>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+<!-- Module Item 3 -->
+<div class="glass-card p-sm rounded-xl flex items-center justify-between cursor-pointer hover:bg-white/90" onclick="selectQuestion(this)">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-sm">radio_button_unchecked</span>
+</div>
+<div>
+<h4 class="font-body-md font-semibold text-primary">Backpropagation Deep-Dive</h4>
+<div class="flex items-center gap-xs mt-1">
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container text-[10px] uppercase tracking-wider font-bold">Hard</span>
+<span class="text-label-sm text-on-surface-variant text-[12px]">• Not started</span>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+<!-- Module Item 4 -->
+<div class="glass-card p-sm rounded-xl flex items-center justify-between cursor-pointer hover:bg-white/90" onclick="selectQuestion(this)">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-sm">radio_button_unchecked</span>
+</div>
+<div>
+<h4 class="font-body-md font-semibold text-primary">Dimensionality Reduction (PCA)</h4>
+<div class="flex items-center gap-xs mt-1">
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] uppercase tracking-wider font-bold">Medium</span>
+<span class="text-label-sm text-on-surface-variant text-[12px]">• Not started</span>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Sticky Footer CTA (Contextual) -->
+<div class="fixed bottom-24 left-1/2 -translate-x-1/2 w-full max-w-md px-margin-mobile z-40 transition-all duration-500 transform translate-y-32 opacity-0" id="cta-container">
+<button class="w-full bg-primary text-on-primary py-4 rounded-full font-headline-md text-headline-md shadow-2xl flex items-center justify-center gap-sm active:scale-95 transition-transform" id="start-btn">
+                Start Practice Session
+                <span class="material-symbols-outlined">mic</span>
+</button>
+<p class="text-center mt-2 text-label-sm text-on-surface-variant">System ready. Select a topic to continue.</p>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pt-2 pb-6 px-4 backdrop-blur-md bg-surface/90 shadow-[0_-4px_12px_rgba(15,23,42,0.08)] z-50 rounded-t-xl md:hidden">
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 transition-all duration-200 ease-out">
+<span class="material-symbols-outlined">mic_none</span>
+<span class="font-label-sm text-label-sm">Sessions</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 active:scale-90 transition-all duration-200 ease-out hover:text-secondary">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-sm text-label-sm">Coach</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 active:scale-90 transition-all duration-200 ease-out hover:text-secondary">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-sm text-label-sm">Insights</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 active:scale-90 transition-all duration-200 ease-out hover:text-secondary">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-sm text-label-sm">History</span>
+</div>
+</nav>
+<script>
+        function selectTopic(element, id) {
+            // Clear previous active states
+            document.querySelectorAll('.glass-card').forEach(el => el.classList.remove('active-selection'));
+            
+            // Set new active state
+            element.classList.add('active-selection');
+            
+            // Show subtopics
+            const subtopics = document.getElementById('subtopics-container');
+            const title = document.getElementById('selected-topic-title');
+            
+            const titles = {
+                'ml': 'Machine Learning Modules',
+                'sql': 'SQL & Database Modules',
+                'stats': 'Statistics & Probability Modules',
+                'python': 'Python for Data Science Modules'
+            };
+            
+            title.textContent = titles[id];
+            subtopics.classList.remove('hidden');
+            
+            // Scroll into view
+            subtopics.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Show CTA partially
+            const cta = document.getElementById('cta-container');
+            cta.classList.remove('translate-y-32', 'opacity-0');
+        }
+
+        function selectQuestion(element) {
+            // Deselect others in subtopics
+            document.querySelectorAll('#subtopics-container .glass-card').forEach(el => {
+                el.classList.remove('bg-secondary/5', 'ring-2', 'ring-secondary');
+            });
+            
+            // Select this one
+            element.classList.add('bg-secondary/5', 'ring-2', 'ring-secondary');
+            
+            // Highlight button
+            const btn = document.getElementById('start-btn');
+            btn.classList.replace('bg-primary', 'bg-secondary');
+        }
+    </script>
+</body></html>

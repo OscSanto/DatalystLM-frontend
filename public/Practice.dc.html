@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./app.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f8f9ff;color:#0b1c30;font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
+.msi{font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;display:inline-block;line-height:1;letter-spacing:normal;white-space:nowrap;direction:ltr}
+.msi-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+@keyframes pulsering{0%,100%{transform:scale(1);opacity:0.8}50%{transform:scale(1.1);opacity:1}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+@keyframes wave{0%,100%{transform:scaleY(0.35)}50%{transform:scaleY(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+
+<div data-screen-label="Practice Session" style="min-height:100vh;padding-bottom:120px">
+
+<!-- ── Header ── -->
+<header style="position:fixed;top:0;left:0;right:0;z-index:50;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 64px;backdrop-filter:blur(16px);background:rgba(248,249,255,0.85);box-shadow:0 1px 3px rgba(15,23,42,0.06)">
+  <a href="Front.dc.html" style="display:flex;align-items:center"><img alt="DatalystLM" src="assets/logo-datalystlm.png" style="height:44px;width:auto;object-fit:contain"></a>
+  <nav style="display:flex;gap:32px">
+    <a href="Selection.dc.html" style="font-size:14px;font-weight:700;color:#0051d5;border-bottom:2px solid #0051d5;padding-bottom:2px">Sessions</a>
+    <a href="Results.dc.html" style="font-size:14px;font-weight:500;color:#45464d" style-hover="color:#0051d5">Analytics</a>
+    <a href="Results.dc.html" style="font-size:14px;font-weight:500;color:#45464d" style-hover="color:#0051d5">Feedback</a>
+  </nav>
+  <div style="position:relative;display:flex;align-items:center">
+    <button data-useravatar="true" onClick="{{ toggleMenu }}" aria-haspopup="true" aria-expanded="{{ menuOpen }}" style="width:40px;height:40px;border-radius:9999px;background:#131b2e;color:#ffffff;display:flex;align-items:center;justify-content:center;font-family:'Hanken Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.02em;cursor:pointer;flex-shrink:0;border:none">{{ initials }}</button>
+    <div data-usermenu="true" style="{{ menuStyle }}">
+      <button onClick="{{ openSettings }}" style="display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:12px 16px 8px" style-hover="background:#f0f4ff">
+        <p style="font-family:'Hanken Grotesk',sans-serif;font-size:15px;font-weight:700;color:#0b1c30;margin:0;line-height:1.3">{{ fullName }}</p>
+        <p style="font-size:13px;color:#76777d;margin:2px 0 0;line-height:1.4">{{ email }}</p>
+        <p style="font-size:11px;color:#0051d5;font-weight:600;margin:4px 0 0;letter-spacing:0.03em;text-transform:uppercase">{{ planLabel }}</p>
+      </button>
+      <div style="padding:6px 8px;border-top:1px solid #e5eeff">
+        <button onClick="{{ openSettings }}" style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;color:#45464d;width:100%;border:none;background:none;cursor:pointer;text-align:left" style-hover="background:#eff4ff;color:#0051d5"><span class="msi" style="font-size:20px">settings</span>Settings</button>
+        <a href="#" style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;color:#45464d;text-decoration:none" style-hover="background:#eff4ff;color:#0051d5"><span class="msi" style="font-size:20px">help</span>Help &amp; Support</a>
+      </div>
+      <div style="padding:6px 8px;border-top:1px solid #e5eeff">
+        <button onClick="{{ signOut }}" style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;color:#ba1a1a;width:100%;border:none;background:none;cursor:pointer;text-align:left" style-hover="background:#fff3f2"><span class="msi" style="font-size:20px">logout</span>Sign Out</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── Main ── -->
+<main style="padding:96px 64px 0;max-width:1280px;margin:0 auto">
+  <div style="{{ gridStyle }}">
+
+    <!-- Left: question + transcription -->
+    <section style="display:flex;flex-direction:column;gap:16px">
+
+      <!-- Status row -->
+      <div style="display:flex;align-items:center;gap:8px">
+        <span id="dl-badge" style="padding:4px 12px;border-radius:9999px;font-size:12px;font-weight:600;background:#76777d;color:#ffffff">READY</span>
+        <!-- Paused badge (only visible when paused) -->
+        <span id="dl-paused-badge" style="display:none;padding:4px 12px;border-radius:9999px;font-size:12px;font-weight:600;background:#f5a623;color:#ffffff">⏸ PAUSED</span>
+        <span id="dl-timer" style="color:#76777d;font-size:14px;font-weight:500;letter-spacing:0.01em">1:00 remaining</span>
+      </div>
+
+      <!-- Interview / Coach mode selector -->
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:#ffffff;border:1px solid #e5eeff;border-radius:12px;padding:10px 16px">
+        <div role="radiogroup" aria-label="Support level" style="display:flex;gap:4px;background:#f8f9ff;border-radius:10px;padding:4px">
+          <button onClick="{{ setInterview }}" role="radio" aria-checked="{{ isInterview }}" style="{{ segInterview }}">Interview</button>
+          <button onClick="{{ setCoach }}" role="radio" aria-checked="{{ isCoach }}" style="{{ segCoach }}">Coach</button>
+        </div>
+        <p style="font-size:13px;line-height:18px;color:#45464d;margin:0">{{ supportBlurb }}</p>
+      </div>
+
+      <!-- Question -->
+      <h2 id="dl-question" style="font-family:'Hanken Grotesk',sans-serif;font-size:40px;line-height:48px;font-weight:600;letter-spacing:-0.01em;margin:0">Loading question…</h2>
+
+      <!-- Transcription card -->
+      <div style="background:#ffffff;border-radius:12px;box-shadow:0 4px 12px rgba(15,23,42,0.08);padding:32px;min-height:320px;display:flex;flex-direction:column;border:1px solid #e5eeff">
+
+        <!-- Live indicator — hidden until recording -->
+        <div id="dl-live-header" style="display:none;justify-content:space-between;align-items:center;margin-bottom:24px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:8px;height:8px;border-radius:9999px;background:#ba1a1a;animation:blink 1.4s infinite"></div>
+            <span style="font-size:14px;font-weight:500;letter-spacing:0.06em;color:#45464d;text-transform:uppercase">Live Transcription</span>
+          </div>
+          <span class="msi" style="color:#76777d;cursor:pointer" style-hover="color:#0b1c30">fullscreen</span>
+        </div>
+
+        <!-- Idle state: click-to-start prompt -->
+        <div id="dl-idle-prompt" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:40px 0">
+          <div style="width:64px;height:64px;border-radius:9999px;background:#eff4ff;display:flex;align-items:center;justify-content:center;cursor:pointer" id="dl-idle-mic" style-hover="">
+            <span class="msi" style="font-size:32px;color:#0051d5">mic</span>
+          </div>
+          <div>
+            <p style="font-size:16px;font-weight:600;color:#0b1c30;margin:0 0 4px">Click the mic to start recording</p>
+            <p style="font-size:14px;color:#76777d;margin:0">Your spoken answer will be transcribed live</p>
+          </div>
+        </div>
+
+        <!-- Transcript text — shown once recording starts -->
+        <div id="dl-transcript-wrap" style="display:none;flex:1">
+          <p id="dl-transcript-text" style="font-size:18px;line-height:30px;margin:0;min-height:80px"></p>
+          <div style="margin-top:24px;height:1px;background:#e5eeff"></div>
+          <!-- "Listening..." — shown only while actively recording -->
+          <p id="dl-listening" style="display:none;margin-top:24px;font-size:18px;line-height:28px;color:#76777d;font-style:italic">Listening for next response…</p>
+        </div>
+
+        <!-- Wave animation — hidden until recording -->
+        <div id="dl-wave" style="display:none;margin-top:48px;align-items:flex-end;gap:4px;height:48px;justify-content:center">
+          <div style="width:6px;background:rgba(0,81,213,0.4);border-radius:9999px;height:100%;transform-origin:bottom;animation:wave 1.2s ease-in-out infinite"></div>
+          <div style="width:6px;background:rgba(0,81,213,0.6);border-radius:9999px;height:100%;transform-origin:bottom;animation:wave 1s ease-in-out infinite 0.1s"></div>
+          <div style="width:6px;background:#0051d5;border-radius:9999px;height:100%;transform-origin:bottom;animation:wave 0.8s ease-in-out infinite 0.2s"></div>
+          <div style="width:6px;background:rgba(0,81,213,0.7);border-radius:9999px;height:100%;transform-origin:bottom;animation:wave 1.1s ease-in-out infinite 0.05s"></div>
+          <div style="width:6px;background:rgba(0,81,213,0.5);border-radius:9999px;height:100%;transform-origin:bottom;animation:wave 0.9s ease-in-out infinite 0.15s"></div>
+          <div style="width:6px;background:rgba(0,81,213,0.8);border-radius:9999px;height:100%;transform-origin:bottom;animation:wave 1.3s ease-in-out infinite 0.25s"></div>
+          <div style="width:6px;background:rgba(0,81,213,0.4);border-radius:9999px;height:100%;transform-origin:bottom;animation:wave 1s ease-in-out infinite 0.3s"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Right: Concept Bridge / Answer Guide + Assistance Ladder + Quick Hints -->
+    <aside style="{{ asideStyle }}">
+
+      <!-- ── Concept Bridge / Answer Guide tabbed card ── -->
+      <div style="background:#ffffff;border-radius:12px;box-shadow:0 4px 12px rgba(15,23,42,0.08);border:1px solid #e5eeff;overflow:hidden">
+        <div role="radiogroup" aria-label="Sidebar panel" style="display:flex;gap:4px;background:#f8f9ff;border-bottom:1px solid #e5eeff;padding:8px">
+          <button onClick="{{ showBridge }}" role="radio" aria-checked="{{ isBridge }}" style="{{ tabBridge }}">Concept Bridge</button>
+          <button onClick="{{ showGuide }}" role="radio" aria-checked="{{ isGuide }}" style="{{ tabGuide }}">Answer Guide</button>
+        </div>
+        <div style="padding:20px 24px 24px">
+
+          <!-- Concept Bridge panel -->
+          <div style="{{ bridgePanelStyle }}">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px">
+              <h3 style="font-size:14px;font-weight:700;letter-spacing:0.1em;color:#45464d;text-transform:uppercase;margin:0">Concept Bridge</h3>
+              <div style="display:flex;flex-shrink:0;background:#f8f9ff;border:1px solid #e5eeff;border-radius:8px;overflow:hidden">
+                <button onClick="{{ zoomOut }}" aria-label="Zoom out" style="width:26px;height:26px;border:none;background:none;display:flex;align-items:center;justify-content:center;color:#45464d;cursor:pointer" style-hover="background:#eff4ff;color:#0051d5"><span class="msi" style="font-size:16px">zoom_out</span></button>
+                <button onClick="{{ zoomIn }}" aria-label="Zoom in" style="width:26px;height:26px;border:none;background:none;display:flex;align-items:center;justify-content:center;color:#45464d;cursor:pointer" style-hover="background:#eff4ff;color:#0051d5"><span class="msi" style="font-size:16px">zoom_in</span></button>
+                <button onClick="{{ zoomFit }}" aria-label="Fit to view" style="width:26px;height:26px;border:none;background:none;display:flex;align-items:center;justify-content:center;color:#45464d;cursor:pointer" style-hover="background:#eff4ff;color:#0051d5"><span class="msi" style="font-size:16px">fit_screen</span></button>
+              </div>
+            </div>
+            <p style="font-size:12px;line-height:18px;color:#76777d;margin:0 0 14px">The route a strong answer takes. Say a term and it lights up here and below.</p>
+            <div style="position:relative;background:#f8f9ff;border:1px solid #eff4ff;border-radius:10px;height:112px;overflow:hidden">
+              <div data-canvas="true" style="position:absolute;inset:0;cursor:grab;background-image:radial-gradient(#d3ddf2 1px,transparent 1px);background-size:16px 16px;touch-action:none;user-select:none;-webkit-user-select:none;-ms-user-select:none;-webkit-tap-highlight-color:transparent">
+                <div data-layer="true" style="{{ layerStyle }}">
+                  <div style="position:relative;width:{{ canvasW }}px;height:96px;padding:8px;box-sizing:content-box">
+                    <sc-for list="{{ bridgeNodes }}" as="n" hint-placeholder-count="12">
+                      <div style="{{ n.rowStyle }}">
+                        <span class="msi" style="{{ n.arrowStyle }}">{{ n.arrow }}</span>
+                        <button onClick="{{ n.open }}" aria-pressed="{{ n.active }}" style="{{ n.chipStyle }}">{{ n.label }}</button>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p style="font-size:10px;font-weight:600;letter-spacing:0.04em;color:#8ba3d1;margin:6px 0 0">Drag sideways to follow the chain · click a node for detail</p>
+            <div style="{{ nodeInfoStyle }}">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px">
+                <span style="font-size:13px;font-weight:700;color:#0b1c30;line-height:18px">{{ nodeTitle }}</span>
+                <button onClick="{{ closeNode }}" aria-label="Close" style="width:22px;height:22px;flex-shrink:0;border:none;border-radius:6px;background:none;display:flex;align-items:center;justify-content:center;color:#76777d;cursor:pointer" style-hover="background:#eff4ff"><span class="msi" style="font-size:16px">close</span></button>
+              </div>
+              <p style="font-size:12px;line-height:18px;color:#45464d;margin:0">{{ nodeBody }}</p>
+            </div>
+            <!-- Key Concepts chips -->
+            <div style="margin-top:24px;padding-top:20px;border-top:1px solid #eff4ff">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:4px">
+                <h3 style="font-size:14px;font-weight:700;letter-spacing:0.1em;color:#45464d;text-transform:uppercase;margin:0">Key Concepts</h3>
+                <span style="font-size:12px;color:#76777d;flex-shrink:0">{{ saidCount }} of {{ totalCount }}</span>
+              </div>
+              <p style="font-size:12px;line-height:18px;color:#76777d;margin:0 0 14px">Optional — plenty of strong answers use fewer.</p>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <sc-for list="{{ concepts }}" as="c" hint-placeholder-count="9">
+                  <button onClick="{{ c.toggle }}" aria-pressed="{{ c.said }}" style="{{ c.style }}">
+                    <sc-if value="{{ c.said }}" hint-placeholder-val="{{ true }}"><span class="msi msi-fill" style="font-size:15px">check_circle</span></sc-if>
+                    {{ c.term }}
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <!-- Answer Guide panel -->
+          <div style="{{ guidePanelStyle }}">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px">
+              <div>
+                <h3 style="font-size:14px;font-weight:700;letter-spacing:0.1em;color:#45464d;text-transform:uppercase;margin:0">Answer Guide</h3>
+                <p style="font-size:12px;color:#76777d;margin:4px 0 0">Build a strong answer by covering the essentials.</p>
+              </div>
+              <span style="flex-shrink:0;padding:4px 10px;background:#eff4ff;border-radius:9999px;font-size:12px;font-weight:700;color:#0051d5">{{ essCount }}</span>
+            </div>
+            <ul style="list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:14px">
+              <sc-for list="{{ essentials }}" as="ess" hint-placeholder-count="5">
+                <li>
+                  <button onClick="{{ ess.toggle }}" aria-checked="{{ ess.on }}" role="checkbox" style="display:flex;align-items:center;gap:12px;width:100%;padding:0;background:none;border:none;font-family:Inter,sans-serif;text-align:left;cursor:pointer">
+                    <span class="msi" style="{{ ess.iconStyle }}">{{ ess.glyph }}</span>
+                    <span style="{{ ess.textStyle }}">{{ ess.text }}</span>
+                  </button>
+                </li>
+              </sc-for>
+            </ul>
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f8f9ff;border:1px solid #e5eeff;border-radius:10px">
+              <span class="msi" style="font-size:18px;color:#76777d;flex-shrink:0">auto_awesome</span>
+              <span style="flex:1;font-size:12px;line-height:17px;color:#45464d">Have these checked off automatically as you speak</span>
+              <a href="Front.dc.html#pricing" style="display:flex;align-items:center;gap:5px;height:28px;padding:0 11px;background:#ffffff;border:1px solid #c6c6cd;border-radius:9999px;font-size:11px;font-weight:700;color:#0b1c30;flex-shrink:0" style-hover="background:#eff4ff;color:#0051d5"><span class="msi" style="font-size:14px">lock</span>Pro</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Assistance Ladder ── -->
+      <div style="{{ ladderCardStyle }}">
+        <h3 style="font-size:14px;font-weight:700;letter-spacing:0.1em;color:#45464d;text-transform:uppercase;margin:0 0 4px">Assistance Ladder</h3>
+        <p style="font-size:12px;line-height:18px;color:#76777d;margin:0 0 16px">Get the right amount of help, when you need it. Using it never affects your score.</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <!-- Level 1: Thinking prompt -->
+          <div style="border:1px solid #e5eeff;border-radius:12px;overflow:hidden;background:#ffffff">
+            <button onClick="{{ togL1 }}" aria-expanded="{{ openL1 }}" style="display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;background:none;border:none;font-family:Inter,sans-serif;text-align:left;cursor:pointer" style-hover="background:#f8f9ff">
+              <span class="msi" style="font-size:20px;color:#0051d5;flex-shrink:0">lightbulb</span>
+              <span style="flex:1">
+                <span style="display:block;font-size:13px;font-weight:600;color:#0b1c30">Level 1 &nbsp;·&nbsp; Thinking prompt</span>
+                <span style="display:block;font-size:12px;color:#76777d;margin-top:2px">Nudge your thinking</span>
+              </span>
+              <span class="msi" style="{{ chevL1 }}">expand_more</span>
+            </button>
+            <div style="{{ bodyL1 }}"><p style="font-size:13px;line-height:20px;color:#45464d;margin:0">{{ ladderL1 }}</p></div>
+          </div>
+          <!-- Level 2: Answer structure -->
+          <div style="border:1px solid #e5eeff;border-radius:12px;overflow:hidden;background:#ffffff">
+            <button onClick="{{ togL2 }}" aria-expanded="{{ openL2 }}" style="display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;background:none;border:none;font-family:Inter,sans-serif;text-align:left;cursor:pointer" style-hover="background:#f8f9ff">
+              <span class="msi" style="font-size:20px;color:#0051d5;flex-shrink:0">format_list_numbered</span>
+              <span style="flex:1">
+                <span style="display:block;font-size:13px;font-weight:600;color:#0b1c30">Level 2 &nbsp;·&nbsp; Answer structure</span>
+                <span style="display:block;font-size:12px;color:#76777d;margin-top:2px">See the outline</span>
+              </span>
+              <span class="msi" style="{{ chevL2 }}">expand_more</span>
+            </button>
+            <div style="{{ bodyL2 }}">
+              <ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:20px;color:#45464d">
+                <sc-for list="{{ ladderL2Steps }}" as="step" hint-placeholder-count="5">
+                  <li>{{ step }}</li>
+                </sc-for>
+              </ol>
+            </div>
+          </div>
+          <!-- Level 3: Sentence starter -->
+          <div style="border:1px solid #e5eeff;border-radius:12px;overflow:hidden;background:#ffffff">
+            <button onClick="{{ togL3 }}" aria-expanded="{{ openL3 }}" style="display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;background:none;border:none;font-family:Inter,sans-serif;text-align:left;cursor:pointer" style-hover="background:#f8f9ff">
+              <span class="msi" style="font-size:20px;color:#0051d5;flex-shrink:0">format_quote</span>
+              <span style="flex:1">
+                <span style="display:block;font-size:13px;font-weight:600;color:#0b1c30">Level 3 &nbsp;·&nbsp; Sentence starter</span>
+                <span style="display:block;font-size:12px;color:#76777d;margin-top:2px">Get a starting sentence</span>
+              </span>
+              <span class="msi" style="{{ chevL3 }}">expand_more</span>
+            </button>
+            <div style="{{ bodyL3 }}"><p style="font-size:13px;line-height:20px;color:#45464d;margin:0;font-style:italic">{{ ladderL3 }}</p></div>
+          </div>
+          <!-- Level 4: Talking points -->
+          <div style="border:1px solid #e5eeff;border-radius:12px;overflow:hidden;background:#ffffff">
+            <button onClick="{{ togL4 }}" aria-expanded="{{ openL4 }}" style="display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;background:none;border:none;font-family:Inter,sans-serif;text-align:left;cursor:pointer" style-hover="background:#f8f9ff">
+              <span class="msi" style="font-size:20px;color:#0051d5;flex-shrink:0">checklist</span>
+              <span style="flex:1">
+                <span style="display:block;font-size:13px;font-weight:600;color:#0b1c30">Level 4 &nbsp;·&nbsp; Talking points</span>
+                <span style="display:block;font-size:12px;color:#76777d;margin-top:2px">See key points to cover</span>
+              </span>
+              <span class="msi" style="{{ chevL4 }}">expand_more</span>
+            </button>
+            <div style="{{ bodyL4 }}">
+              <ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:20px;color:#45464d">
+                <sc-for list="{{ ladderL4Points }}" as="pt" hint-placeholder-count="5">
+                  <li>{{ pt }}</li>
+                </sc-for>
+              </ul>
+            </div>
+          </div>
+          <!-- Level 5: Example answer (Pro — open to all for now) -->
+          <div style="border:1px solid #e5eeff;border-radius:12px;overflow:hidden;background:#ffffff">
+            <button onClick="{{ togL5 }}" aria-expanded="{{ openL5 }}" style="display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;background:none;border:none;font-family:Inter,sans-serif;text-align:left;cursor:pointer" style-hover="background:#f8f9ff">
+              <span class="msi" style="font-size:20px;color:#c6c6cd;flex-shrink:0">description</span>
+              <span style="flex:1">
+                <span style="display:block;font-size:13px;font-weight:600;color:#0b1c30">Level 5 &nbsp;·&nbsp; Example answer</span>
+                <span style="display:block;font-size:12px;color:#76777d;margin-top:2px">See a full sample answer</span>
+              </span>
+              <span style="display:flex;align-items:center;gap:4px;padding:3px 10px;border:1px solid #c6c6cd;border-radius:9999px;font-size:11px;font-weight:700;color:#0b1c30;flex-shrink:0"><span class="msi" style="font-size:14px">lock</span>Pro</span>
+            </button>
+            <div style="{{ bodyL5 }}"><p style="font-size:13px;line-height:20px;color:#45464d;margin:0">{{ ladderL5 }}</p></div>
+          </div>
+          <p style="font-size:12px;line-height:18px;color:#76777d;margin:2px 0 0">Level 5 is part of Pro. Everything above it is free on every question.</p>
+        </div>
+      </div>
+
+      <!-- ── Quick Hints ── -->
+      <div style="{{ hintsCardStyle }}">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px">
+          <h3 style="font-size:14px;font-weight:700;letter-spacing:0.1em;color:#45464d;text-transform:uppercase;margin:0">Quick hints</h3>
+          <button onClick="{{ togHints }}" aria-expanded="{{ hintsOpen }}" style="display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;background:#ffffff;border:1px solid #c6c6cd;border-radius:9999px;font-family:Inter,sans-serif;font-size:12px;font-weight:600;color:#0b1c30;cursor:pointer" style-hover="background:#eff4ff;color:#0051d5"><span class="msi" style="font-size:16px">emoji_objects</span>{{ hintsLabel }}</button>
+        </div>
+        <p style="font-size:12px;color:#76777d;margin:0 0 12px">Hints to unstick you.</p>
+        <div style="{{ hintsListStyle }}">
+          <sc-for list="{{ quickHints }}" as="h" hint-placeholder-count="3">
+            <div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:#f8f9ff;border:1px solid #e5eeff;border-radius:10px">
+              <span class="msi" style="font-size:18px;color:#0051d5;flex-shrink:0">emoji_objects</span>
+              <span style="font-size:13px;line-height:19px;color:#0b1c30">{{ h }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</main>
+
+<!-- ── Control bar ── -->
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:50">
+  <div style="max-width:1280px;margin:0 auto;padding:8px 64px 24px">
+    <div style="background:#131b2e;color:#7c839b;border-radius:9999px;box-shadow:0 4px 12px rgba(15,23,42,0.2);padding:8px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+
+      <!-- Topic / Difficulty labels -->
+      <div style="display:flex;align-items:center;gap:24px;padding-left:24px">
+        <div style="display:flex;flex-direction:column">
+          <span style="font-size:12px;font-weight:600;opacity:0.6;text-transform:uppercase">Topic</span>
+          <span id="dl-topic-label" style="font-size:14px;font-weight:500;letter-spacing:0.01em;color:#ffffff">—</span>
+        </div>
+        <div style="width:1px;height:32px;background:rgba(124,131,155,0.3)"></div>
+        <div style="display:flex;flex-direction:column">
+          <span style="font-size:12px;font-weight:600;opacity:0.6;text-transform:uppercase">Difficulty</span>
+          <span id="dl-diff-label" style="font-size:14px;font-weight:500;letter-spacing:0.01em;color:#ceee93">—</span>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div style="display:flex;align-items:center;gap:16px">
+
+        <!-- Pause / Resume -->
+        <button id="dl-pause-btn" style="width:48px;height:48px;border-radius:9999px;display:flex;align-items:center;justify-content:center;color:#7c839b;background:transparent;border:none;cursor:not-allowed;opacity:0.35;transition:opacity 0.2s,color 0.2s" disabled>
+          <span id="dl-pause-icon" class="msi">pause</span>
+        </button>
+
+        <!-- Stop & Get Feedback -->
+        <button id="dl-stop-btn" onClick="{{ stop }}" disabled style="padding:12px 32px;background:#45464d;color:#7c839b;border:none;border-radius:9999px;font-family:Inter,sans-serif;font-size:14px;font-weight:700;letter-spacing:0.01em;display:flex;align-items:center;gap:8px;cursor:not-allowed;box-shadow:none;transition:background 0.2s,color 0.2s,box-shadow 0.2s">
+          <sc-if value="{{ analyzing }}" hint-placeholder-val="{{ false }}"><span class="msi" style="font-size:20px;animation:spin 1s linear infinite">sync</span></sc-if>
+          <sc-if value="{{ notAnalyzing }}" hint-placeholder-val="{{ true }}"><span class="msi msi-fill" style="font-size:20px">stop</span></sc-if>
+          {{ stopLabel }}
+        </button>
+
+        <!-- Retry -->
+        <button id="dl-retry-btn" style="width:48px;height:48px;border-radius:9999px;display:flex;align-items:center;justify-content:center;color:#7c839b;background:transparent;border:none;cursor:not-allowed;opacity:0.35;transition:opacity 0.2s,color 0.2s" disabled>
+          <span class="msi">refresh</span>
+        </button>
+      </div>
+
+      <!-- Mic status -->
+      <div style="display:flex;align-items:center;gap:8px;padding-right:24px">
+        <div id="dl-mic-ring" style="width:40px;height:40px;border-radius:9999px;background:#4a5063;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s" title="Click to start recording">
+          <span class="msi" style="color:#fefcff;font-size:20px">mic</span>
+        </div>
+        <span id="dl-mic-label" style="font-size:14px;font-weight:500;letter-spacing:0.01em;color:#7c839b">Click mic to start</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── Settings overlay + modal ── -->
+<div onClick="{{ closeSettings }}" style="{{ overlayStyle }}"></div>
+<div style="{{ modalStyle }}" role="dialog" aria-modal="true" aria-label="Settings">
+  <div style="display:flex;height:100%">
+    <nav style="width:236px;flex-shrink:0;background:#f8f9ff;border-right:1px solid #e5eeff;padding:24px 0;display:flex;flex-direction:column;gap:2px">
+      <div style="padding:0 20px 16px;border-bottom:1px solid #e5eeff;margin-bottom:8px">
+        <p style="font-family:'Hanken Grotesk',sans-serif;font-size:15px;font-weight:700;color:#0b1c30;margin:0;line-height:1.3">{{ fullName }}</p>
+        <p style="font-size:13px;color:#76777d;margin:2px 0 0">{{ email }}</p>
+      </div>
+      <button onClick="{{ navProfile }}" style="{{ isProfile }}" style-hover="background:#eff4ff;color:#0051d5"><span class="msi" style="font-size:20px">person</span>Profile</button>
+      <button onClick="{{ navSecurity }}" style="{{ isSecurity }}" style-hover="background:#eff4ff;color:#0051d5"><span class="msi" style="font-size:20px">lock</span>Account &amp; Security</button>
+      <button onClick="{{ navAppearance }}" style="{{ isAppearance }}" style-hover="background:#eff4ff;color:#0051d5"><span class="msi" style="font-size:20px">palette</span>Appearance</button>
+      <button onClick="{{ navNotifications }}" style="{{ isNotifications }}" style-hover="background:#eff4ff;color:#0051d5"><span class="msi" style="font-size:20px">notifications</span>Notifications</button>
+      <button onClick="{{ navPrivacy }}" style="{{ isPrivacy }}" style-hover="background:#eff4ff;color:#0051d5"><span class="msi" style="font-size:20px">privacy_tip</span>Privacy</button>
+      <div style="flex:1"></div>
+      <div style="padding:0 12px">
+        <button onClick="{{ closeSettings }}" style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;color:#45464d;width:100%;border:none;background:none;cursor:pointer;text-align:left" style-hover="background:#eff4ff;color:#0051d5"><span class="msi" style="font-size:20px">close</span>Close</button>
+      </div>
+    </nav>
+    <div style="flex:1;overflow-y:auto;padding:32px">
+      <sc-if value="{{ goProfile }}">
+        <div>
+          <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:600;margin:0 0 8px">Profile</h2>
+          <p style="font-size:14px;color:#76777d;margin:0 0 32px">Manage how you appear across DatalystLM.</p>
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:32px">
+            <div style="width:64px;height:64px;border-radius:9999px;background:#131b2e;color:#ffffff;display:flex;align-items:center;justify-content:center;font-family:'Hanken Grotesk',sans-serif;font-size:22px;font-weight:700;flex-shrink:0">{{ initials }}</div>
+            <div>
+              <p style="font-size:15px;font-weight:600;margin:0 0 4px">{{ fullName }}</p>
+              <p style="font-size:13px;color:#76777d;margin:0">{{ planLabel }} · {{ memberSince }}</p>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:600;color:#45464d;margin-bottom:6px">First Name</label>
+              <input type="text" value="{{ first }}" onInput="{{ onFirst }}" style="width:100%;padding:10px 14px;border:1px solid #dce9ff;border-radius:8px;font-family:Inter,sans-serif;font-size:14px;color:#0b1c30;background:#ffffff;box-sizing:border-box;outline:none" placeholder="First name">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:600;color:#45464d;margin-bottom:6px">Last Initial</label>
+              <input type="text" value="{{ last }}" onInput="{{ onLast }}" maxlength="1" style="width:60px;padding:10px 14px;border:1px solid #dce9ff;border-radius:8px;font-family:Inter,sans-serif;font-size:14px;color:#0b1c30;background:#ffffff;outline:none" placeholder="S">
+            </div>
+            <button onClick="{{ saveProfile }}" style="align-self:flex-start;padding:10px 24px;background:#131b2e;color:#ffffff;border:none;border-radius:8px;font-family:Inter,sans-serif;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#0051d5">{{ profileSavedMsg || 'Save Changes' }}</button>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ goSecurity }}">
+        <div>
+          <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:600;margin:0 0 8px">Account &amp; Security</h2>
+          <p style="font-size:14px;color:#76777d;margin:0 0 32px">Manage your email, password, and linked accounts.</p>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="padding:20px;background:#f8f9ff;border:1px solid #e5eeff;border-radius:10px;display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <p style="font-size:14px;font-weight:600;margin:0 0 2px">Email Address</p>
+                <p style="font-size:13px;color:#76777d;margin:0">{{ email }}</p>
+              </div>
+              <button style="padding:8px 16px;border:1px solid #dce9ff;border-radius:8px;font-family:Inter,sans-serif;font-size:13px;font-weight:600;color:#45464d;background:#ffffff;cursor:pointer" style-hover="border-color:#0051d5;color:#0051d5">Change</button>
+            </div>
+            <div style="padding:20px;background:#f8f9ff;border:1px solid #e5eeff;border-radius:10px;display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <p style="font-size:14px;font-weight:600;margin:0 0 2px">Password</p>
+                <p style="font-size:13px;color:#76777d;margin:0">Last changed: never</p>
+              </div>
+              <a href="/login" style="padding:8px 16px;border:1px solid #dce9ff;border-radius:8px;font-family:Inter,sans-serif;font-size:13px;font-weight:600;color:#45464d;background:#ffffff;text-decoration:none" style-hover="border-color:#0051d5;color:#0051d5">Reset</a>
+            </div>
+          </div>
+          <div style="margin-top:32px;padding:20px;background:#fff3f2;border:1px solid rgba(186,26,26,0.2);border-radius:10px">
+            <p style="font-size:14px;font-weight:700;color:#ba1a1a;margin:0 0 4px">Danger Zone</p>
+            <p style="font-size:13px;color:#45464d;margin:0 0 16px">Permanently delete your account and all associated data.</p>
+            <button style="padding:8px 16px;background:#ba1a1a;color:#ffffff;border:none;border-radius:8px;font-family:Inter,sans-serif;font-size:13px;font-weight:600;cursor:pointer">Delete Account</button>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ goAppearance }}">
+        <div>
+          <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:600;margin:0 0 8px">Appearance</h2>
+          <p style="font-size:14px;color:#76777d;margin:0 0 32px">Customize your visual experience.</p>
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:20px;background:#f8f9ff;border:1px solid #e5eeff;border-radius:10px">
+              <div>
+                <p style="font-size:14px;font-weight:600;margin:0 0 2px">Dark Mode</p>
+                <p style="font-size:13px;color:#76777d;margin:0">Switch to a dark color scheme</p>
+              </div>
+              <button onClick="{{ onAdvance }}" aria-checked="{{ togAdvance }}" style="{{ swAdvance }}" role="switch"><span style="{{ knAdvance }}"></span></button>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:20px;background:#f8f9ff;border:1px solid #e5eeff;border-radius:10px">
+              <div>
+                <p style="font-size:14px;font-weight:600;margin:0 0 2px">Compact View</p>
+                <p style="font-size:13px;color:#76777d;margin:0">Reduce spacing and padding</p>
+              </div>
+              <button onClick="{{ onMotion }}" aria-checked="{{ togMotion }}" style="{{ swMotion }}" role="switch"><span style="{{ knMotion }}"></span></button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ goNotifications }}">
+        <div>
+          <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:600;margin:0 0 8px">Notifications</h2>
+          <p style="font-size:14px;color:#76777d;margin:0 0 32px">Choose when and how you get notified.</p>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:20px;background:#f8f9ff;border:1px solid #e5eeff;border-radius:10px">
+              <div>
+                <p style="font-size:14px;font-weight:600;margin:0 0 2px">Weekly Progress Report</p>
+                <p style="font-size:13px;color:#76777d;margin:0">Get a summary every Monday</p>
+              </div>
+              <button onClick="{{ onDigest }}" aria-checked="{{ togDigest }}" style="{{ swDigest }}" role="switch"><span style="{{ knDigest }}"></span></button>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:20px;background:#f8f9ff;border:1px solid #e5eeff;border-radius:10px">
+              <div>
+                <p style="font-size:14px;font-weight:600;margin:0 0 2px">Session Reminders</p>
+                <p style="font-size:13px;color:#76777d;margin:0">Remind me to practice daily</p>
+              </div>
+              <button onClick="{{ onRemind }}" aria-checked="{{ togRemind }}" style="{{ swRemind }}" role="switch"><span style="{{ knRemind }}"></span></button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ goPrivacy }}">
+        <div>
+          <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:600;margin:0 0 8px">Privacy</h2>
+          <p style="font-size:14px;color:#76777d;margin:0 0 32px">Control your data and privacy settings.</p>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:20px;background:#f8f9ff;border:1px solid #e5eeff;border-radius:10px">
+              <div>
+                <p style="font-size:14px;font-weight:600;margin:0 0 2px">Share Usage Analytics</p>
+                <p style="font-size:13px;color:#76777d;margin:0">Help us improve DatalystLM</p>
+              </div>
+              <button onClick="{{ onShare }}" aria-checked="{{ togShare }}" style="{{ swShare }}" role="switch"><span style="{{ knShare }}"></span></button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</div>
+
+</div><!-- /screen -->
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { analyzing: false };
+
+  // ── Lifecycle ──────────────────────────────────────────────────────────────
+
+  componentDidMount() {
+    if (!window.DL.isAuthenticated()) { window.location.replace('/login'); return; }
+
+    let session = {};
+    try { session = JSON.parse(sessionStorage.getItem('dl_practice') || '{}'); } catch (e) {}
+    this._session      = session;
+    this._transcript   = '';
+    this._finalText    = '';
+    this._questionId   = null;
+    this._questionText = '';
+    this._startTime    = null;
+    this._pauseCount   = 0;
+    this._confidences  = [];
+    this._timeLimit    = 60;
+    this._timeLeft     = 60;
+    this._timerInterval = null;
+    this._recog        = null;
+    this._started      = false;
+    this._paused       = false;
+    this._stopping     = false;
+
+    // Cache DOM refs (IDs, so safe)
+    this._badge      = document.getElementById('dl-badge');
+    this._pausedBadge= document.getElementById('dl-paused-badge');
+    this._timerEl    = document.getElementById('dl-timer');
+    this._question   = document.getElementById('dl-question');
+    this._liveHeader = document.getElementById('dl-live-header');
+    this._idlePrompt = document.getElementById('dl-idle-prompt');
+    this._txWrap     = document.getElementById('dl-transcript-wrap');
+    this._txText     = document.getElementById('dl-transcript-text');
+    this._listening  = document.getElementById('dl-listening');
+    this._wave       = document.getElementById('dl-wave');
+    this._kwChips    = document.getElementById('dl-kw-chips');
+    this._kwCount    = document.getElementById('dl-kw-count');
+    this._kwTotal    = document.getElementById('dl-kw-total');
+    this._checklist  = document.getElementById('dl-checklist');
+    this._topicLabel = document.getElementById('dl-topic-label');
+    this._diffLabel  = document.getElementById('dl-diff-label');
+    this._stopBtn    = document.getElementById('dl-stop-btn');
+    this._pauseBtn   = document.getElementById('dl-pause-btn');
+    this._pauseIcon  = document.getElementById('dl-pause-icon');
+    this._retryBtn   = document.getElementById('dl-retry-btn');
+    this._micRing    = document.getElementById('dl-mic-ring');
+    this._micLabel   = document.getElementById('dl-mic-label');
+    this._idleMic    = document.getElementById('dl-idle-mic');
+
+    // Wire buttons
+    this._micRing.addEventListener('click',  () => { if (!this._started && !this._stopping) this._beginRecording(); });
+    this._idleMic.addEventListener('click',  () => { if (!this._started && !this._stopping) this._beginRecording(); });
+    this._pauseBtn.addEventListener('click', () => this._togglePause());
+    this._retryBtn.addEventListener('click', () => this._newQuestion());
+
+    // Update timer display with actual limit once known
+    this._timerEl.textContent = this._fmt(this._timeLimit) + ' remaining';
+
+    this.bindProfile();
+    this._assist       = null;
+    this._assistLoaded = false;
+    this._colX         = null;
+    this.view          = { x: 8, y: 8, k: 0.9 };
+    this.raf = requestAnimationFrame(() => this.bindCanvas());
+    this._loadQuestion(session);
+  }
+
+  componentWillUnmount() {
+    this.unbindProfile();
+    clearInterval(this._timerInterval);
+    if (this._recog) { try { this._recog.abort(); } catch (e) {} }
+    cancelAnimationFrame(this.raf);
+  }
+
+  // ── Question loading ───────────────────────────────────────────────────────
+
+  async _loadQuestion(session) {
+    const topic = session.topic || 'ML';
+    const questionId = session.questionId;
+    const subtopic = session.subtopic;
+    const difficulty = session.difficulty;
+    let url = `${window.DL.API}/practice/question?topic=${topic}`;
+    if (questionId) url += `&questionId=${questionId}`;
+    else {
+      if (subtopic)   url += `&subtopic=${subtopic}`;
+      if (difficulty) url += `&difficulty=${difficulty}`;
+    }
+
+    try {
+      const res = await fetch(url, { headers: window.DL.authHeaders() });
+      if (res.status === 401) { window.DL.goLogin(); return; }
+      if (!res.ok) throw new Error('Could not load question');
+      const q = await res.json();
+
+      this._questionId   = q.questionId;
+      this._questionText = q.text;
+      this._timeLimit    = q.timeLimitSeconds || 60;
+      this._timeLeft     = this._timeLimit;
+
+      if (this._question) this._question.textContent = q.text;
+      if (this._timerEl)  this._timerEl.textContent  = this._fmt(this._timeLeft) + ' remaining';
+      if (this._topicLabel) this._topicLabel.textContent = session.topicLabel || topic;
+      if (this._diffLabel) {
+        const label = session.difficultyLabel ||
+          (q.difficulty ? q.difficulty.charAt(0) + q.difficulty.slice(1).toLowerCase() : 'Medium');
+        this._diffLabel.textContent = label;
+      }
+
+      // Populate keywords from DB
+      const kws = (q.keywords && q.keywords.length) ? q.keywords : [];
+      this._renderKeywords(kws);
+
+      // Load per-question coaching assist data (non-blocking)
+      this._loadAssist(q.questionId);
+
+    } catch (e) {
+      console.warn('Question load failed:', e.message);
+      if (this._question) this._question.textContent = 'Could not load question. Please refresh.';
+    }
+  }
+
+  _renderKeywords(kws) {
+    if (!this._kwChips || !this._checklist) return;
+
+    if (!kws.length) {
+      this._kwChips.innerHTML = '<span style="font-size:13px;color:#76777d">No keywords available</span>';
+      this._checklist.innerHTML = '';
+      return;
+    }
+
+    // Chips
+    this._kwChips.innerHTML = kws.map(kw =>
+      `<span data-kw="${kw.toLowerCase()}" style="padding:5px 12px;border-radius:9999px;background:#f8f9ff;border:1px dashed #c6c6cd;color:#76777d;font-size:13px;font-weight:600">${kw}</span>`
+    ).join('');
+
+    if (this._kwCount) this._kwCount.textContent = '0';
+    if (this._kwTotal) this._kwTotal.textContent = `of ${kws.length} mentioned so far`;
+
+    // Checklist
+    this._checklist.innerHTML = kws.map(kw =>
+      `<li data-kw="${kw.toLowerCase()}" style="display:flex;align-items:flex-start;gap:16px;padding:16px;border-radius:8px;border:1px dashed #c6c6cd;opacity:0.6">
+        <span class="msi" style="color:#76777d">circle</span>
+        <div style="display:flex;flex-direction:column">
+          <span style="font-size:14px;font-weight:500;letter-spacing:0.01em">${kw}</span>
+          <span style="color:#76777d;font-size:12px;font-weight:600">Not mentioned yet</span>
+        </div>
+      </li>`
+    ).join('');
+  }
+
+  // ── Recording controls ─────────────────────────────────────────────────────
+
+  _beginRecording() {
+    this._started  = true;
+    this._paused   = false;
+    this._stopping = false;
+    this._startTime = Date.now();
+
+    this._setRecordingUI(true, false);
+    this._startTimer();
+    this._startVoice();
+  }
+
+  _setRecordingUI(active, paused) {
+    // Badge
+    if (this._badge) {
+      this._badge.textContent = active ? (paused ? 'PAUSED' : 'ACTIVE SESSION') : 'READY';
+      this._badge.style.background = active ? (paused ? '#7c839b' : '#316bf3') : '#76777d';
+    }
+    if (this._pausedBadge) {
+      this._pausedBadge.style.display = (active && paused) ? 'inline-block' : 'none';
+    }
+
+    // Live indicator + wave (only when actively transcribing — active AND NOT paused)
+    const transcribing = active && !paused;
+    if (this._liveHeader)  this._liveHeader.style.display  = transcribing ? 'flex' : 'none';
+    if (this._wave)        this._wave.style.display         = transcribing ? 'flex' : 'none';
+    if (this._listening)   this._listening.style.display    = transcribing ? 'block' : 'none';
+
+    // Idle prompt vs transcript area
+    if (this._idlePrompt) this._idlePrompt.style.display = active ? 'none' : 'flex';
+    if (this._txWrap)     this._txWrap.style.display     = active ? 'block' : 'none';
+
+    // Mic ring
+    if (this._micRing) {
+      this._micRing.style.background = active
+        ? (paused ? '#7c839b' : '#316bf3')
+        : '#4a5063';
+      this._micRing.style.animation  = (active && !paused) ? 'pulsering 2s cubic-bezier(0.4,0,0.6,1) infinite' : 'none';
+    }
+    if (this._micLabel) {
+      this._micLabel.style.color = active ? '#ffffff' : '#7c839b';
+      this._micLabel.textContent = active
+        ? (paused ? 'Paused' : 'Mic active')
+        : 'Click mic to start';
+    }
+
+    // Pause button — enabled only when recording started
+    if (this._pauseBtn) {
+      const canPause = active && !this._stopping;
+      this._pauseBtn.disabled = !canPause;
+      this._pauseBtn.style.cursor  = canPause ? 'pointer' : 'not-allowed';
+      this._pauseBtn.style.opacity = canPause ? '1' : '0.35';
+      this._pauseBtn.style.color   = canPause ? (paused ? '#f5a623' : '#ffffff') : '#7c839b';
+      this._pauseBtn.style.background = (canPause && paused) ? 'rgba(245,166,35,0.15)' : 'transparent';
+    }
+    if (this._pauseIcon) {
+      this._pauseIcon.textContent = paused ? 'play_arrow' : 'pause';
+    }
+
+    // Stop button — enabled only after recording has started
+    if (this._stopBtn) {
+      const canStop = active && !this._stopping;
+      this._stopBtn.disabled = !canStop;
+      this._stopBtn.style.cursor     = canStop ? 'pointer' : 'not-allowed';
+      this._stopBtn.style.background = canStop ? '#0051d5' : '#45464d';
+      this._stopBtn.style.color      = canStop ? '#ffffff' : '#7c839b';
+      this._stopBtn.style.boxShadow  = canStop ? '0 8px 20px rgba(0,81,213,0.35)' : 'none';
+    }
+
+    // Retry button — enabled any time a question is loaded (can retry before or after recording)
+    if (this._retryBtn) {
+      const canRetry = !!this._questionId && !this._stopping;
+      this._retryBtn.disabled = !canRetry;
+      this._retryBtn.style.cursor  = canRetry ? 'pointer' : 'not-allowed';
+      this._retryBtn.style.opacity = canRetry ? '1' : '0.35';
+      this._retryBtn.style.color   = canRetry ? '#ffffff' : '#7c839b';
+    }
+  }
+
+  _togglePause() {
+    if (!this._started || this._stopping) return;
+    this._paused = !this._paused;
+    this._setRecordingUI(true, this._paused);
+    if (this._paused) {
+      if (this._recog) { try { this._recog.stop(); } catch (e) {} }
+    } else {
+      try { if (this._recog) this._recog.start(); } catch (e) { this._startVoice(); }
+    }
+  }
+
+  _newQuestion() {
+    if (!this._questionId && !this._started) return; // nothing loaded yet
+    // Stop everything
+    clearInterval(this._timerInterval);
+    if (this._recog) { try { this._recog.abort(); } catch (e) {} }
+
+    // Reset all session state
+    this._transcript   = '';
+    this._finalText    = '';
+    this._questionId   = null;
+    this._questionText = '';
+    this._pauseCount   = 0;
+    this._confidences  = [];
+    this._startTime    = null;
+    this._started      = false;
+    this._paused       = false;
+    this._stopping     = false;
+    this.setState({ analyzing: false });
+
+    // Clear transcript display
+    if (this._txText) this._txText.textContent = '';
+
+    this._setRecordingUI(false, false);
+    this._loadQuestion(this._session);
+  }
+
+  // ── Timer ──────────────────────────────────────────────────────────────────
+
+  _startTimer() {
+    clearInterval(this._timerInterval);
+    this._timerInterval = setInterval(() => {
+      if (this._paused) return;
+      this._timeLeft = Math.max(0, this._timeLeft - 1);
+      if (this._timerEl) this._timerEl.textContent = this._fmt(this._timeLeft) + ' remaining';
+      if (this._timeLeft <= 0) {
+        clearInterval(this._timerInterval);
+        if (!this._stopping) {
+          this._stopping = true;
+          this.setState({ analyzing: true });
+          this._setRecordingUI(true, false); // keep active but stop button handled by analyze state
+          if (this._recog) {
+            this._recog.onend = () => this._evaluate();
+            try { this._recog.stop(); } catch (e) { this._evaluate(); }
+          } else {
+            this._evaluate();
+          }
+        }
+      }
+    }, 1000);
+  }
+
+  _fmt(s) {
+    return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  // ── Voice recognition ──────────────────────────────────────────────────────
+
+  _startVoice() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { this._addTextFallback(); return; }
+
+    this._recog = new SR();
+    this._recog.continuous    = true;
+    this._recog.interimResults = true;
+    this._recog.lang          = 'en-US';
+
+    let lastSpeak = Date.now();
+    const PAUSE_MS = 2000;
+
+    this._recog.onresult = ev => {
+      let interim = '';
+      for (let i = ev.resultIndex; i < ev.results.length; i++) {
+        const r = ev.results[i];
+        if (r.isFinal) {
+          const now = Date.now();
+          if (now - lastSpeak > PAUSE_MS) this._pauseCount++;
+          lastSpeak = now;
+          this._finalText += r[0].transcript + ' ';
+          this._confidences.push(r[0].confidence || 0.8);
+          this._updateKeywordProgress();
+        } else {
+          interim = r[0].transcript;
+          lastSpeak = Date.now();
+        }
+      }
+      this._transcript = (this._finalText + interim).trim();
+      if (this._txText) this._txText.textContent = '"' + this._transcript + '"';
+    };
+
+    this._recog.onerror = ev => {
+      if (ev.error !== 'aborted') console.warn('Speech error:', ev.error);
+    };
+
+    // Chrome kills recognition after ~60s silence — auto-restart while active
+    this._recog.onend = () => {
+      if (this._started && !this._paused && !this._stopping && this._timeLeft > 0) {
+        try { this._recog.start(); } catch (e) {}
+      }
+    };
+
+    try { this._recog.start(); } catch (e) { this._addTextFallback(); }
+  }
+
+  _updateConceptsFromTranscript() {
+    const terms = (this._assist && this._assist.keyTerms) ? this._assist.keyTerms : [];
+    if (!terms.length) return;
+    const tx = this._transcript.toLowerCase();
+    const updates = {};
+    terms.forEach(term => { if (tx.includes(term.toLowerCase())) updates['said:' + term] = true; });
+    if (Object.keys(updates).length) this.setState(updates);
+  }
+
+  _updateKeywordProgress() {
+    this._updateConceptsFromTranscript();
+    if (!this._kwChips) return;
+    const tx = this._transcript.toLowerCase();
+    let hit = 0;
+    this._kwChips.querySelectorAll('span[data-kw]').forEach(span => {
+      const kw = span.getAttribute('data-kw');
+      if (tx.includes(kw)) {
+        span.style.cssText = 'padding:5px 12px;border-radius:9999px;background:#eff4ff;border:1px solid #0051d5;color:#0051d5;font-size:13px;font-weight:600;display:flex;align-items:center;gap:5px';
+        if (!span.querySelector('span')) {
+          span.insertAdjacentHTML('afterbegin', '<span class="msi msi-fill" style="font-size:15px">check_circle</span>');
+        }
+        hit++;
+      }
+    });
+    if (this._kwCount) this._kwCount.textContent = hit;
+
+    if (this._checklist) {
+      this._checklist.querySelectorAll('li[data-kw]').forEach(li => {
+        const kw  = li.getAttribute('data-kw');
+        const mentioned = tx.includes(kw);
+        const label = li.querySelector('div span:last-child');
+        const icon  = li.querySelector('span.msi');
+        if (mentioned) {
+          li.style.background = '#eff4ff'; li.style.border = 'none'; li.style.opacity = '1';
+          if (icon)  { icon.textContent = 'check_circle'; icon.style.color = '#718d3e'; icon.classList.add('msi-fill'); }
+          if (label) label.textContent = 'Mentioned ✓';
+        } else {
+          li.style.background = 'transparent'; li.style.border = '1px dashed #c6c6cd'; li.style.opacity = '0.6';
+          if (icon)  { icon.textContent = 'circle'; icon.style.color = '#76777d'; icon.classList.remove('msi-fill'); }
+          if (label) label.textContent = 'Not mentioned yet';
+        }
+      });
+    }
+  }
+
+  _addTextFallback() {
+    if (this._txWrap) {
+      const ta = document.createElement('textarea');
+      ta.placeholder = 'Type your answer here (voice not available in this browser)…';
+      ta.style.cssText = 'width:100%;min-height:100px;margin-top:12px;padding:12px 16px;border:1px solid #dce9ff;border-radius:8px;font-family:Inter,sans-serif;font-size:15px;line-height:1.6;resize:vertical;box-sizing:border-box;color:#0b1c30;background:#f8f9ff;outline:none';
+      ta.addEventListener('input', () => { this._transcript = ta.value; this._finalText = ta.value; });
+      this._txWrap.appendChild(ta);
+    }
+  }
+
+  // ── Evaluation ─────────────────────────────────────────────────────────────
+
+  async _evaluate() {
+    // Use _transcript (includes interim) as primary — it's the most complete at stop time.
+    // _finalText is the accumulated finalized text; _transcript = finalText + last interim chunk.
+    const answer = (this._transcript || this._finalText || '').trim();
+    const durationSeconds = this._startTime ? Math.max(1, Math.round((Date.now() - this._startTime) / 1000)) : 1;
+    const avgConf = this._confidences.length
+      ? parseFloat((this._confidences.reduce((a, b) => a + b, 0) / this._confidences.length).toFixed(2))
+      : 0.8;
+
+    const meta = {
+      question:   this._questionText,
+      answer,
+      topic:      this._session.topicLabel     || this._session.topic      || 'Machine Learning',
+      difficulty: this._session.difficultyLabel || this._session.difficulty || 'Medium',
+      durationSeconds
+    };
+
+    if (!answer || !this._questionId) {
+      // No answer captured — navigate to results with an empty-answer flag
+      sessionStorage.setItem('dl_feedback', JSON.stringify({ ...meta, noAnswer: true }));
+      window.location.href = './Results.dc.html';
+      return;
+    }
+    try {
+      const res = await fetch(`${window.DL.API}/practice/evaluate`, {
+        method: 'POST',
+        headers: window.DL.authHeaders(),
+        body: JSON.stringify({
+          questionId:        this._questionId,
+          transcribedAnswer: answer.length >= 5 ? answer : answer + '     ', // pad if too short for @Size(min=5)
+          durationSeconds,
+          pauseCount:        this._pauseCount,
+          confidenceScore:   avgConf
+        })
+      });
+      if (res.status === 401) { window.DL.goLogin(); return; }
+      if (!res.ok) {
+        // API error (e.g. Ollama unavailable) — navigate to results with error state
+        const errBody = await res.text().catch(() => '');
+        sessionStorage.setItem('dl_feedback', JSON.stringify({ ...meta, evalError: true, evalErrorStatus: res.status, evalErrorBody: errBody }));
+        window.location.href = './Results.dc.html';
+        return;
+      }
+      const feedback = await res.json();
+      sessionStorage.setItem('dl_feedback', JSON.stringify({ ...meta, feedback }));
+      window.location.href = './Results.dc.html';
+    } catch (e) {
+      console.error('Evaluate error:', e);
+      // Network/runtime error — still navigate so user isn't stranded on the practice page
+      sessionStorage.setItem('dl_feedback', JSON.stringify({ ...meta, evalError: true, evalErrorBody: e.message }));
+      window.location.href = './Results.dc.html';
+    }
+  }
+
+  // ── Assist data loader ────────────────────────────────────────────────────
+
+  async _loadAssist(questionId) {
+    this._assist       = null;
+    this._assistLoaded = false;
+    this.setState({ assistLoaded: false });
+    try {
+      const res = await fetch(`${window.DL.API}/practice/assist?questionId=${questionId}`, { headers: window.DL.authHeaders() });
+      this._assist = res.ok ? await res.json() : null;
+    } catch (e) {
+      this._assist = null;
+    }
+    this._assistLoaded = true;
+    // Reset concept said state when a new question loads
+    const clears = {};
+    const terms = (this._assist && this._assist.keyTerms) ? this._assist.keyTerms : [];
+    terms.forEach(t => { clears['said:' + t] = false; });
+    this._colX = null;
+    this.setState({ ...clears, assistLoaded: true });
+    // Re-bind canvas once nodes render
+    requestAnimationFrame(() => { this.bindCanvas(); this.fitView(); });
+  }
+
+  // ── Concept Bridge canvas ─────────────────────────────────────────────────
+
+  // Estimate pixel width per column from character count (text-measure fallback)
+  colX(nodes) {
+    if (this._colX) return this._colX;
+    const all = nodes || (this._assist && this._assist.conceptNodes) || [];
+    const cols = [];
+    all.forEach(n => {
+      const spine = n.row === 0;
+      cols[n.col] = Math.max(cols[n.col] || 0,
+        (spine ? 6.9 : 5.7) * n.label.length + (spine ? 26 : 22));
+    });
+    return this.layout(cols);
+  }
+
+  // Convert per-column widths into cumulative x-offsets; stores this._canvasW
+  layout(cols) {
+    const GAP = 16;
+    let x = 0;
+    const out = [];
+    for (let i = 0; i < cols.length; i++) {
+      out[i] = x;
+      x += (cols[i] || 80) + GAP;
+    }
+    this._canvasW = Math.max(x + 8, 300);
+    this._colX = out;
+    return out;
+  }
+
+  // After fonts load, re-measure actual rendered node widths and redo layout if changed
+  measureColumns() {
+    const nodes = (this._assist && this._assist.conceptNodes) || [];
+    const layer = document.querySelector('[data-layer]');
+    if (!layer || !nodes.length) return;
+    const inner = layer.firstElementChild;
+    if (!inner) return;
+    const chips = Array.from(inner.children);
+    if (chips.length !== nodes.length) return;
+    const cols = [];
+    chips.forEach((el, i) => {
+      const col = nodes[i].col;
+      cols[col] = Math.max(cols[col] || 0, el.offsetWidth);
+    });
+    if (!cols.length) return;
+    const before = (this._colX || []).join(',');
+    this.layout(cols);
+    if (this._colX.join(',') !== before) this.setState({ _cv: (this.state._cv || 0) + 1 });
+  }
+
+  clampView() {
+    const host = document.querySelector('[data-canvas]');
+    if (!host) return;
+    const hr = host.getBoundingClientRect();
+    const w = (this._canvasW || 300) * this.view.k;
+    const h = 96 * this.view.k;
+    const PAD = 24;
+    this.view.x = w < hr.width
+      ? Math.min(hr.width - w - PAD, Math.max(PAD, this.view.x))
+      : Math.min(hr.width - PAD, Math.max(PAD - w, this.view.x));
+    this.view.y = h < hr.height
+      ? Math.min(hr.height - h - PAD, Math.max(PAD, this.view.y))
+      : Math.min(hr.height - PAD, Math.max(PAD - h, this.view.y));
+  }
+
+  applyView() {
+    const layer = document.querySelector('[data-layer]');
+    if (!layer) return;
+    this.clampView();
+    layer.style.transform = this.transform();
+  }
+
+  transform() {
+    const v = this.view;
+    return `translate(${v.x}px,${v.y}px) scale(${v.k})`;
+  }
+
+  setZoom(next, cx, cy) {
+    const v = this.view, k = Math.min(1.6, Math.max(0.75, next));
+    const host = document.querySelector('[data-canvas]');
+    const r = host ? host.getBoundingClientRect() : { width: 260, height: 120 };
+    const px = cx === undefined ? r.width / 2 : cx;
+    const py = cy === undefined ? r.height / 2 : cy;
+    v.x = px - (px - v.x) * (k / v.k);
+    v.y = py - (py - v.y) * (k / v.k);
+    v.k = k;
+    this.applyView();
+  }
+
+  openNode(label, body) {
+    const nodes = (this._assist && this._assist.conceptNodes) || [];
+    const n = nodes.find(x => x.label === label);
+    this.setState({ node: n ? { id: n.id, label: n.label, body: n.body } : { id: '', label, body } });
+  }
+
+  bindCanvas() {
+    const host = document.querySelector('[data-canvas]');
+    if (!host || host.dataset.bound) return;
+    host.dataset.bound = '1';
+    let down = false, sx = 0, sy = 0, ox = 0, oy = 0;
+    host.addEventListener('pointerdown', e => {
+      if (e.target.closest('button')) return;
+      down = true; sx = e.clientX; sy = e.clientY;
+      ox = this.view.x; oy = this.view.y;
+      host.style.cursor = 'grabbing';
+      host.setPointerCapture(e.pointerId);
+    });
+    host.addEventListener('pointermove', e => {
+      if (!down) return;
+      this.view.x = ox + e.clientX - sx;
+      this.view.y = oy + e.clientY - sy;
+      this.applyView();
+    });
+    const end = () => { down = false; host.style.cursor = 'grab'; };
+    host.addEventListener('pointerup', end);
+    host.addEventListener('pointercancel', end);
+    host.addEventListener('wheel', e => {
+      e.preventDefault();
+      const r = host.getBoundingClientRect();
+      this.setZoom(this.view.k * (e.deltaY > 0 ? 0.9 : 1.1), e.clientX - r.left, e.clientY - r.top);
+    }, { passive: false });
+    this.applyView();
+    const remeasure = () => { this.measureColumns(); this.applyView(); };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
+    else setTimeout(remeasure, 400);
+  }
+
+  fitView() {
+    const host = document.querySelector('[data-canvas]');
+    if (!host) return;
+    const hr = host.getBoundingClientRect();
+    const PAD = 8;
+    const kFit = Math.max(0.75, Math.min(1, (hr.height - PAD * 2) / (96 + 4)));
+    this.view = { k: kFit, x: PAD, y: PAD };
+    this.applyView();
+  }
+
+  focusNode(label) {
+    const host = document.querySelector('[data-canvas]');
+    const btn = Array.from(document.querySelectorAll('[data-layer] button'))
+      .find(b => b.textContent.trim() === label);
+    if (!host || !btn) return;
+    const hr = host.getBoundingClientRect(), br = btn.getBoundingClientRect();
+    this.view.x += hr.left + hr.width / 2 - (br.left + br.width / 2);
+    this.view.y += hr.top + hr.height / 2 - (br.top + br.height / 2);
+    this.applyView();
+  }
+
+  // ── Assist vals (Interview/Coach, Bridge, Guide, Ladder, Hints) ────────────
+
+  assistVals() {
+    const st = this.state;
+    const assist     = this._assist || {};
+    const interview  = st.support === 'interview';
+    const tab2       = st.tab2 || 'bridge';
+    const hints      = !!st.hintsOpen;
+    const activeNode = st.node;
+
+    const CARD = 'background:#ffffff;border-radius:12px;padding:24px;box-shadow:0 4px 12px rgba(15,23,42,0.08);border:1px solid #e5eeff';
+    const seg  = on => `padding:7px 16px;border:none;border-radius:8px;font-family:Inter,sans-serif;font-size:13px;font-weight:${on?600:500};color:${on?'#0051d5':'#45464d'};background:${on?'#ffffff':'transparent'};box-shadow:${on?'0 0 0 1px #0051d5':'none'};cursor:pointer;transition:all 0.18s`;
+    const tabBtn = on => `flex:1;padding:7px 10px;white-space:nowrap;border:none;border-radius:8px;font-family:Inter,sans-serif;font-size:13px;font-weight:${on?600:500};color:${on?'#0051d5':'#45464d'};background:${on?'#ffffff':'transparent'};box-shadow:${on?'0 0 0 1px #0051d5':'none'};cursor:pointer;transition:all 0.18s`;
+
+    // Concept Bridge nodes
+    const nodes = assist.conceptNodes || [];
+
+    const isSaid = term => {
+      const v = st['said:' + term];
+      return v === undefined ? false : v;
+    };
+
+    const bridgeNodes = nodes.map(n => {
+      const spine  = n.row === 0;
+      const branch = !spine;
+      const said   = isSaid(n.label.toLowerCase());
+      const act    = !!activeNode && activeNode.id === n.id;
+      const colX   = this.colX(nodes);
+      const x      = colX[n.col] + (branch ? 12 : 0);
+      const y      = n.row * 34;
+      return {
+        label: n.label,
+        active: act,
+        arrow: spine
+          ? (n.col === 0 ? 'trip_origin' : 'arrow_forward')
+          : 'subdirectory_arrow_right',
+        arrowStyle: `font-size:${spine ? 18 : 15}px;color:${spine ? '#0051d5' : '#a8bcdd'};flex-shrink:0`,
+        chipStyle: `padding:${spine ? '7px 13px' : '5px 10px'};border-radius:9999px;font-family:Inter,sans-serif;font-size:${spine ? 14 : 12}px;font-weight:600;white-space:nowrap;cursor:pointer;background:${said ? '#dce9ff' : '#ffffff'};border:1px ${act ? 'solid #0b1c30' : said ? 'solid #0051d5' : 'dashed #b7c4dd'};color:${said ? '#0051d5' : '#5c6b85'};box-shadow:${act ? '0 0 0 2px rgba(11,28,48,0.12)' : spine ? '0 1px 3px rgba(15,23,42,0.08)' : 'none'}`,
+        rowStyle: `position:absolute;left:${x}px;top:${y}px;display:flex;align-items:center;gap:6px`,
+        open: () => { this.openNode(n.label, n.body); this.focusNode(n.label); }
+      };
+    });
+
+    // Key Concepts chips
+    const terms        = assist.keyTerms || [];
+    const explanations = assist.conceptExplanations || {};
+    const concepts = terms.map(term => {
+      const said    = isSaid(term);
+      const explain = explanations[term];
+      return {
+        term, said,
+        // Toggle said state; also open the detail panel if an explanation exists
+        toggle: () => {
+          const p = {}; p['said:' + term] = !said; this.setState(p);
+          if (explain) this.setState({ node: { id: term, label: term, body: explain } });
+        },
+        style: `display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:9999px;font-family:Inter,sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;background:${said?'#eff4ff':'#f8f9ff'};border:1px ${said?'solid #0051d5':'dashed #c6c6cd'};color:${said?'#0051d5':'#76777d'}`
+      };
+    });
+
+    // Answer Guide essentials
+    const essArr  = assist.answerEssentials || [];
+    const nDone   = essArr.filter((_, i) => !!st['ess' + i]).length;
+    const essentials = essArr.map((text, i) => {
+      const on = !!st['ess' + i];
+      return {
+        text, on,
+        toggle: () => { const p = {}; p['ess' + i] = !on; this.setState(p); },
+        glyph: on ? 'check_circle' : 'radio_button_unchecked',
+        iconStyle: `font-size:20px;flex-shrink:0;color:${on?'#0051d5':'#c6c6cd'};font-variation-settings:'FILL' ${on?1:0}`,
+        textStyle: `font-size:14px;line-height:20px;font-weight:500;color:${on?'#76777d':'#0b1c30'};text-decoration:${on?'line-through':'none'}`
+      };
+    });
+
+    // Assistance Ladder
+    const ladder  = assist.ladder || {};
+    const hasL = !!(ladder.l1ThinkingPrompt || ladder.l3SentenceStarter || ladder.l5ExampleAnswer
+                   || (ladder.l2StructureSteps && ladder.l2StructureSteps.length)
+                   || (ladder.l4TalkingPoints  && ladder.l4TalkingPoints.length));
+    const lvl = n => {
+      const on = !!st['lvlL' + n];
+      return {
+        [`openL${n}`]: on,
+        [`chevL${n}`]: `font-size:20px;color:#45464d;flex-shrink:0;transform:rotate(${on?180:0}deg);transition:transform 0.2s`,
+        [`bodyL${n}`]: `padding:${on?'0 16px 16px':'0 16px'};max-height:${on?600:0}px;overflow:hidden;transition:max-height 0.26s ease,padding 0.26s ease`,
+        [`togL${n}`]:  () => { const p = {}; p['lvlL' + n] = !on; this.setState(p); }
+      };
+    };
+
+    // Quick Hints
+    const quickHints = assist.quickHints || [];
+    const hasHints   = quickHints.length > 0;
+
+    return {
+      // Interview / Coach
+      isInterview: interview,
+      isCoach: !interview,
+      segInterview: seg(interview),
+      segCoach: seg(!interview),
+      supportBlurb: interview
+        ? 'No prompts, no hints. Closest to the real thing.'
+        : 'The assistance ladder and answer guide stay available while you answer.',
+      setInterview: () => this.setState({ support: 'interview', hintsOpen: false }),
+      setCoach:     () => this.setState({ support: 'coach' }),
+
+      // Layout
+      gridStyle:  'display:flex;flex-wrap:wrap;align-items:flex-start;gap:24px',
+      asideStyle: `flex:1 1 300px;min-width:0;max-width:none;flex-direction:column;gap:20px;display:${interview?'none':'flex'}`,
+
+      // Tabs
+      isBridge: tab2 === 'bridge',
+      isGuide:  tab2 === 'guide',
+      tabBridge: tabBtn(tab2 === 'bridge'),
+      tabGuide:  tabBtn(tab2 === 'guide'),
+      showBridge: () => this.setState({ tab2: 'bridge' }),
+      showGuide:  () => this.setState({ tab2: 'guide' }),
+      bridgePanelStyle: `display:${tab2 === 'bridge' ? 'block' : 'none'}`,
+      guidePanelStyle:  `flex-direction:column;gap:20px;display:${tab2 === 'guide' ? 'flex' : 'none'}`,
+
+      // Concept Bridge
+      canvasW: (this.colX(nodes), this._canvasW || 300),
+      layerStyle: `position:absolute;top:0;left:0;transform-origin:0 0;transform:${this.transform()}`,
+      bridgeNodes,
+      nodeTitle: activeNode ? activeNode.label : '',
+      nodeBody:  activeNode ? activeNode.body  : '',
+      nodeInfoStyle: `margin-top:12px;padding:14px;border-radius:10px;background:#eff4ff;border:1px solid #dce9ff;display:${activeNode ? 'block' : 'none'}`,
+      closeNode: () => this.setState({ node: null }),
+      zoomIn:  () => this.setZoom(this.view.k * 1.25),
+      zoomOut: () => this.setZoom(this.view.k / 1.25),
+      zoomFit: () => this.fitView(),
+
+      // Key Concepts
+      concepts,
+      saidCount:  terms.filter(t => isSaid(t)).length,
+      totalCount: terms.length,
+
+      // Answer Guide
+      essentials,
+      essCount: `${nDone}/${essArr.length}`,
+
+      // Assistance Ladder
+      ladderCardStyle: hasL ? CARD : 'display:none',
+      ladderL1:       ladder.l1ThinkingPrompt  || '',
+      ladderL2Steps:  ladder.l2StructureSteps  || [],
+      ladderL3:       ladder.l3SentenceStarter || '',
+      ladderL4Points: ladder.l4TalkingPoints   || [],
+      ladderL5:       ladder.l5ExampleAnswer   || '',
+      ...lvl(1), ...lvl(2), ...lvl(3), ...lvl(4), ...lvl(5),
+
+      // Quick Hints
+      hintsCardStyle: hasHints ? CARD : 'display:none',
+      hintsOpen:     hints,
+      hintsLabel:    hints ? 'Hide hints' : 'Show hints',
+      togHints:      () => this.setState(p => ({ hintsOpen: !p.hintsOpen })),
+      hintsListStyle: `flex-direction:column;gap:8px;display:${hints ? 'flex' : 'none'}`,
+      quickHints
+    };
+  }
+
+  // ── renderVals ─────────────────────────────────────────────────────────────
+
+  renderVals() {
+    return {
+      ...this.profileVals(),
+      ...this.assistVals(),
+      analyzing:    !!this.state.analyzing,
+      notAnalyzing: !this.state.analyzing,
+      stopLabel:    this.state.analyzing ? 'Analyzing…' : 'Stop & Get Feedback',
+      stop: () => {
+        if (!this._started || this._stopping) return;
+        this._stopping = true;
+        clearInterval(this._timerInterval);
+        this.setState({ analyzing: true });
+        if (this._stopBtn) {
+          this._stopBtn.disabled = true;
+          this._stopBtn.style.cursor = 'not-allowed';
+        }
+        if (this._recog) {
+          // Override onend so _evaluate() runs AFTER the browser fires the final
+          // onresult event (which carries the last interim → final conversion).
+          this._recog.onend = () => this._evaluate();
+          try { this._recog.stop(); } catch (e) { this._evaluate(); }
+        } else {
+          this._evaluate();
+        }
+      }
+    };
+  }
+
+  // ── Profile / settings (unchanged) ────────────────────────────────────────
+
+  initialsOf(f, l) {
+    const fn = (f || '').trim(); const ln = (l || '').trim();
+    if (!fn) return '?';
+    return ln ? fn.charAt(0).toUpperCase() + '.' + ln.charAt(0).toUpperCase() : fn.charAt(0).toUpperCase();
+  }
+
+  bindProfile() {
+    this._docClick = e => {
+      if (!this.state.menuOpen) return;
+      if (e.target.closest('[data-useravatar]')) return;
+      const menu = document.querySelector('[data-usermenu]');
+      if (menu && !menu.contains(e.target)) this.setState({ menuOpen: false });
+    };
+    this._docKey = e => {
+      if (e.key === 'Escape') {
+        if (this.state.settingsOpen) this.setState({ settingsOpen: false });
+        else if (this.state.menuOpen) this.setState({ menuOpen: false });
+      }
+    };
+    document.addEventListener('click', this._docClick, { capture: true });
+    document.addEventListener('keydown', this._docKey);
+    const first = localStorage.getItem('datalystlm_first') || '';
+    const last  = localStorage.getItem('datalystlm_last')  || '';
+    this.setState({ first, last });
+    fetch(`${window.DL.API}/users/me`, { headers: window.DL.authHeaders() })
+      .then(r => r.ok ? r.json() : null)
+      .then(p => {
+        if (!p) return;
+        this.setState({
+          email:       p.email,
+          memberSince: p.memberSinceYear,
+          planLabel:   p.subscriptionTier === 'PRO' ? 'Pro Plan' : 'Free Plan'
+        });
+      })
+      .catch(() => {});
+  }
+
+  unbindProfile() {
+    if (this._docClick) document.removeEventListener('click', this._docClick, { capture: true });
+    if (this._docKey)   document.removeEventListener('keydown', this._docKey);
+  }
+
+  profileVals() {
+    const st = this.state;
+    const T = { advance: false, motion: false, digest: true, remind: false, share: true };
+    const tabs = ['profile', 'security', 'appearance', 'notifications', 'privacy'];
+    const tab = st.tab || 'profile';
+    const sw = key => {
+      const stored = (() => { try { const v = localStorage.getItem('datalystlm_tog_' + key); return v !== null ? JSON.parse(v) : null; } catch(e) { return null; } })();
+      const on = st['tog_' + key] != null ? st['tog_' + key] : (stored !== null ? stored : T[key]);
+      const cap = key.charAt(0).toUpperCase() + key.slice(1);
+      return {
+        [`tog${cap}`]: on,
+        [`sw${cap}`]: `display:inline-flex;align-items:center;width:44px;height:24px;border-radius:9999px;border:none;cursor:pointer;padding:2px;box-sizing:border-box;transition:background 0.2s;background:${on ? '#0051d5' : '#c6c6cd'}`,
+        [`kn${cap}`]: `display:block;width:20px;height:20px;border-radius:9999px;background:#ffffff;box-shadow:0 1px 3px rgba(0,0,0,0.25);transition:transform 0.2s;transform:translateX(${on ? '20px' : '0px'})`,
+        [`on${cap}`]: () => { const v = {}; v['tog_' + key] = !on; this.setState(v); try { localStorage.setItem('datalystlm_tog_' + key, JSON.stringify(!on)); } catch(e) {} }
+      };
+    };
+    const res = {};
+    tabs.forEach(t => {
+      const cap = t.charAt(0).toUpperCase() + t.slice(1);
+      res[`is${cap}`] = `display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;font-family:Inter,sans-serif;font-size:14px;font-weight:${tab===t?'600':'500'};width:100%;border:none;cursor:pointer;text-align:left;background:${tab===t?'#eff4ff':'none'};color:${tab===t?'#0051d5':'#45464d'}`;
+      res[`nav${cap}`] = () => this.setState({ tab: t });
+      res[`go${cap}`]  = tab === t;
+    });
+    Object.keys(T).forEach(k => Object.assign(res, sw(k)));
+    const menuOpen     = !!st.menuOpen;
+    const settingsOpen = !!st.settingsOpen;
+    const first = st.first || ''; const last = st.last || '';
+    const planLabel   = st.planLabel   || 'Free Plan';
+    const memberSince = st.memberSince ? 'Member since ' + st.memberSince : '';
+    return {
+      ...res, menuOpen,
+      initials:    this.initialsOf(first, last),
+      fullName:    first || 'User',
+      email:       st.email || '',
+      first, last,
+      planLabel,
+      memberSince,
+      saveProfile: () => {
+        try {
+          localStorage.setItem('datalystlm_first', st.first || '');
+          localStorage.setItem('datalystlm_last',  st.last  || '');
+          localStorage.setItem('datalystlm_profile_set', '1');
+        } catch(e) {}
+        this.setState({ profileSaved: true });
+        setTimeout(() => this.setState({ profileSaved: false }), 2000);
+      },
+      profileSavedMsg: st.profileSaved ? 'Saved!' : '',
+      menuStyle: menuOpen
+        ? 'position:absolute;top:calc(100% + 8px);right:0;min-width:220px;background:#ffffff;border:1px solid #e5eeff;border-radius:12px;box-shadow:0 8px 24px rgba(15,23,42,0.15);z-index:200;overflow:hidden;opacity:1;pointer-events:auto;transform:translateY(0);transition:opacity 0.15s,transform 0.15s'
+        : 'position:absolute;top:calc(100% + 8px);right:0;min-width:220px;background:#ffffff;border:1px solid #e5eeff;border-radius:12px;box-shadow:0 8px 24px rgba(15,23,42,0.15);z-index:200;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity 0.15s,transform 0.15s',
+      overlayStyle:  settingsOpen ? 'position:fixed;inset:0;background:rgba(11,28,48,0.4);z-index:300;backdrop-filter:blur(2px)' : 'display:none',
+      modalStyle:    settingsOpen
+        ? 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(860px,92vw);height:min(600px,88vh);background:#ffffff;border-radius:16px;box-shadow:0 24px 64px rgba(15,23,42,0.25);z-index:301;display:flex;flex-direction:column;overflow:hidden'
+        : 'display:none',
+      toggleMenu:    () => this.setState({ menuOpen: !menuOpen }),
+      openSettings:  () => this.setState({ menuOpen: false, settingsOpen: true }),
+      closeSettings: () => this.setState({ settingsOpen: false }),
+      signOut:       () => { window.DL.clearToken(); window.location.replace('/login'); },
+      onFirst: e => this.setState({ first: e.target.value }),
+      onLast:  e => this.setState({ last: e.target.value.slice(0, 1) })
+    };
+  }
+}
+</script>
+</body>
+</html>

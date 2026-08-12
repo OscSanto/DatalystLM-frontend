@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>window.location.replace("/login");</script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f8f9ff;color:#0b1c30;font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
+.msi{font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;display:inline-block;line-height:1;letter-spacing:normal;white-space:nowrap;direction:ltr}
+input::placeholder{color:#76777d}
+</style>
+</helmet>
+<div data-screen-label="Login" style="min-height:100vh;display:flex">
+<aside style="position: relative; width: 50%; background: #131b2e; display: flex; align-items: flex-start; justify-content: center; overflow: hidden; padding: 64px; box-sizing: border-box">
+  <div style="position: relative; z-index: 10; max-width: 512px; color: #ffffff; width: 100%">
+    <a href="Front.dc.html" style="display:inline-block;margin-bottom:48px"><img alt="DatalystLM" src="assets/logo-datalystlm.png" style="height:40px;width:auto;display:block;filter:brightness(0) invert(1)"></a>
+    <h1 style="font-family:'Hanken Grotesk',sans-serif;font-size:48px;line-height:56px;font-weight:600;letter-spacing:-0.01em;color:#ffffff;margin:0 0 24px">Practice out loud.<br>Land the role.</h1>
+    <p style="font-size:18px;line-height:28px;color:#bec6e0;margin:0;max-width:448px">Real-world interview simulations powered by voice analysis and specialized AI feedback. Master your pitch, refine your technical answers, and gain institutional confidence.</p>
+    <div style="margin-top:64px">
+      <div style="position:relative;height:196px;overflow:hidden;border-radius:12px">
+        <button onClick="{{ prev }}" aria-label="Previous question" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);z-index:20;width:36px;height:36px;border-radius:9999px;border:1px solid rgba(255,255,255,0.2);background:rgba(19,27,46,0.7);backdrop-filter:blur(8px);color:#ffffff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0" style-hover="background:#0051d5;border-color:#0051d5"><span class="msi" style="font-size:20px">chevron_left</span></button>
+        <button onClick="{{ next }}" aria-label="Next question" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);z-index:20;width:36px;height:36px;border-radius:9999px;border:1px solid rgba(255,255,255,0.2);background:rgba(19,27,46,0.7);backdrop-filter:blur(8px);color:#ffffff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0" style-hover="background:#0051d5;border-color:#0051d5"><span class="msi" style="font-size:20px">chevron_right</span></button>
+        <sc-for list="{{ cards }}" as="c" hint-placeholder-count="4">
+          <div style="{{ c.style }}">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+              <span style="background:#316bf3;color:#fefcff;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em">{{ c.topic }}</span>
+              <span style="{{ c.levelStyle }}">{{ c.level }}</span>
+              <div style="margin-left:auto;display:flex;align-items:center;gap:4px;color:#bec6e0"><span class="msi" style="font-size:18px">timer</span><span style="font-size:12px;font-weight:600">0:60</span></div>
+            </div>
+            <h3 style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;line-height:32px;font-weight:500;color:#ffffff;margin:0 0 16px">{{ c.question }}</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ c.tags }}" as="tag" hint-placeholder-count="3">
+                <span style="font-size:12px;font-weight:600;color:#bec6e0;background:rgba(255,255,255,0.05);padding:4px 8px;border-radius:4px">{{ tag }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:20px">
+        <sc-for list="{{ dots }}" as="d" hint-placeholder-count="4">
+          <button onClick="{{ d.go }}" style="{{ d.style }}"></button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</aside>
+<main style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px;background:#f8f9ff;position:relative;box-sizing:border-box;overflow:hidden">
+  <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 0%, rgba(0,81,213,0.05) 0%, transparent 70%);pointer-events:none"></div>
+  <div style="width:100%;max-width:440px;position:relative;z-index:10;{{ signInPanel }}">
+    <div style="text-align:left;margin-bottom:48px">
+      <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:32px;line-height:40px;font-weight:600;letter-spacing:-0.01em;margin:0 0 8px">Welcome back :)</h2>
+      <p style="font-size:16px;line-height:24px;color:#45464d;margin:0">Sign in with your email and password to continue.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:32px">
+      <button style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;background:#ffffff;border:1px solid #c6c6cd;border-radius:9999px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;letter-spacing:0.01em;color:#0b1c30;cursor:pointer" style-hover="background:#e5eeff">
+        <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24s.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path></svg>
+        Continue with Google
+      </button>
+      <button style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;background:#ffffff;border:1px solid #c6c6cd;border-radius:9999px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;letter-spacing:0.01em;color:#0b1c30;cursor:pointer" style-hover="background:#e5eeff">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+        Continue with GitHub
+      </button>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px">
+      <div style="flex:1;height:1px;background:#c6c6cd"></div>
+      <span style="font-size:12px;font-weight:600;color:#76777d;text-transform:uppercase;letter-spacing:0.1em">or sign in with email</span>
+      <div style="flex:1;height:1px;background:#c6c6cd"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label for="email" style="font-size:14px;font-weight:500;letter-spacing:0.01em">Email Address</label>
+        <div style="position:relative">
+          <span class="msi" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#c6c6cd;font-size:20px">mail</span>
+          <input id="email" type="email" placeholder="you@example.com" style="{{ fEmail }}" style-focus="background:#ffffff;box-shadow:0 0 0 2px #0051d5">
+        </div>
+        <sc-if value="{{ eEmail }}" hint-placeholder-val="">
+          <p style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#ba1a1a;margin:0"><span class="msi" style="font-size:16px">error</span>{{ eEmail }}</p>
+        </sc-if>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <label for="password" style="font-size:14px;font-weight:500;letter-spacing:0.01em">Password</label>
+          <button onClick="{{ showReset }}" style="background:none;border:none;padding:0;font-family:Inter,sans-serif;font-size:12px;font-weight:600;color:#0051d5;cursor:pointer" style-hover="text-decoration:underline">Forgot password?</button>
+        </div>
+        <div style="position:relative">
+          <span class="msi" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#c6c6cd;font-size:20px">lock</span>
+          <input id="password" type="password" placeholder="••••••••" style="{{ fPass }}" style-focus="background:#ffffff;box-shadow:0 0 0 2px #0051d5">
+        </div>
+        <sc-if value="{{ ePass }}" hint-placeholder-val="">
+          <p style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#ba1a1a;margin:0"><span class="msi" style="font-size:16px">error</span>{{ ePass }}</p>
+        </sc-if>
+      </div>
+      <button id="remember" type="button" role="checkbox" aria-checked="{{ remember }}" onClick="{{ toggleRemember }}" style="display:flex;align-items:center;gap:10px;background:none;border:none;padding:0;cursor:pointer;font-family:Inter,sans-serif;font-size:14px;font-weight:500;letter-spacing:0.01em;color:#45464d;text-align:left">
+        <sc-if value="{{ remember }}" hint-placeholder-val="{{ true }}">
+          <span style="width:20px;height:20px;flex-shrink:0;border-radius:6px;display:flex;align-items:center;justify-content:center;background:#0051d5;border:1px solid #0051d5"><span class="msi" style="font-size:16px;color:#ffffff">check</span></span>
+        </sc-if>
+        <sc-if value="{{ notRemember }}" hint-placeholder-val="{{ false }}">
+          <span style="width:20px;height:20px;flex-shrink:0;border-radius:6px;display:flex;align-items:center;justify-content:center;background:#ffffff;border:1px solid #c6c6cd"></span>
+        </sc-if>
+        Keep me signed in for 30 days
+      </button>
+      <div style="display:flex;flex-direction:column;gap:16px;padding-top:16px">
+        <button onClick="{{ submitSignIn }}" style="display:flex;align-items:center;justify-content:center;width:100%;height:48px;background:#000000;color:#ffffff;border:none;border-radius:9999px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;letter-spacing:0.01em;box-shadow:0 4px 12px rgba(15,23,42,0.08);cursor:pointer" style-hover="opacity:0.9">Sign In</button>
+        <button onClick="{{ showSignUp }}" style="display:flex;align-items:center;justify-content:center;width:100%;height:48px;background:#ffffff;border:1px solid #c6c6cd;color:#0b1c30;border-radius:9999px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;letter-spacing:0.01em;box-sizing:border-box;cursor:pointer" style-hover="background:#e5eeff">Create Account</button>
+      </div>
+    </div>
+    <footer style="margin-top:48px;text-align:center">
+      <p style="font-size:14px;font-weight:500;letter-spacing:0.01em;color:#45464d;margin:0">Don't have an account? <button onClick="{{ showSignUp }}" style="background:none;border:none;padding:0;font-family:Inter,sans-serif;font-size:14px;color:#0051d5;font-weight:700;cursor:pointer" style-hover="text-decoration:underline">Sign up free</button></p>
+    </footer>
+  </div>
+  <div style="width:100%;max-width:440px;position:relative;z-index:10;{{ signUpPanel }}">
+    <button onClick="{{ showSignIn }}" style="display:flex;align-items:center;gap:6px;background:none;border:none;padding:0;margin-bottom:24px;font-family:Inter,sans-serif;font-size:13px;font-weight:600;color:#45464d;cursor:pointer" style-hover="color:#0051d5"><span class="msi" style="font-size:18px">arrow_back</span>Back to sign in</button>
+    <div style="text-align:left;margin-bottom:32px">
+      <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:32px;line-height:40px;font-weight:600;letter-spacing:-0.01em;margin:0 0 8px">Create your account</h2>
+      <p style="font-size:16px;line-height:24px;color:#45464d;margin:0">Free plan — unlimited practice questions, no card required.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:grid;grid-template-columns:1fr 96px;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <label for="fname" style="font-size:14px;font-weight:500;letter-spacing:0.01em">First Name</label>
+          <input id="fname" type="text" placeholder="John" style="width:100%;height:48px;padding:0 16px;background:#eff4ff;border:none;border-radius:12px;font-family:Inter,sans-serif;font-size:16px;color:#0b1c30;outline:none;box-sizing:border-box" style-focus="background:#ffffff;box-shadow:0 0 0 2px #0051d5">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <label for="minit" style="font-size:14px;font-weight:500;letter-spacing:0.01em">Initial</label>
+          <input id="minit" type="text" maxlength="1" placeholder="S" style="width:100%;height:48px;padding:0 16px;background:#eff4ff;border:none;border-radius:12px;font-family:Inter,sans-serif;font-size:16px;color:#0b1c30;outline:none;box-sizing:border-box;text-align:center" style-focus="background:#ffffff;box-shadow:0 0 0 2px #0051d5">
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label for="su-email" style="font-size:14px;font-weight:500;letter-spacing:0.01em">Email Address</label>
+        <div style="position:relative">
+          <span class="msi" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#c6c6cd;font-size:20px">mail</span>
+          <input id="su-email" type="email" placeholder="you@example.com" style="width:100%;height:48px;padding:0 16px 0 48px;background:#eff4ff;border:none;border-radius:12px;font-family:Inter,sans-serif;font-size:16px;color:#0b1c30;outline:none;box-sizing:border-box" style-focus="background:#ffffff;box-shadow:0 0 0 2px #0051d5">
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label for="su-pass" style="font-size:14px;font-weight:500;letter-spacing:0.01em">Password</label>
+        <div style="position:relative">
+          <span class="msi" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#c6c6cd;font-size:20px">lock</span>
+          <input id="su-pass" type="password" placeholder="At least 8 characters" style="{{ fSuPass }}" style-focus="background:#ffffff;box-shadow:0 0 0 2px #0051d5">
+        </div>
+        <sc-if value="{{ eSuPass }}" hint-placeholder-val="">
+          <p style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#ba1a1a;margin:0"><span class="msi" style="font-size:16px">error</span>{{ eSuPass }}</p>
+        </sc-if>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label for="su-pass2" style="font-size:14px;font-weight:500;letter-spacing:0.01em">Confirm Password</label>
+        <div style="position:relative">
+          <span class="msi" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#c6c6cd;font-size:20px">lock_reset</span>
+          <input id="su-pass2" type="password" placeholder="Re-enter your password" style="{{ fSuPass2 }}" style-focus="background:#ffffff;box-shadow:0 0 0 2px #0051d5">
+        </div>
+        <sc-if value="{{ eSuPass2 }}" hint-placeholder-val="">
+          <p style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#ba1a1a;margin:0"><span class="msi" style="font-size:16px">error</span>{{ eSuPass2 }}</p>
+        </sc-if>
+      </div>
+      <div style="padding-top:8px">
+        <button onClick="{{ submitSignUp }}" style="display:flex;align-items:center;justify-content:center;width:100%;height:48px;background:#000000;color:#ffffff;border:none;border-radius:9999px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;letter-spacing:0.01em;box-shadow:0 4px 12px rgba(15,23,42,0.08);cursor:pointer" style-hover="opacity:0.9">Create Free Account</button>
+      </div>
+      <p style="font-size:12px;line-height:18px;color:#76777d;margin:0;text-align:center">By creating an account you agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
+    </div>
+  </div>
+  <div style="width:100%;max-width:440px;position:relative;z-index:10;{{ resetPanel }}">
+    <button onClick="{{ showSignIn }}" style="display:flex;align-items:center;gap:6px;background:none;border:none;padding:0;margin-bottom:24px;font-family:Inter,sans-serif;font-size:13px;font-weight:600;color:#45464d;cursor:pointer" style-hover="color:#0051d5"><span class="msi" style="font-size:18px">arrow_back</span>Back to sign in</button>
+    <div style="{{ resetFormStyle }}">
+      <div style="margin-bottom:32px">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px">
+          <div style="width:48px;height:48px;flex-shrink:0;border-radius:12px;background:#eff4ff;display:flex;align-items:center;justify-content:center"><span class="msi" style="font-size:24px;color:#0051d5">key</span></div>
+          <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:32px;line-height:40px;font-weight:600;letter-spacing:-0.01em;margin:0">Reset your password</h2>
+        </div>
+        <p style="font-size:16px;line-height:24px;color:#45464d;margin:0">Enter the email on your account and we'll send a link to set a new password.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <label for="rs-email" style="font-size:14px;font-weight:500;letter-spacing:0.01em">Email Address</label>
+          <div style="position:relative">
+            <span class="msi" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#c6c6cd;font-size:20px">mail</span>
+            <input id="rs-email" type="email" placeholder="you@example.com" style="{{ fRsEmail }}" style-focus="background:#ffffff;box-shadow:0 0 0 2px #0051d5">
+          </div>
+          <sc-if value="{{ eRsEmail }}" hint-placeholder-val="">
+            <p style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#ba1a1a;margin:0"><span class="msi" style="font-size:16px">error</span>{{ eRsEmail }}</p>
+          </sc-if>
+        </div>
+        <button onClick="{{ sendReset }}" style="display:flex;align-items:center;justify-content:center;width:100%;height:48px;background:#000000;color:#ffffff;border:none;border-radius:9999px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;letter-spacing:0.01em;box-shadow:0 4px 12px rgba(15,23,42,0.08);cursor:pointer" style-hover="opacity:0.9">Send Reset Link</button>
+        <p style="font-size:12px;line-height:18px;color:#76777d;margin:0;text-align:center">The link expires in 30 minutes.</p>
+      </div>
+    </div>
+    <div style="{{ resetSentStyle }}">
+      <div style="width:48px;height:48px;border-radius:12px;background:rgba(113,141,62,0.12);display:flex;align-items:center;justify-content:center;margin-bottom:24px"><span class="msi" style="font-size:24px;color:#718d3e">mark_email_read</span></div>
+      <div style="text-align:left;margin-bottom:32px">
+        <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:32px;line-height:40px;font-weight:600;letter-spacing:-0.01em;margin:0 0 8px">Check your inbox</h2>
+        <p style="font-size:16px;line-height:24px;color:#45464d;margin:0">If an account exists for that address, a reset link is on its way. Check spam if it hasn't arrived in a few minutes.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <button onClick="{{ showSignIn }}" style="display:flex;align-items:center;justify-content:center;width:100%;height:48px;background:#000000;color:#ffffff;border:none;border-radius:9999px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;letter-spacing:0.01em;box-shadow:0 4px 12px rgba(15,23,42,0.08);cursor:pointer" style-hover="opacity:0.9">Return to Sign In</button>
+        <button onClick="{{ resendReset }}" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;background:#ffffff;border:1px solid #c6c6cd;color:#0b1c30;border-radius:9999px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;letter-spacing:0.01em;box-sizing:border-box;cursor:pointer" style-hover="background:#e5eeff"><span class="msi" style="font-size:18px">refresh</span>Use a different email</button>
+        <p style="font-size:12px;color:#76777d;margin:8px 0 0;text-align:center">Already have the link? <button onClick="{{ showNewPass }}" style="background:none;border:none;padding:0;font-family:Inter,sans-serif;font-size:12px;font-weight:700;color:#0051d5;cursor:pointer" style-hover="text-decoration:underline">Set a new password</button></p>
+      </div>
+    </div>
+  </div>
+  <div style="width:100%;max-width:440px;position:relative;z-index:10;{{ newPassPanel }}">
+    <div style="{{ newPassFormStyle }}">
+      <div style="margin-bottom:32px">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px">
+          <div style="width:48px;height:48px;flex-shrink:0;border-radius:12px;background:#eff4ff;display:flex;align-items:center;justify-content:center"><span class="msi" style="font-size:24px;color:#0051d5">lock_reset</span></div>
+          <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:32px;line-height:40px;font-weight:600;letter-spacing:-0.01em;margin:0">Set a new password</h2>
+        </div>
+        <p style="font-size:16px;line-height:24px;color:#45464d;margin:0">Resetting the password for <strong style="color:#0b1c30">{{ resetEmail }}</strong>. Choose something you haven't used before.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <label for="np-pass" style="font-size:14px;font-weight:500;letter-spacing:0.01em">New Password</label>
+          <div style="position:relative">
+            <span class="msi" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#c6c6cd;font-size:20px">lock</span>
+            <input id="np-pass" type="password" placeholder="At least 8 characters" onInput="{{ onNewPass }}" style="{{ fNpPass }}" style-focus="background:#ffffff;box-shadow:0 0 0 2px #0051d5">
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:2px">
+            <span style="flex:1;height:3px;background:#dce9ff;border-radius:9999px;overflow:hidden"><span style="{{ strengthBar }}"></span></span>
+            <span style="{{ strengthLabel }}">{{ strengthText }}</span>
+          </div>
+          <sc-if value="{{ eNpPass }}" hint-placeholder-val="">
+            <p style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#ba1a1a;margin:0"><span class="msi" style="font-size:16px">error</span>{{ eNpPass }}</p>
+          </sc-if>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <label for="np-pass2" style="font-size:14px;font-weight:500;letter-spacing:0.01em">Confirm New Password</label>
+          <div style="position:relative">
+            <span class="msi" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#c6c6cd;font-size:20px">lock_reset</span>
+            <input id="np-pass2" type="password" placeholder="Re-enter your new password" style="{{ fNpPass2 }}" style-focus="background:#ffffff;box-shadow:0 0 0 2px #0051d5">
+          </div>
+          <sc-if value="{{ eNpPass2 }}" hint-placeholder-val="">
+            <p style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#ba1a1a;margin:0"><span class="msi" style="font-size:16px">error</span>{{ eNpPass2 }}</p>
+          </sc-if>
+        </div>
+        <button onClick="{{ submitNewPass }}" style="display:flex;align-items:center;justify-content:center;width:100%;height:48px;background:#000000;color:#ffffff;border:none;border-radius:9999px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;letter-spacing:0.01em;box-shadow:0 4px 12px rgba(15,23,42,0.08);cursor:pointer" style-hover="opacity:0.9">Save New Password</button>
+        <p style="font-size:12px;line-height:18px;color:#76777d;margin:0;text-align:center">Saving will sign you out of other devices.</p>
+      </div>
+    </div>
+    <div style="{{ newPassDoneStyle }}">
+      <div style="margin-bottom:32px">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px">
+          <div style="width:48px;height:48px;flex-shrink:0;border-radius:12px;background:rgba(113,141,62,0.12);display:flex;align-items:center;justify-content:center"><span class="msi" style="font-size:24px;color:#718d3e">task_alt</span></div>
+          <h2 style="font-family:'Hanken Grotesk',sans-serif;font-size:32px;line-height:40px;font-weight:600;letter-spacing:-0.01em;margin:0">Password updated</h2>
+        </div>
+        <p style="font-size:16px;line-height:24px;color:#45464d;margin:0">You can sign in with your new password now.</p>
+      </div>
+      <button onClick="{{ showSignIn }}" style="display:flex;align-items:center;justify-content:center;width:100%;height:48px;background:#000000;color:#ffffff;border:none;border-radius:9999px;font-family:Inter,sans-serif;font-size:14px;font-weight:500;letter-spacing:0.01em;box-shadow:0 4px 12px rgba(15,23,42,0.08);cursor:pointer" style-hover="opacity:0.9">Continue to Sign In</button>
+    </div>
+  </div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { i: 0, mode: 'in', sent: false, saved: false, remember: true, errs: {}, resetEmail: '', pwLen: 0, pwScore: 0 };
+  DECK = [
+    { topic: 'ML', level: 'Medium', question: 'What is overfitting and how do you prevent it?', tags: ['overfitting', 'regularization', 'dropout'] },
+    { topic: 'SQL', level: 'Hard', question: 'When would a window function beat a self-join?', tags: ['window functions', 'joins', 'indexes'] },
+    { topic: 'Stats', level: 'Medium', question: 'How do you size and read an A/B test?', tags: ['power', 'p-values', 'significance'] },
+    { topic: 'Python', level: 'Easy', question: 'Explain how you would clean a messy dataset in pandas.', tags: ['pandas', 'imputation', 'dtypes'] }
+  ];
+  componentDidMount() { this.arm(); }
+  componentWillUnmount() { clearInterval(this.iv); }
+  arm() {
+    clearInterval(this.iv);
+    this.iv = setInterval(() => this.setState(s => ({ i: (s.i + 1) % this.DECK.length })), 5000);
+  }
+  go(n) {
+    this.setState({ i: (n + this.DECK.length) % this.DECK.length });
+    this.arm();
+  }
+  val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+  score(p) {
+    let n = 0;
+    if (p.length >= 8) n++;
+    if (p.length >= 12) n++;
+    if (/[A-Z]/.test(p) && /[a-z]/.test(p)) n++;
+    if (/[0-9]/.test(p)) n++;
+    if (/[^A-Za-z0-9]/.test(p)) n++;
+    return Math.min(n, 4);
+  }
+  submitSignIn() {
+    const email = this.val('email'), pass = this.val('password'), errs = {};
+    if (!email) errs.email = 'Enter your email address.';
+    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) errs.email = "That doesn't look like a valid email.";
+    if (!pass) errs.pass = 'Enter your password.';
+    else if (pass.length < 8) errs.pass = 'Incorrect password. Passwords are at least 8 characters.';
+    this.setState({ errs });
+    if (!Object.keys(errs).length) window.location.href = 'Selection.dc.html';
+  }
+  submitSignUp() {
+    const p = this.val('su-pass'), p2 = this.val('su-pass2'), errs = {};
+    if (!p) errs.suPass = 'Choose a password.';
+    else if (p.length < 8) errs.suPass = 'Use at least 8 characters.';
+    else if (this.score(p) < 2) errs.suPass = 'Add a number or capital letter to strengthen this.';
+    if (!p2) errs.suPass2 = 'Re-enter your password.';
+    else if (p && p2 && p !== p2) errs.suPass2 = "Passwords don't match.";
+    this.setState({ errs });
+    if (!Object.keys(errs).length) window.location.href = 'Selection.dc.html';
+  }
+  sendResetLink() {
+    const email = this.val('rs-email'), errs = {};
+    if (!email) errs.rsEmail = 'Enter the email on your account.';
+    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) errs.rsEmail = "That doesn't look like a valid email.";
+    this.setState({ errs, sent: !Object.keys(errs).length, resetEmail: email });
+  }
+  submitNewPass() {
+    const p = this.val('np-pass'), p2 = this.val('np-pass2'), errs = {};
+    if (!p) errs.npPass = 'Choose a new password.';
+    else if (p.length < 8) errs.npPass = 'Use at least 8 characters.';
+    else if (this.score(p) < 2) errs.npPass = 'Too weak — add a number or capital letter.';
+    if (!p2) errs.npPass2 = 'Confirm your new password.';
+    else if (p && p2 && p !== p2) errs.npPass2 = "Passwords don't match.";
+    this.setState({ errs, saved: !Object.keys(errs).length });
+  }
+  renderVals() {
+    const { i, mode, sent, saved, remember, errs, resetEmail, pwScore, pwLen } = this.state;
+    const slide = (hidden, x) => `position:${hidden ? 'absolute' : 'relative'};opacity:${hidden ? 0 : 1};transform:translateX(${hidden ? x : 0}px);visibility:${hidden ? 'hidden' : 'visible'};pointer-events:${hidden ? 'none' : 'auto'};transition:opacity 0.45s cubic-bezier(0.4,0,0.2,1),transform 0.45s cubic-bezier(0.4,0,0.2,1),visibility 0.45s`;
+    const fade = hidden => `opacity:${hidden ? 0 : 1};position:${hidden ? 'absolute' : 'relative'};inset:${hidden ? '0' : 'auto'};visibility:${hidden ? 'hidden' : 'inherit'};pointer-events:${hidden ? 'none' : 'inherit'};transition:opacity 0.35s ease,visibility 0.35s`;
+    const FIELD = 'width:100%;height:48px;padding:0 16px 0 48px;font-family:Inter,sans-serif;font-size:16px;color:#0b1c30;outline:none;box-sizing:border-box;border-radius:12px;border:none;transition:background 0.2s,box-shadow 0.2s';
+    const field = err => `${FIELD};background:${err ? '#fff3f2' : '#eff4ff'};box-shadow:${err ? '0 0 0 2px #ba1a1a' : 'none'}`;
+    const tiers = [['Too short', '#ba1a1a', 12], ['Weak', '#ba1a1a', 30], ['Fair', '#c48a1a', 55], ['Good', '#718d3e', 78], ['Strong', '#718d3e', 100]];
+    const t = tiers[pwLen ? pwScore : 0];
+    return {
+      resetEmail: resetEmail || 'your email',
+      signInPanel: slide(mode !== 'in', -48),
+      signUpPanel: slide(mode !== 'up', 48),
+      resetPanel: slide(mode !== 'reset', 48),
+      newPassPanel: slide(mode !== 'new', 48),
+      resetFormStyle: fade(sent),
+      resetSentStyle: fade(!sent),
+      newPassFormStyle: fade(saved),
+      newPassDoneStyle: fade(!saved),
+      showSignUp: () => this.setState({ mode: 'up', errs: {} }),
+      showSignIn: () => this.setState({ mode: 'in', sent: false, saved: false, errs: {} }),
+      showReset: () => this.setState({ mode: 'reset', sent: false, errs: {} }),
+      showNewPass: () => this.setState({ mode: 'new', saved: false, errs: {}, pwLen: 0, pwScore: 0 }),
+      sendReset: () => this.sendResetLink(),
+      resendReset: () => this.setState({ sent: false, errs: {} }),
+      submitSignIn: () => this.submitSignIn(),
+      submitSignUp: () => this.submitSignUp(),
+      submitNewPass: () => this.submitNewPass(),
+      onNewPass: e => this.setState({ pwLen: e.target.value.length, pwScore: this.score(e.target.value) }),
+      remember,
+      notRemember: !remember,
+      toggleRemember: () => this.setState(st => ({ remember: !st.remember })),
+      boxRemember: `width:20px;height:20px;flex-shrink:0;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;background:${remember ? '#0051d5' : '#ffffff'};border:1px solid ${remember ? '#0051d5' : '#c6c6cd'}`,
+      tickRemember: `font-size:16px;color:#ffffff;opacity:${remember ? 1 : 0};transition:opacity 0.2s`,
+      strengthBar: `display:block;height:100%;border-radius:9999px;width:${pwLen ? t[2] : 0}%;background:${t[1]};transition:width 0.3s ease,background 0.3s ease`,
+      strengthLabel: `font-size:11px;font-weight:700;letter-spacing:0.04em;width:64px;text-align:right;color:${pwLen ? t[1] : '#76777d'}`,
+      strengthText: pwLen ? t[0] : 'Strength',
+      fEmail: field(errs.email), eEmail: errs.email || '',
+      fPass: field(errs.pass), ePass: errs.pass || '',
+      fSuPass: field(errs.suPass), eSuPass: errs.suPass || '',
+      fSuPass2: field(errs.suPass2), eSuPass2: errs.suPass2 || '',
+      fRsEmail: field(errs.rsEmail), eRsEmail: errs.rsEmail || '',
+      fNpPass: field(errs.npPass), eNpPass: errs.npPass || '',
+      fNpPass2: field(errs.npPass2), eNpPass2: errs.npPass2 || '',
+      prev: () => this.go(i - 1),
+      next: () => this.go(i + 1),
+      cards: this.DECK.map((c, n) => ({
+        ...c,
+        levelStyle: `background:${({ Easy: 'rgba(113,141,62,0.9)', Medium: 'rgba(196,138,26,0.95)', Hard: 'rgba(186,26,26,0.95)' })[c.level] || 'rgba(255,255,255,0.15)'};color:#ffffff;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em`,
+        style: `position:absolute;inset:0;padding:24px 56px;box-sizing:border-box;background:rgba(211,228,254,0.1);backdrop-filter:blur(12px);border-radius:12px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 4px 12px rgba(15,23,42,0.08);opacity:${n === i ? 1 : 0};transform:translateX(${(n - i) * 100}%);pointer-events:${n === i ? 'auto' : 'none'};transition:opacity 0.6s cubic-bezier(0.4,0,0.2,1),transform 0.6s cubic-bezier(0.4,0,0.2,1)`
+      })),
+      dots: this.DECK.map((c, n) => ({
+        go: () => this.go(n),
+        style: `height:4px;width:${n === i ? 32 : 16}px;border-radius:9999px;border:none;padding:0;cursor:pointer;background:${n === i ? '#0051d5' : 'rgba(255,255,255,0.25)'};transition:all 0.5s cubic-bezier(0.4,0,0.2,1)`
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

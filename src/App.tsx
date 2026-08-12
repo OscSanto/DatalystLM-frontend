@@ -2,14 +2,14 @@ import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth }   from "./hooks/useAuth";
 
-import LoginPage     from "./pages/LoginPage";
-import RegisterPage  from "./pages/RegisterPage";
-import DashboardPage from "./pages/DashboardPage";
-import PracticePage  from "./pages/PracticePage";
-import HistoryPage   from "./pages/HistoryPage";
+import LoginPage   from "./pages/LoginPage";
+import HistoryPage from "./pages/HistoryPage";
+
+// After login/register, land on the DC-HTML dashboard
+const DASHBOARD = "/Selection.dc.html";
 
 export default function App() {
-  const { token, username, isAuthenticated, saveAuth, logout } = useAuth();
+  const { token, isAuthenticated, saveAuth, logout } = useAuth();
 
   // Handle OAuth2 redirect: backend lands on / with ?token=xxx&username=yyy
   useEffect(() => {
@@ -18,41 +18,34 @@ export default function App() {
     const oauthUser  = params.get("username");
     if (oauthToken && oauthUser) {
       saveAuth(oauthToken, decodeURIComponent(oauthUser));
-      window.location.replace("/dashboard");
+      window.location.replace(DASHBOARD);
     }
   }, []);
 
   function handleAuth(t: string, u: string) {
     saveAuth(t, u);
+    window.location.replace(DASHBOARD);
   }
 
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public — "/" is served as landing.html directly by nginx, never reaches React */}
-        <Route path="/"        element={null} />
-        <Route path="/login"   element={
+        {/* "/" served as Front.dc.html by voxLanding — React never sees it */}
+        <Route path="/" element={null} />
+
+        {/* Login / Register */}
+        <Route path="/login" element={
           isAuthenticated
-            ? <Navigate to="/dashboard" replace />
+            ? <Navigate to={DASHBOARD} replace />
             : <LoginPage onAuth={handleAuth} />
         } />
         <Route path="/register" element={
           isAuthenticated
-            ? <Navigate to="/dashboard" replace />
-            : <RegisterPage onAuth={handleAuth} />
+            ? <Navigate to={DASHBOARD} replace />
+            : <LoginPage onAuth={handleAuth} initialTab="register" />
         } />
 
-        {/* Protected */}
-        <Route path="/dashboard" element={
-          isAuthenticated
-            ? <DashboardPage username={username!} onLogout={logout} />
-            : <Navigate to="/login" replace />
-        } />
-        <Route path="/practice" element={
-          isAuthenticated
-            ? <PracticePage token={token!} onLogout={logout} />
-            : <Navigate to="/login" replace />
-        } />
+        {/* History — only React page remaining for protected routes */}
         <Route path="/history" element={
           isAuthenticated
             ? <HistoryPage token={token!} onLogout={logout} />

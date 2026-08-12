@@ -10,9 +10,11 @@ function voxLanding(): Plugin {
   return {
     name: "vox-landing",
     configureServer(server) {
-      server.middlewares.use((req, _res, next) => {
-        if (req.url === "/" || req.url === "/index.html") {
-          req.url = "/DatalystLM%20v2.dc.html";
+      server.middlewares.use((req: any, _res, next) => {
+        // Only rewrite the root path so SPA routes (/login, /dashboard, etc.)
+        // still reach the React app via Vite's normal index.html fallback.
+        if (req.url === "/") {
+          req.url = "/Front.dc.html";
         }
         next();
       });

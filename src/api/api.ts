@@ -19,11 +19,20 @@ function authHeaders(token: string) {
   };
 }
 
+// For unauthenticated endpoints (login, register) — never redirects on 401
+async function handleAuthResponse<T>(res: Response): Promise<T> {
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.message ?? `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+// For authenticated endpoints — 401 means session expired, clear and redirect
 async function handleResponse<T>(res: Response): Promise<T> {
   if (res.status === 401) {
-    // Token missing or expired — clear storage and send to login
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
+    localStorage.removeItem("datalystlm_token");
+    localStorage.removeItem("datalystlm_user");
     window.location.href = "/login";
     throw new Error("Unauthorized");
   }
@@ -40,7 +49,7 @@ export async function register(data: RegisterRequest): Promise<AuthResponse> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  return handleResponse<AuthResponse>(res);
+  return handleAuthResponse<AuthResponse>(res);
 }
 
 export async function login(data: LoginRequest): Promise<AuthResponse> {
@@ -49,7 +58,7 @@ export async function login(data: LoginRequest): Promise<AuthResponse> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  return handleResponse<AuthResponse>(res);
+  return handleAuthResponse<AuthResponse>(res);
 }
 
 export async function getQuestion(

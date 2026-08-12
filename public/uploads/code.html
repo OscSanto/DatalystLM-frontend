@@ -1,0 +1,627 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>DatalystLM | Master Your Data Science Interview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .custom-shadow {
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float { animation: float 4s ease-in-out infinite; }
+
+        @keyframes pulse-wave {
+            0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
+            50% { transform: scaleY(1.5); opacity: 1; }
+        }
+        .waveform-bar {
+            animation: pulse-wave 1.2s ease-in-out infinite;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#00174b",
+                        "on-secondary-container": "#fefcff",
+                        "outline-variant": "#c6c6cd",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "tertiary-fixed-dim": "#b3d17a",
+                        "on-primary-fixed": "#131b2e",
+                        "primary-fixed": "#dae2fd",
+                        "inverse-surface": "#213145",
+                        "surface-container": "#e5eeff",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-surface": "#0b1c30",
+                        "primary": "#000000",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "tertiary": "#000000",
+                        "on-primary-container": "#7c839b",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#d3e4fe",
+                        "tertiary-container": "#131f00",
+                        "surface": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#45464d",
+                        "on-secondary": "#ffffff",
+                        "background": "#f8f9ff",
+                        "on-tertiary-container": "#718d3e",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#565e74",
+                        "secondary": "#0051d5",
+                        "on-tertiary-fixed-variant": "#364e03",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "surface-container-high": "#dce9ff",
+                        "tertiary-fixed": "#ceee93",
+                        "inverse-primary": "#bec6e0",
+                        "surface-container-low": "#eff4ff",
+                        "primary-fixed-dim": "#bec6e0",
+                        "surface-container-highest": "#d3e4fe",
+                        "secondary-fixed": "#dbe1ff",
+                        "surface-bright": "#f8f9ff",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#131b2e",
+                        "inverse-on-surface": "#eaf1ff",
+                        "secondary-container": "#316bf3",
+                        "outline": "#76777d",
+                        "on-tertiary-fixed": "#131f00",
+                        "on-background": "#0b1c30"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "16px",
+                        "margin-mobile": "20px",
+                        "xs": "8px",
+                        "margin-desktop": "64px",
+                        "lg": "48px",
+                        "md": "24px",
+                        "xl": "80px",
+                        "gutter": "24px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 backdrop-blur-xl bg-surface/80 shadow-sm flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16">
+<div class="flex items-center">
+<img alt="DatalystLM" class="h-8 md:h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AP1WRLtBGR79aAwlRo_nyNCJ_fzg_jYHBBXQaLZMyQcJozwnDKaQTo6oXdjXadcl1rgdIij6PSjTd255dflF_aiKwaQsRUnmw1WgzBN9vHLY8JN6x4WmNRJplRTkoCcjVKSnuIxRlE3ItDay3ZmYwmoeEaajnTn130DXnMwW71C7s4JPM3u4n5YDxKKlR3U3XiGOvHDsXCNtE0FWnmE3JQX6zJSyVzgzghg0Wxj7JeiLjn3lEhKHjqA4gK9VLNU">
+</div>
+<nav class="hidden md:flex gap-8">
+<a class="font-label-md text-label-md text-secondary font-bold transition-opacity hover:opacity-80" href="#">Sessions</a>
+<a class="font-label-md text-label-md text-on-surface-variant transition-opacity hover:opacity-80" href="#">Coach</a>
+<a class="font-label-md text-label-md text-on-surface-variant transition-opacity hover:opacity-80" href="#">Insights</a>
+<a class="font-label-md text-label-md text-on-surface-variant transition-opacity hover:opacity-80" href="#">History</a>
+</nav>
+<div class="flex items-center gap-2 md:gap-4">
+<button class="hidden sm:block font-label-md text-label-md text-on-surface-variant px-4 py-2 hover:bg-surface-container transition-colors rounded-full">Login</button>
+<button class="bg-primary text-on-primary px-4 md:px-6 py-2 rounded-full font-label-md text-label-md font-bold hover:opacity-90 transition-all shadow-sm active:scale-95">Register</button>
+<div class="hidden md:flex w-10 h-10 rounded-full bg-surface-container-high items-center justify-center overflow-hidden cursor-pointer active:scale-95 transition-transform border border-outline-variant">
+<img alt="User Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKFMg5CI7ccqm4RxQVnT9OIewyc_Cuszivl6YoDQNTaf1kihNLYNLedhf0gPm0P1wJpJlkIQ8_Yj7vkVqrzgh3OsSZ_Ox-nt1FUJ_LSfNkyyF5p9oHErFGLYbexA8iVw9dYUufPkyUVqynqG6ml5P-nvRrVrvr3rFnXsiylFA4sV2cYCZ_tmWv3QNFdEozOE5H7a2UY2Ra_NCnDenNXxLQ0uOJ-kUNiGjuBrjp1AymW7jG2oycdlUt">
+</div>
+</div>
+</header>
+<main class="pt-16 pb-24 md:pb-0">
+<!-- Hero Section -->
+<section class="relative min-h-[700px] flex items-center px-margin-mobile md:px-margin-desktop py-xl overflow-hidden bg-surface">
+<!-- Background Decorative Elements -->
+<div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+<div class="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-secondary/5 rounded-full blur-3xl"></div>
+<div class="absolute bottom-[-10%] right-[-5%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-3xl"></div>
+</div>
+<div class="max-w-7xl mx-auto w-full relative z-10">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+<!-- Text Content -->
+<div class="md:col-span-7 lg:col-span-6">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary-fixed text-on-secondary-fixed mb-8">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Voice-First Interview Practice</span>
+</div>
+<h1 class="font-headline-lg-mobile md:text-display-lg md:font-display-lg text-on-background mb-6 leading-[1.1] tracking-tight">
+                        Ace your data science interview — <span class="text-secondary">out loud.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-xl leading-relaxed">
+                        Practice real technical and behavioral questions by voice or text. See the concepts you covered, what you missed, and how clearly you delivered your answer.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 mb-12">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-lg font-label-md text-label-md font-bold hover:opacity-90 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2">
+                            Start Practicing Free
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="bg-white border border-outline-variant px-8 py-4 rounded-lg font-label-md text-label-md font-bold text-on-surface hover:bg-surface-container-low transition-all active:scale-95 flex items-center justify-center gap-2">
+                            Watch a 60-second demo
+                            <span class="material-symbols-outlined">play_circle</span>
+</button>
+</div>
+<div class="flex flex-wrap items-center gap-6 opacity-70">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span>
+<span class="text-xs font-label-md">No credit card required</span>
+</div>
+<div class="text-xs font-label-md">SQL, Python, ML and behavioral questions</div>
+</div>
+</div>
+<!-- Integrated Image/UI Mockup -->
+<div class="md:col-span-5 lg:col-span-6 relative">
+<div class="relative z-20 rounded-2xl overflow-hidden shadow-2xl border border-white/20 bg-white p-2">
+<img alt="Professional woman practicing interview" class="w-full h-full object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida/AP1WRLsL9pWKMtgF85zgPQFIQV8RFvuNYrIYHXReRs5UNURt7MUGGHDOHeGiXLQ94XiDAHPgtPaD8nGS_TeoBKXV4oHw9kG25DGSWLI3hRA_8Kg30MUimyCxHXKomcrK7R4QKZbS4Kma3p0IP2YaUUxfGWLrqXobvk9vSSXHbiR7b7E2cZNCPoS3Uo4YiwPkQb3fN5tHNMA8St5wjp0fw4Vpnm30x8Y0glKR0c6QiWQdiZhVAu4rbSUNAYqqJ8A">
+</div>
+<!-- Floating UI Elements -->
+<div class="absolute -bottom-10 -left-10 z-30 bg-white p-6 rounded-2xl shadow-xl border border-outline-variant hidden lg:block animate-float">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container">mic</span>
+</div>
+<div>
+<p class="text-xs font-bold uppercase tracking-tighter text-on-surface-variant">Voice-first</p>
+<p class="text-sm font-bold">Practice</p>
+</div>
+</div>
+<div class="w-32 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-2/3"></div>
+</div>
+</div>
+<div class="absolute -top-6 -right-6 z-10 w-64 h-64 bg-secondary/10 rounded-full blur-3xl"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- New Interactive Demo Section -->
+<section class="py-xl px-margin-mobile md:px-margin-desktop bg-surface" id="interactive-demo">
+<div class="max-w-4xl mx-auto">
+<div class="text-center mb-10">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-4">Experience the Workflow</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">See how our AI analyzes your verbal response in real-time.</p>
+</div>
+<div class="relative bg-primary-container rounded-[2rem] shadow-2xl overflow-hidden border border-white/10 min-h-[500px] flex flex-col">
+<!-- State 1: Live Demo -->
+<div class="flex-1 flex flex-col p-8 md:p-12 transition-all duration-700 opacity-100 transform translate-x-0 hidden" id="demo-live-state" style="opacity: 0; transform: translateX(-20px);">
+<div class="mb-8">
+<div class="inline-flex items-center gap-2 text-secondary-fixed-dim font-label-sm uppercase tracking-widest mb-2">
+<span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                            Live Interview Session
+                        </div>
+<h3 class="font-headline-md text-white text-2xl md:text-3xl leading-tight">"What is overfitting and how do you prevent it?"</h3>
+</div>
+<div class="flex-1 bg-white/5 rounded-2xl border border-white/10 p-6 relative overflow-hidden mb-8">
+<div class="flex items-center gap-4 mb-6">
+<div class="flex items-end gap-1 h-8">
+<div class="waveform-bar w-1 bg-secondary rounded-full h-4" style="animation-delay: 0.1s"></div>
+<div class="waveform-bar w-1 bg-secondary rounded-full h-8" style="animation-delay: 0.2s"></div>
+<div class="waveform-bar w-1 bg-secondary rounded-full h-6" style="animation-delay: 0.3s"></div>
+<div class="waveform-bar w-1 bg-secondary rounded-full h-9" style="animation-delay: 0.4s"></div>
+<div class="waveform-bar w-1 bg-secondary rounded-full h-5" style="animation-delay: 0.5s"></div>
+<div class="waveform-bar w-1 bg-secondary rounded-full h-7" style="animation-delay: 0.6s"></div>
+</div>
+<span class="text-secondary-fixed-dim font-label-md">Listening...</span>
+</div>
+<div class="text-white/80 font-body-lg text-lg leading-relaxed min-h-[120px]" id="transcription-text">Overfitting occurs when a machine learning model learns the noise in the training data rather than the underlying pattern. This typically results in high variance. To prevent it, we can use techniques like L1 or L2 regularization, which add a penalty term to the cost function to discourage overly complex models. Another common approach is using cross-validation to ensure the model generalizes well to unseen data.<span class="w-1.5 h-5 bg-secondary inline-block ml-1 animate-pulse"></span></div>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xl">mic</span>
+</div>
+<span class="text-white/60 text-sm font-label-md">Audio input detected</span>
+</div>
+<button class="text-white/40 hover:text-white text-xs underline underline-offset-4" onclick="skipToResults()">Skip animation</button>
+</div>
+</div>
+<!-- State 2: Results -->
+<div class="absolute inset-0 flex flex-col p-8 md:p-12 transition-all duration-700 opacity-0 transform translate-x-full pointer-events-none bg-surface-container-low pointer-events-auto" id="demo-results-state" style="opacity: 1; transform: translateX(0px);">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="font-headline-md text-on-surface mb-1">Session Analysis</h3>
+<p class="text-on-surface-variant text-sm">Reviewing: Machine Learning Fundamentals</p>
+</div>
+<div class="bg-secondary text-on-secondary px-4 py-2 rounded-xl text-center">
+<p class="text-[10px] uppercase font-bold tracking-tighter opacity-80 leading-none mb-1">Score</p>
+<p class="text-2xl font-bold leading-none">84<span class="text-sm opacity-60">/100</span></p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+<!-- Left: Keywords -->
+<div class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm">
+<p class="font-label-sm text-on-surface-variant uppercase mb-4 tracking-widest">Key Concepts Mentioned</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">check</span> Generalization
+                                </span>
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">check</span> Regularization
+                                </span>
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">check</span> High Variance
+                                </span>
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">close</span> Cross-Validation
+                                </span>
+</div>
+</div>
+<!-- Right: Feedback -->
+<div class="bg-primary-container p-6 rounded-2xl shadow-sm text-white">
+<p class="font-label-sm text-secondary-fixed-dim uppercase mb-4 tracking-widest">AI Feedback Summary</p>
+<p class="text-sm leading-relaxed mb-4">"Great definition of noise vs. signal. You correctly identified L1/L2 regularization. For a perfect score, mention how cross-validation helps detect overfitting early."</p>
+<div class="flex items-center gap-2 text-xs font-bold">
+<span class="material-symbols-outlined text-sm text-secondary">trending_up</span>
+                                Communication: Clear &amp; Concise
+                            </div>
+</div>
+</div>
+<div class="mt-auto flex flex-col sm:flex-row gap-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-xl font-label-md font-bold flex-1 hover:opacity-90 transition-all shadow-lg active:scale-95">Full Analysis Report</button>
+<button class="border border-outline-variant text-on-surface-variant px-8 py-4 rounded-xl font-label-md font-bold flex items-center justify-center gap-2 hover:bg-surface transition-all active:scale-95" onclick="restartDemo()">
+<span class="material-symbols-outlined text-xl">replay</span>
+                            Watch Demo Again
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Core Methodology -->
+<section class="py-xl px-margin-mobile md:px-margin-desktop bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg mb-4">Master Every Dimension</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Engineered by elite FAANG interviewers and data leaders to replicate the actual pressure of a corporate interview.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Speak Naturally -->
+<div class="p-8 rounded-xl bg-surface custom-shadow border border-surface-container hover:translate-y-[-8px] transition-transform duration-300">
+<div class="w-12 h-12 rounded-lg bg-secondary-container flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-on-secondary-container">mic_none</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Speak Naturally</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">No typing. Our low-latency voice engine handles technical nuance, mathematical definitions, and complex jargon in real-time.</p>
+</div>
+<!-- AI Feedback -->
+<div class="p-8 rounded-xl bg-surface custom-shadow border border-surface-container hover:translate-y-[-8px] transition-transform duration-300">
+<div class="w-12 h-12 rounded-lg bg-tertiary-fixed flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-on-tertiary-fixed">psychology</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">AI Feedback</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Instant diagnostics on your technical accuracy, communication clarity, and confidence levels after every response.</p>
+</div>
+<!-- Real Questions -->
+<div class="p-8 rounded-xl bg-surface custom-shadow border border-surface-container hover:translate-y-[-8px] transition-transform duration-300">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary">quiz</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Real Questions</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Dynamic pool of 5,000+ technical questions covering Deep Learning, SQL Optimization, and Applied Statistics.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Get Graded Section -->
+<section class="py-xl px-margin-mobile md:px-margin-desktop bg-white">
+<div class="max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+<div class="md:col-span-6 flex flex-col justify-center">
+<h2 class="font-headline-lg text-headline-lg mb-6">Get Graded like a <br> Real Interviewer</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">
+                        Our proprietary Datalyst Intelligence score correlates 94% with actual hiring outcomes. We don't just tell you what you got wrong; we show you how a Senior Lead would have said it.
+                    </p>
+<ul class="space-y-4 mb-10">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-tertiary-container">check_circle</span>
+<span class="font-label-md text-label-md">Technical Precision Analysis</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-tertiary-container">check_circle</span>
+<span class="font-label-md text-label-md">Speech Pattern &amp; Filler Word Tracking</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-tertiary-container">check_circle</span>
+<span class="font-label-md text-label-md">Topic Sensitivity Heatmaps</span>
+</li>
+</ul>
+</div>
+<div class="md:col-span-6">
+<div class="p-8 rounded-2xl bg-surface-container-low border border-outline-variant custom-shadow">
+<div class="flex justify-between items-center mb-8">
+<h4 class="font-headline-md text-headline-md">Session Analytics</h4>
+<div class="px-3 py-1 bg-secondary text-on-secondary rounded-full text-xs font-bold">LATEST</div>
+</div>
+<div class="space-y-6">
+<!-- Concept Mastery -->
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-md text-on-surface-variant">Concept Mastery (Keyword Hit Rate)</span>
+<span class="font-label-md font-bold text-primary">88%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 88%"></div>
+</div>
+</div>
+<!-- Voice Analytics -->
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 bg-white rounded-xl border border-outline-variant">
+<p class="text-xs text-on-surface-variant mb-1 uppercase font-bold tracking-tight">Words Per Min</p>
+<p class="text-2xl font-bold text-secondary">142</p>
+<p class="text-[10px] text-green-600 mt-1 flex items-center"><span class="material-symbols-outlined text-[12px]">trending_up</span> Optimal range</p>
+</div>
+<div class="p-4 bg-white rounded-xl border border-outline-variant">
+<p class="text-xs text-on-surface-variant mb-1 uppercase font-bold tracking-tight">Filler Words</p>
+<p class="text-2xl font-bold text-on-error-container">3</p>
+<p class="text-[10px] text-on-surface-variant mt-1">Excellent control</p>
+</div>
+</div>
+<!-- Session Score -->
+<div class="mt-4 p-6 bg-primary-container text-on-primary-fixed rounded-xl flex items-center justify-between">
+<div>
+<p class="font-label-sm uppercase opacity-70 mb-1">Final Session Score</p>
+<p class="text-4xl font-bold">92<span class="text-xl opacity-50">/100</span></p>
+</div>
+<div class="w-16 h-16 rounded-full border-4 border-secondary flex items-center justify-center bg-white/10">
+<span class="material-symbols-outlined text-3xl">emoji_events</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Success Stories -->
+<section class="py-xl bg-primary-container text-on-primary-fixed overflow-hidden"><div class="px-margin-mobile md:px-margin-desktop max-w-6xl mx-auto"><div class="text-center mb-16"><h2 class="font-headline-lg text-headline-lg text-white mb-4">Success Stories</h2><p class="font-body-lg text-body-lg text-white/70 max-w-2xl mx-auto">From mock sessions to dream offers at institutional leaders.</p></div><div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto"><!-- Testimonial 1 --><div class="flex flex-col p-10 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/[0.08] transition-colors duration-300"><div class="flex gap-1 text-tertiary-fixed mb-8"><span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span></div><blockquote class="flex-1"><p class="font-body-lg text-lg md:text-xl text-white leading-relaxed italic mb-10">"DatalystLM was the bridge between my technical knowledge and my ability to communicate it to partners. I landed a Senior DS role at Goldman within 3 weeks."</p></blockquote><div class="flex items-center gap-4 pt-6 border-t border-white/10"><div class="w-12 h-12 rounded-full overflow-hidden border-2 border-secondary"><img alt="Marcus Chen" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKkrG650T-9AqQZSGJzLeckJbO66-XJi0W_UXsdsdch7qRBXnuveiFZqj3cy79fnsw63Khf2xD1lfQx_zCdr5opxogKcUV7iuqJl11s8lu3cldyhAgj9LzI7PxaGrz8Qpc-rEIZfHzYulSDe9nZgGYQgw4U0q0ThN4yMj9o_A44y_b3EtXD0CaOmoINurSvV3-EmASYjX2dDI1BuIKGqa3mUDRDxjQxO1gxISVn89X9GfFE9EDjDzp"></div><div><p class="font-label-md text-label-md font-bold text-white">Marcus Chen</p><p class="text-xs text-white/60">Senior Data Scientist @ Goldman Sachs</p></div></div></div><!-- Testimonial 2 --><div class="flex flex-col p-10 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/[0.08] transition-colors duration-300"><div class="flex gap-1 text-tertiary-fixed mb-8"><span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">star</span></div><blockquote class="flex-1"><p class="font-body-lg text-lg md:text-xl text-white leading-relaxed italic mb-10">"The AI coach's feedback on my statistical explanations was incredibly precise. It caught nuances that even my human mentors missed."</p></blockquote><div class="flex items-center gap-4 pt-6 border-t border-white/10"><div class="w-12 h-12 rounded-full overflow-hidden border-2 border-secondary"><img alt="Sarah Jenkins" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwem27T0KK5JSH2RB5SQ-Suovxksb07JFKuBq3PaV7UmdP-YXBPWVST8n9DfqK5Hu8OZLD8dE38ndveEQWc-edVJAxnShbfBsm_6zsjofIcrQyw0nqRDPzTfrSacisO23WJt3oUX-daZx8rnyapv1YE5Udqw2RMFqSKzrIrrirSu0TckWv3I720mddWJgsFqAf85RkTOMH_m6hNI9HxFCvsVmve4J_Ox_93QAJa4MxVJAQjxu5ZRKf"></div><div><p class="font-label-md text-label-md font-bold text-white">Sarah Jenkins</p><p class="text-xs text-white/60">Machine Learning Engineer @ Meta</p></div></div></div></div></div></section>
+<!-- Pricing Section -->
+<section class="py-xl px-margin-mobile md:px-margin-desktop bg-surface-container-low text-center">
+<div class="max-w-6xl mx-auto">
+<h2 class="font-headline-lg text-headline-lg mb-6">Ready to apex your career?</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-12">Flexible plans for every stage of your job hunt. High-impact coaching for elite professionals.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter max-w-4xl mx-auto">
+<!-- Free Plan -->
+<div class="p-10 rounded-2xl bg-white border border-outline-variant custom-shadow flex flex-col items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-bold tracking-widest mb-4 block">Free Plan</span>
+<div class="flex justify-center items-end gap-1 mb-8">
+<span class="text-5xl font-bold text-on-background">$0</span>
+<span class="text-on-surface-variant pb-2">/ month</span>
+</div>
+<ul class="text-left space-y-4 mb-10 w-full">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">check</span>
+<span class="font-body-md text-body-md">Unlimited voice practice</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">check</span>
+<span class="font-body-md text-body-md">All topics (ML, SQL, Stats)</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">check</span>
+<span class="font-body-md text-body-md">Full AI feedback engine</span>
+</li>
+</ul>
+<button class="w-full bg-surface border border-primary text-primary py-4 rounded-full font-label-md text-label-md font-bold hover:bg-surface-container transition-all active:scale-95 mt-auto">
+                        Start Practicing
+                    </button>
+</div>
+<!-- Pro Plan -->
+<div class="p-10 rounded-2xl bg-white border-2 border-secondary custom-shadow flex flex-col items-center relative overflow-hidden">
+<div class="absolute top-4 right-[-35px] bg-secondary text-on-secondary py-1 px-10 rotate-45 text-[10px] font-bold uppercase tracking-widest">Waitlist</div>
+<span class="font-label-sm text-label-sm text-secondary uppercase font-bold tracking-widest mb-4 block">Pro Plan</span>
+<div class="flex justify-center items-end gap-1 mb-8">
+<span class="text-5xl font-bold text-on-background">$TBD</span>
+</div>
+<ul class="text-left space-y-4 mb-10 w-full">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">check</span>
+<span class="font-body-md text-body-md">Full session history</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">check</span>
+<span class="font-body-md text-body-md">Progress dashboards</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">check</span>
+<span class="font-body-md text-body-md">Company-specific sets</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">check</span>
+<span class="font-body-md text-body-md">Mock interview mode</span>
+</li>
+</ul>
+<button class="w-full bg-secondary text-on-secondary py-4 rounded-full font-label-md text-label-md font-bold hover:opacity-90 transition-all active:scale-95 shadow-lg mt-auto">
+                        Join Waitlist
+                    </button>
+</div>
+</div>
+<p class="text-xs text-on-surface-variant mt-10">Trusted by professionals at top tech firms globally.</p>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center pt-2 pb-6 px-4 backdrop-blur-md bg-surface/90 shadow-[0_-4px_12px_rgba(15,23,42,0.08)] z-50 rounded-t-xl">
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 transition-all duration-200 ease-out">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">mic_none</span>
+<span class="font-label-sm text-label-sm">Sessions</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 active:scale-90 transition-all duration-200 ease-out">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-sm text-label-sm">Coach</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 active:scale-90 transition-all duration-200 ease-out">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-sm text-label-sm">Insights</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 active:scale-90 transition-all duration-200 ease-out">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-sm text-label-sm">History</span>
+</div>
+</nav>
+<!-- Footer -->
+<footer class="bg-surface py-lg px-margin-mobile md:px-margin-desktop border-t border-surface-variant pb-32 md:pb-lg">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-10">
+<div class="max-w-xs">
+<img alt="DatalystLM" class="h-8 mb-4" src="https://lh3.googleusercontent.com/aida/AP1WRLtBGR79aAwlRo_nyNCJ_fzg_jYHBBXQaLZMyQcJozwnDKaQTo6oXdjXadcl1rgdIij6PSjTd255dflF_aiKwaQsRUnmw1WgzBN9vHLY8JN6x4WmNRJplRTkoCcjVKSnuIxRlE3ItDay3ZmYwmoeEaajnTn130DXnMwW71C7s4JPM3u4n5YDxKKlR3U3XiGOvHDsXCNtE0FWnmE3JQX6zJSyVzgzghg0Wxj7JeiLjn3lEhKHjqA4gK9VLNU">
+<p class="text-on-surface-variant text-sm">Professional AI coaching for elite data science roles. Built for professionals, by professionals.</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-10">
+<div>
+<h4 class="font-label-md text-label-md font-bold mb-4">Product</h4>
+<ul class="space-y-2 text-sm text-on-surface-variant">
+<li class=""><a class="hover:text-secondary" href="#">Features</a></li>
+<li class=""><a class="hover:text-secondary" href="#">Pricing</a></li>
+<li class=""><a class="hover:text-secondary" href="#">Beta Program</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-md text-label-md font-bold mb-4">Resources</h4>
+<ul class="space-y-2 text-sm text-on-surface-variant">
+<li class=""><a class="hover:text-secondary" href="#">Interview Guide</a></li>
+<li class=""><a class="hover:text-secondary" href="#">Case Studies</a></li>
+<li class=""><a class="hover:text-secondary" href="#">Support</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-md text-label-md font-bold mb-4">Company</h4>
+<ul class="space-y-2 text-sm text-on-surface-variant">
+<li class=""><a class="hover:text-secondary" href="#">About Us</a></li>
+<li class=""><a class="hover:text-secondary" href="#">Privacy</a></li>
+<li class=""><a class="hover:text-secondary" href="#">Terms</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-surface-variant text-center md:text-left">
+<p class="text-xs text-on-surface-variant">© 2024 DatalystLM Intelligence Systems. All rights reserved.</p>
+</div>
+</footer>
+<script>
+    // Header scroll dynamic
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (window.scrollY > 10) {
+            header.classList.add('shadow-md');
+        } else {
+            header.classList.remove('shadow-md');
+        }
+    });
+
+    // Interactive Demo Logic
+    const fullText = "Overfitting occurs when a machine learning model learns the noise in the training data rather than the underlying pattern. This typically results in high variance. To prevent it, we can use techniques like L1 or L2 regularization, which add a penalty term to the cost function to discourage overly complex models. Another common approach is using cross-validation to ensure the model generalizes well to unseen data.";
+    const textEl = document.getElementById('transcription-text');
+    const liveState = document.getElementById('demo-live-state');
+    const resultsState = document.getElementById('demo-results-state');
+    let typingTimer;
+
+    function typeWriter(text, i) {
+        if (i < text.length) {
+            textEl.innerHTML = text.substring(0, i + 1) + '<span class="w-1.5 h-5 bg-secondary inline-block ml-1 animate-pulse"></span>';
+            typingTimer = setTimeout(() => typeWriter(text, i + 1), 30);
+        } else {
+            setTimeout(showResults, 1000);
+        }
+    }
+
+    function showResults() {
+        liveState.style.opacity = '0';
+        liveState.style.transform = 'translateX(-20px)';
+        setTimeout(() => {
+            liveState.classList.add('hidden');
+            resultsState.classList.remove('hidden');
+            // Trigger browser reflow
+            resultsState.offsetHeight;
+            resultsState.style.opacity = '1';
+            resultsState.style.transform = 'translateX(0)';
+            resultsState.classList.add('pointer-events-auto');
+        }, 500);
+    }
+
+    function skipToResults() {
+        clearTimeout(typingTimer);
+        showResults();
+    }
+
+    function restartDemo() {
+        resultsState.style.opacity = '0';
+        resultsState.style.transform = 'translateX(20px)';
+        resultsState.classList.remove('pointer-events-auto');
+        
+        setTimeout(() => {
+            resultsState.classList.add('hidden');
+            liveState.classList.remove('hidden');
+            liveState.offsetHeight;
+            liveState.style.opacity = '1';
+            liveState.style.transform = 'translateX(0)';
+            textEl.innerHTML = "";
+            typeWriter(fullText, 0);
+        }, 500);
+    }
+
+    // Auto-start demo when scrolled into view
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+            typeWriter(fullText, 0);
+            observer.unobserve(entries[0].target);
+        }
+    }, { threshold: 0.5 });
+
+    observer.observe(document.getElementById('interactive-demo'));
+</script>
+
+
+</body></html>
