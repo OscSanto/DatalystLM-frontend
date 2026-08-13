@@ -391,15 +391,23 @@ class Component extends DCLogic {
   }
 
   _render({ feedback, question, answer, topic, difficulty, score }) {
+    // Prefer server-returned fields (authoritative) over the sessionStorage meta snapshot.
+    // feedback.questionText / transcribedAnswer are set by evaluate() and getResult().
+    const qText = feedback.questionText    || question;
+    const aText = feedback.transcribedAnswer || answer;
+    // “FREE” | “PRO” — what tier the user was on when they submitted this answer.
+    const tier  = feedback.subscriptionTier || 'FREE';
+    const isPro = tier === 'PRO';
+
     // ── Question & answer
-    this._set('p[style*="font-size:18px"][style*="font-weight:600"]', question);
-    const ansEl = document.querySelector('p[style*="font-style:italic"][style*="border-left"]');
-    if (ansEl) ansEl.textContent = '“' + (answer || '') + '”';
+    this._set('p[style*=”font-size:18px”][style*=”font-weight:600”]', qText);
+    const ansEl = document.querySelector('p[style*=”font-style:italic”][style*=”border-left”]');
+    if (ansEl) ansEl.textContent = '”' + (aText || '') + '”';
 
     // ── Score card
-    const scoreNumEl = document.querySelector('span[style*="font-size:56px"]');
+    const scoreNumEl = document.querySelector('span[style*=”font-size:56px”]');
     if (scoreNumEl) scoreNumEl.textContent = score != null ? score : '—';
-    const scoreLabelEl = document.querySelector('span[style*="color:#364e03"][style*="font-weight:700"]');
+    const scoreLabelEl = document.querySelector('span[style*=”color:#364e03”][style*=”font-weight:700”]');
     if (scoreLabelEl) {
       if (score == null)      scoreLabelEl.textContent = 'N/A';
       else if (score >= 80)   scoreLabelEl.textContent = 'Excellent';
@@ -408,53 +416,70 @@ class Component extends DCLogic {
       else                    scoreLabelEl.textContent = 'Keep Practicing';
     }
 
-    // ── Inline AI brief (the eff4ff box in the results overview)
-    if (feedback.llmFeedBack) {
-      const llm = feedback.llmFeedBack;
-      const briefEl = document.querySelector('div[style*="background:#eff4ff"] p[style*="font-size:16px"]');
-      if (briefEl) {
+    // ── Inline AI brief (the eff4ff highlight box inside the results overview card)
+    const briefEl = document.querySelector('div[style*=”background:#eff4ff”] p[style*=”font-size:16px”]');
+    if (briefEl) {
+      if (isPro && feedback.llmFeedBack) {
+        const llm = feedback.llmFeedBack;
         briefEl.innerHTML = [llm.concepts, llm.accuracy].filter(Boolean).join(' ') +
-          (llm.tip ? ` <strong style="color:#000000">${llm.tip}</strong>` : '');
+          (llm.tip ? ` <strong style=”color:#000000”>${llm.tip}</strong>` : '');
+      } else if (!isPro) {
+        // FREE users — replace the brief with an upgrade nudge
+        briefEl.innerHTML = `AI analysis is a <strong>Pro</strong> feature. You still get your score, keywords, and voice analytics below. <a href=”Front.dc.html#pricing” style=”color:#0051d5;font-weight:600”>Upgrade to Pro</a> for concept-level feedback and coaching tips.`;
       }
-      // ── AI Feedback aside article (border-top:4px solid #316bf3)
-      const articles = document.querySelectorAll('article');
-      const feedArticle = Array.from(articles).find(a =>
-        a.getAttribute('style') && a.getAttribute('style').includes('border-top:4px solid')
-      );
-      if (feedArticle) {
-        const p = feedArticle.querySelector('p[style*="font-size:16px"]');
+    }
+
+    // ── AI Feedback sidebar article (identified by the blue top border)
+    const articles = document.querySelectorAll('article');
+    const feedArticle = Array.from(articles).find(a =>
+      a.getAttribute('style') && a.getAttribute('style').includes('border-top:4px solid')
+    );
+    if (feedArticle) {
+      if (isPro && feedback.llmFeedBack) {
+        const llm = feedback.llmFeedBack;
+        const p = feedArticle.querySelector('p[style*=”font-size:16px”]');
         if (p) p.textContent = [llm.concepts, llm.accuracy, llm.missing, llm.tip].filter(Boolean).join(' ');
+      } else {
+        // FREE users — replace the entire article content with an upgrade card
+        feedArticle.innerHTML = `
+          <div style=”display:flex;align-items:center;gap:8px;margin-bottom:16px”>
+            <span class=”msi” style=”color:#c6c6cd;font-size:22px”>lock</span>
+            <h3 style=”font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin:0;color:#45464d”>AI Feedback</h3>
+          </div>
+          <p style=”font-size:14px;line-height:22px;color:#76777d;margin:0 0 20px”>Upgrade to Pro to unlock concept-level feedback, accuracy assessment, what you missed, and personalised coaching tips after every session.</p>
+          <a href=”Front.dc.html#pricing” style=”display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#131b2e;color:#ffffff;border-radius:8px;font-family:Inter,sans-serif;font-size:13px;font-weight:700;text-decoration:none”>
+            <span class=”msi msi-fill” style=”font-size:18px”>bolt</span>Upgrade to Pro
+          </a>`;
       }
     }
 
     // ── Keywords hit / miss
     const kwHit  = feedback.keyWordHit  || [];
     const kwMiss = feedback.keyWordMiss || [];
-    const hitChip  = kw => `<span style="padding:4px 12px;background:#e5eeff;border-radius:9999px;font-size:12px;font-weight:600;color:#45464d">${kw}</span>`;
-    const missChip = kw => `<span style="padding:4px 12px;background:#eff4ff;border:1px solid rgba(186,26,26,0.2);border-radius:9999px;font-size:12px;font-weight:600;color:#ba1a1a">${kw}</span>`;
+    const hitChip  = kw => `<span style=”padding:4px 12px;background:#e5eeff;border-radius:9999px;font-size:12px;font-weight:600;color:#45464d”>${kw}</span>`;
+    const missChip = kw => `<span style=”padding:4px 12px;background:#eff4ff;border:1px solid rgba(186,26,26,0.2);border-radius:9999px;font-size:12px;font-weight:600;color:#ba1a1a”>${kw}</span>`;
 
-    document.querySelectorAll('div[style*="padding:24px"][style*="box-shadow"]').forEach(section => {
-      const label = section.querySelector('span[style*="text-transform:uppercase"]');
+    document.querySelectorAll('div[style*=”padding:24px”][style*=”box-shadow”]').forEach(section => {
+      const label = section.querySelector('span[style*=”text-transform:uppercase”]');
       if (!label) return;
       const txt = label.textContent.trim().toUpperCase();
-      const chipWrap = section.querySelector('div[style*="flex-wrap:wrap"]');
+      const chipWrap = section.querySelector('div[style*=”flex-wrap:wrap”]');
       if (!chipWrap) return;
       if (txt.includes('HIT') || txt.includes('KEYWORDS HIT')) {
-        chipWrap.innerHTML = kwHit.length ? kwHit.map(hitChip).join('') : '<span style="font-size:13px;color:#76777d">None detected</span>';
+        chipWrap.innerHTML = kwHit.length ? kwHit.map(hitChip).join('') : '<span style=”font-size:13px;color:#76777d”>None detected</span>';
       } else if (txt.includes('MISS') || txt.includes('OPPORTUNITIES')) {
-        chipWrap.innerHTML = kwMiss.length ? kwMiss.map(missChip).join('') : '<span style="font-size:13px;color:#76777d">None missed — great job!</span>';
+        chipWrap.innerHTML = kwMiss.length ? kwMiss.map(missChip).join('') : '<span style=”font-size:13px;color:#76777d”>None missed — great job!</span>';
       }
     });
 
-    // ── Voice analytics
+    // ── Voice analytics (available to all tiers)
     if (feedback.voiceMetrics) {
       const vm = feedback.voiceMetrics;
-      const articles = document.querySelectorAll('article');
       const voiceArt = Array.from(articles).find(a =>
         Array.from(a.querySelectorAll('span')).some(s => s.textContent.trim() === 'graphic_eq')
       );
       if (voiceArt) {
-        const vals = voiceArt.querySelectorAll('span[style*="font-size:24px"]');
+        const vals = voiceArt.querySelectorAll('span[style*=”font-size:24px”]');
         if (vals[0]) vals[0].textContent = vm.wordsPerMinute || '—';
         if (vals[1]) vals[1].textContent = vm.fillerWordCount != null ? vm.fillerWordCount : '—';
         if (vals[2]) vals[2].textContent = vm.confidenceScore != null ? Math.round(vm.confidenceScore * 100) + '%' : '—';
@@ -462,28 +487,26 @@ class Component extends DCLogic {
       }
     }
 
-    // ── Ideal answer preview
+    // ── Ideal answer preview (available to all tiers — shows the best-match angle)
     if (feedback.matchedIdealAnswerText) {
-      const articles = document.querySelectorAll('article');
       const idealArt = Array.from(articles).find(a =>
         Array.from(a.querySelectorAll('span')).some(s => s.textContent.trim() === 'lightbulb')
       );
       if (idealArt) {
-        const p = idealArt.querySelector('p[style*="-webkit-line-clamp"]') || idealArt.querySelector('p');
+        const p = idealArt.querySelector('p[style*=”-webkit-line-clamp”]') || idealArt.querySelector('p');
         if (p) p.textContent = feedback.matchedIdealAnswerText;
       }
     }
 
     // ── Bottom bar — topic / question snippet / difficulty
-    // Uses padding:8px to disambiguate from the 40x40 header avatar
-    const bottomBar = document.querySelector('div[style*="background:#131b2e"][style*="padding:8px"]');
+    // Uses padding:8px to disambiguate from the 40x40 header avatar button
+    const bottomBar = document.querySelector('div[style*=”background:#131b2e”][style*=”padding:8px”]');
     if (bottomBar) {
-      const spans = bottomBar.querySelectorAll('span[style*="font-size:14px"][style*="font-weight:500"]');
+      const spans = bottomBar.querySelectorAll('span[style*=”font-size:14px”][style*=”font-weight:500”]');
       if (spans[0]) spans[0].textContent = topic || 'Machine Learning';
-      if (spans[1]) spans[1].textContent = question ? (question.length > 45 ? question.slice(0, 45) + '…' : question) : '';
+      if (spans[1]) spans[1].textContent = qText ? (qText.length > 45 ? qText.slice(0, 45) + '…' : qText) : '';
       if (spans[2]) spans[2].textContent = difficulty || 'Medium';
     }
-
   }
 
   renderVals() {

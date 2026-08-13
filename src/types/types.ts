@@ -73,9 +73,13 @@ export interface LLMFeedback {
 }
 
 export interface FeedbackResponse {
+  resultId: number | null;
   score: number | null;
   isOutlier: boolean;
-  llmFeedBack: LLMFeedback | null;  // structured — null for FREE tier
+  llmFeedBack: LLMFeedback | null;  // structured — null for FREE tier and outliers
+  subscriptionTier: string;          // "FREE" | "PRO" — tier at time of submission
+  questionText: string | null;
+  transcribedAnswer: string | null;
   keyWordHit: string[];
   keyWordMiss: string[];
   voiceMetrics: VoiceMetrics;
