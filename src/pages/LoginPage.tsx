@@ -143,11 +143,24 @@ const GitHubSVG = () => (
 export default function LoginPage({ onAuth, initialTab = "signin" }: Props) {
   useFonts();
 
-  // Redirect already-authenticated users straight to the app
+  // Redirect already-authenticated users straight to the app.
+  // Validates the JWT expiry — don't redirect on a dead token.
   useEffect(() => {
-    if (localStorage.getItem("datalystlm_token")) {
-      window.location.replace("/Selection.dc.html");
-    }
+    const t = localStorage.getItem("datalystlm_token");
+    if (!t) return;
+    try {
+      const parts = t.split(".");
+      if (parts.length === 3) {
+        const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+        if (payload.exp && payload.exp * 1000 > Date.now()) {
+          window.location.replace("/Selection.dc.html");
+          return;
+        }
+      }
+    } catch (_) {}
+    // Token exists but is invalid/expired — clear it so the form shows cleanly
+    localStorage.removeItem("datalystlm_token");
+    localStorage.removeItem("datalystlm_user");
   }, []);
 
   const [mode, setMode] = useState<Mode>(initialTab === "register" ? "up" : "in");
