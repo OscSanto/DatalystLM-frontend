@@ -252,12 +252,22 @@ export default function LoginPage({ onAuth, initialTab = "signin" }: Props) {
     else setSuErrPass2("");
     if (!valid) return;
 
-    // Combine first name + initial → username (e.g. "John" + "S" → "JohnS")
-    const username = suFirstName.trim() + suInitial.trim();
+    // Generate a unique username: first+initial (lowercased) + random 4-digit suffix
+    // e.g. "Rob" + "S" → "robs4721"  — same pattern as OAuth2 sign-up.
+    // Truncate base to 20 chars so the 4-digit suffix fits within the 25-char DB limit.
+    const suffix = Math.floor(Math.random() * 9000 + 1000);
+    const base   = (suFirstName.trim().slice(0, 20) + suInitial.trim().slice(0, 1)).toLowerCase();
+    const username = base + suffix;
 
     setLoading(true); setGlobalErr("");
     try {
       const res = await register({ username, email: suEmail, password: suPass });
+      // Persist the display name so Selection.dc.html doesn't show the welcome modal again.
+      try {
+        localStorage.setItem("datalystlm_first",       suFirstName.trim());
+        localStorage.setItem("datalystlm_last",        suInitial.trim().slice(0, 1));
+        localStorage.setItem("datalystlm_profile_set", "1");
+      } catch (_) {}
       onAuth(res.token, res.username);
     } catch (err: any) {
       setGlobalErr(err.message ?? "Registration failed. Please try again.");
@@ -591,7 +601,7 @@ export default function LoginPage({ onAuth, initialTab = "signin" }: Props) {
                 <label htmlFor="su-fname" style={{ fontSize: 14, fontWeight: 500, letterSpacing: "0.01em" }}>First Name</label>
                 <input
                   id="su-fname" type="text" placeholder="John"
-                  autoComplete="given-name" required
+                  autoComplete="given-name" required maxLength={20}
                   value={suFirstName} onChange={e => { setSuFirstName(e.target.value); setSuErrFirstName(""); }}
                   style={{ ...FIELD_BASE, padding: "0 16px", boxShadow: suErrFirstName ? "0 0 0 2px #ba1a1a" : "none", background: suErrFirstName ? "#fff3f2" : "#eff4ff" }}
                 />
