@@ -56,20 +56,20 @@ a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
           <div style="display:flex;justify-content:space-between;gap:24px">
             <div style="flex:1">
               <span style="font-size:12px;font-weight:600;color:#45464d;text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:8px">Question</span>
-              <p style="font-size:18px;line-height:28px;font-weight:600;margin:0 0 24px">What is overfitting in machine learning and how do you prevent it?</p>
+              <p id="result-question-text" style="font-size:18px;line-height:28px;font-weight:600;margin:0 0 24px">What is overfitting in machine learning and how do you prevent it?</p>
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
                 <span style="font-size:12px;font-weight:600;color:#45464d;text-transform:uppercase;letter-spacing:0.06em">Your Answer</span>
                 <a href="#" style="display:flex;align-items:center;color:#0051d5" style-hover="text-decoration:underline"><span class="msi" style="font-size:16px;margin-right:4px">mic_none</span><span style="font-size:12px;font-weight:600">View full transcript</span></a>
               </div>
-              <p style="font-size:16px;line-height:26px;color:#45464d;font-style:italic;border-left:4px solid #316bf3;padding-left:16px;margin:0">"Overfitting happens when a model learns the training data too well, including the noise and outliers, which hurts performance on new data. To prevent it, we can use techniques like regularization to penalize complexity, cross-validation to ensure generalization, more training data, and simpler models when possible."</p>
+              <p id="result-answer-text" style="font-size:16px;line-height:26px;color:#45464d;font-style:italic;border-left:4px solid #316bf3;padding-left:16px;margin:0">"Overfitting happens when a model learns the training data too well, including the noise and outliers, which hurts performance on new data. To prevent it, we can use techniques like regularization to penalize complexity, cross-validation to ensure generalization, more training data, and simpler models when possible."</p>
             </div>
             <div style="width:192px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:#e5eeff;border-radius:12px">
               <span style="font-size:12px;font-weight:600;color:#45464d;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Session Score</span>
               <div style="display:flex;align-items:baseline;gap:4px">
-                <span style="font-size:56px;font-weight:700;color:#000000;line-height:1">84</span>
+                <span id="result-score-num" style="font-size:56px;font-weight:700;color:#000000;line-height:1">84</span>
                 <span style="font-size:16px;color:#45464d">/100</span>
               </div>
-              <span style="color:#364e03;font-weight:700;font-size:14px;margin-top:4px">Good</span>
+              <span id="result-score-label" style="color:#364e03;font-weight:700;font-size:14px;margin-top:4px">Good</span>
               <div style="width:100%;height:6px;background:#d3e4fe;border-radius:9999px;margin-top:16px;position:relative;overflow:hidden">
                 <div style="{{ barStyle }}"></div>
                 <div style="position:absolute;top:0;left:75%;width:2px;height:100%;background:#000000;z-index:10"></div>
@@ -83,7 +83,7 @@ a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
         </div>
         <div style="background:#eff4ff;border:1px solid #dce9ff;border-radius:12px;padding:24px;display:flex;gap:24px;align-items:flex-start">
           <div style="width:40px;height:40px;background:#ffffff;border-radius:9999px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(15,23,42,0.1);flex-shrink:0"><span class="msi msi-fill" style="color:#0051d5">grade</span></div>
-          <p style="font-size:16px;line-height:24px;margin:0">Good understanding of overfitting and prevention techniques. You covered key ideas like regularization and cross-validation. <strong style="color:#000000">Strengthen with concrete examples and mention model complexity trade-offs.</strong></p>
+          <p id="result-ai-brief" style="font-size:16px;line-height:24px;margin:0">Good understanding of overfitting and prevention techniques. You covered key ideas like regularization and cross-validation. <strong style="color:#000000">Strengthen with concrete examples and mention model complexity trade-offs.</strong></p>
         </div>
       </section>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
@@ -92,7 +92,7 @@ a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
             <span class="msi" style="color:#718d3e">check_circle</span>
             <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em">Keywords Hit</span>
           </div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <div id="result-kw-hit" style="display:flex;flex-wrap:wrap;gap:8px">
             <span style="padding:4px 12px;background:#e5eeff;border-radius:9999px;font-size:12px;font-weight:600;color:#45464d">Regularization</span>
             <span style="padding:4px 12px;background:#e5eeff;border-radius:9999px;font-size:12px;font-weight:600;color:#45464d">Noise</span>
             <span style="padding:4px 12px;background:#e5eeff;border-radius:9999px;font-size:12px;font-weight:600;color:#45464d">Outliers</span>
@@ -104,7 +104,7 @@ a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
             <span class="msi" style="color:#ba1a1a">cancel</span>
             <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em">Missed Opportunities</span>
           </div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <div id="result-kw-miss" style="display:flex;flex-wrap:wrap;gap:8px">
             <span style="padding:4px 12px;background:#eff4ff;border:1px solid rgba(186,26,26,0.2);border-radius:9999px;font-size:12px;font-weight:600;color:#ba1a1a">Bias-Variance Tradeoff</span>
             <span style="padding:4px 12px;background:#eff4ff;border:1px solid rgba(186,26,26,0.2);border-radius:9999px;font-size:12px;font-weight:600;color:#ba1a1a">Dropout</span>
           </div>
@@ -112,12 +112,42 @@ a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
       </div>
     </div>
     <aside style="display:flex;flex-direction:column;gap:24px">
-      <article style="background:#ffffff;border-radius:12px;padding:24px;box-shadow:0 4px 12px rgba(15,23,42,0.08);border-top:4px solid #316bf3">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px">
-          <span class="msi msi-fill" style="color:#0051d5">auto_awesome</span>
-          <h3 style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin:0;color:#000000">AI Feedback Summary</h3>
+      <!-- Answer Guide — key terms + essentials from /practice/assist; hidden until loaded -->
+      <article id="answer-guide-card" style="display:none;background:#ffffff;border-radius:12px;padding:24px;box-shadow:0 4px 12px rgba(15,23,42,0.08);border-top:4px solid #718d3e">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+          <span class="msi msi-fill" style="color:#718d3e">menu_book</span>
+          <h3 style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin:0;color:#000000">Answer Guide</h3>
         </div>
-        <p style="font-size:16px;line-height:26px;color:#45464d;margin:0">You explained overfitting clearly and mentioned key techniques. Add more detail on why they work (e.g., bias-variance trade-off) and give a brief real-world example to elevate your answer.</p>
+        <!-- Key terms -->
+        <div id="ag-terms-wrap" style="display:none;margin-bottom:16px">
+          <span style="font-size:11px;font-weight:600;color:#45464d;text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:8px">Key Terms to Use</span>
+          <div id="ag-terms" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+        </div>
+        <!-- Answer essentials -->
+        <div id="ag-essentials-wrap" style="display:none">
+          <span style="font-size:11px;font-weight:600;color:#45464d;text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:8px">What a Strong Answer Covers</span>
+          <ol id="ag-essentials" style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px"></ol>
+        </div>
+      </article>
+
+      <article id="result-ai-feed-article" style="background:#ffffff;border-radius:12px;padding:24px;box-shadow:0 4px 12px rgba(15,23,42,0.08);border-top:4px solid #316bf3">
+        <!-- PRO state: shown when user has llmFeedBack -->
+        <div id="result-ai-feed-pro" style="display:none">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px">
+            <span class="msi msi-fill" style="color:#0051d5">auto_awesome</span>
+            <h3 style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin:0;color:#000000">AI Feedback Summary</h3>
+          </div>
+          <p id="result-ai-feed-p" style="font-size:16px;line-height:26px;color:#45464d;margin:0"></p>
+        </div>
+        <!-- FREE state: shown when no llmFeedBack -->
+        <div id="result-ai-feed-upgrade" style="display:none">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+            <span class="msi" style="color:#c6c6cd;font-size:22px">lock</span>
+            <h3 style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin:0;color:#45464d">AI Feedback</h3>
+          </div>
+          <p style="font-size:14px;line-height:22px;color:#76777d;margin:0 0 20px">Upgrade to Pro to unlock concept-level feedback, accuracy assessment, what you missed, and personalised coaching tips after every session.</p>
+          <a href="Front.dc.html#pricing" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#131b2e;color:#ffffff;border-radius:8px;font-family:Inter,sans-serif;font-size:13px;font-weight:700;text-decoration:none"><span class="msi msi-fill" style="font-size:18px">bolt</span>Upgrade to Pro</a>
+        </div>
       </article>
       <article style="background:#ffffff;border-radius:12px;padding:24px;box-shadow:0 4px 12px rgba(15,23,42,0.08)">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
@@ -127,9 +157,9 @@ a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
           </div>
           <a href="#" style="font-size:12px;font-weight:600;color:#45464d" style-hover="color:#0051d5">View full answer</a>
         </div>
-        <p style="font-size:16px;line-height:26px;color:#45464d;margin:0;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden">Overfitting occurs when a model learns the training data too well, including noise and outliers, leading to poor generalization on unseen data. It has high variance and low bias. To prevent it, we use regularization (L1/L2), cross-validation, simpler models, early stopping, more data, and techniques like dropout or data augmentation...</p>
+        <p id="result-ideal-text" style="font-size:16px;line-height:26px;color:#45464d;margin:0;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden">Overfitting occurs when a model learns the training data too well, including noise and outliers, leading to poor generalization on unseen data. It has high variance and low bias. To prevent it, we use regularization (L1/L2), cross-validation, simpler models, early stopping, more data, and techniques like dropout or data augmentation...</p>
       </article>
-      <article style="background:#ffffff;border-radius:12px;padding:24px;box-shadow:0 4px 12px rgba(15,23,42,0.08)">
+      <article id="result-voice-art" style="background:#ffffff;border-radius:12px;padding:24px;box-shadow:0 4px 12px rgba(15,23,42,0.08)">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
           <div style="display:flex;align-items:center;gap:8px">
             <span class="msi" style="color:#0051d5">graphic_eq</span>
@@ -137,26 +167,61 @@ a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
           </div>
           <a href="#" style="font-size:12px;font-weight:600;color:#45464d" style-hover="color:#0051d5">Details</a>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;padding-top:24px;border-top:1px solid #dce9ff">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;padding-top:24px;border-top:1px solid #dce9ff">
           <div style="display:flex;flex-direction:column;gap:4px">
             <span style="font-size:10px;font-weight:600;color:#45464d;text-transform:uppercase">Words / Min</span>
-            <div style="display:flex;align-items:center;gap:8px"><span style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:500;color:#000000">142</span><span class="msi" style="color:#718d3e;font-size:16px">check_circle</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span id="result-vm-wpm" style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:500;color:#000000">142</span><span class="msi" style="color:#718d3e;font-size:16px">check_circle</span></div>
             <span style="font-size:10px;color:#45464d;font-style:italic">Ideal: 130–160</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:4px">
             <span style="font-size:10px;font-weight:600;color:#45464d;text-transform:uppercase">Filler Words</span>
-            <div style="display:flex;align-items:center;gap:8px"><span style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:500;color:#000000">4</span><span class="msi" style="color:#718d3e;font-size:16px">check_circle</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span id="result-vm-filler" style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:500;color:#000000">4</span><span class="msi" style="color:#718d3e;font-size:16px">check_circle</span></div>
             <span style="font-size:10px;color:#45464d;font-style:italic">Ideal: &lt; 5</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:4px">
-            <span style="font-size:10px;font-weight:600;color:#45464d;text-transform:uppercase">Confidence</span>
-            <div style="display:flex;align-items:center;gap:8px"><span style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:500;color:#000000">78%</span></div>
-            <span style="font-size:10px;color:#364e03;font-weight:700">Good</span>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:4px">
             <span style="font-size:10px;font-weight:600;color:#45464d;text-transform:uppercase">Pauses</span>
-            <div style="display:flex;align-items:center;gap:8px"><span style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:500;color:#000000">3</span><span class="msi" style="color:#718d3e;font-size:16px">check_circle</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span id="result-vm-pauses" style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:500;color:#000000">3</span><span class="msi" style="color:#718d3e;font-size:16px">check_circle</span></div>
             <span style="font-size:10px;color:#45464d;font-style:italic">Ideal: 2–4</span>
+          </div>
+        </div>
+        <!-- Structure score — populated by /practice/voice-analytics fetch; hidden until ready -->
+        <div id="structure-section" style="display:none;margin-top:20px;padding-top:20px;border-top:1px solid #dce9ff">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-size:10px;font-weight:600;color:#45464d;text-transform:uppercase">Answer Structure</span>
+            <span id="structure-score-num" style="font-family:'Hanken Grotesk',sans-serif;font-size:20px;font-weight:600;color:#000000">—/100</span>
+          </div>
+          <div style="height:6px;background:#e5eeff;border-radius:9999px;overflow:hidden;margin-bottom:8px">
+            <div id="structure-bar" style="height:100%;background:#316bf3;border-radius:9999px;width:0%;transition:width 1s ease"></div>
+          </div>
+          <div id="structure-phases" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
+          <p id="structure-feedback" style="font-size:12px;line-height:18px;color:#76777d;margin:0"></p>
+        </div>
+        <!-- Audio prosodic section — populated by audio-service; hidden until ready -->
+        <div id="audio-section" style="display:none;margin-top:20px;padding-top:20px;border-top:1px solid #dce9ff">
+          <span style="font-size:10px;font-weight:600;color:#45464d;text-transform:uppercase;display:block;margin-bottom:12px">Prosodic Analysis</span>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span style="font-size:10px;font-weight:600;color:#45464d;text-transform:uppercase">Avg Pitch</span>
+              <span id="result-pitch" style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:500;color:#000000">—</span>
+              <span id="result-pitch-label" style="font-size:10px;color:#76777d;font-style:italic">—</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span style="font-size:10px;font-weight:600;color:#45464d;text-transform:uppercase">Uptalk</span>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span id="result-uptalk" style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:500;color:#000000">—</span>
+              </div>
+              <span id="result-uptalk-label" style="font-size:10px;font-weight:700">—</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span style="font-size:10px;font-weight:600;color:#45464d;text-transform:uppercase">Voice Energy</span>
+              <span id="result-energy" style="font-family:'Hanken Grotesk',sans-serif;font-size:24px;font-weight:500;color:#000000">—</span>
+              <span id="result-energy-label" style="font-size:10px;font-weight:700">—</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span style="font-size:10px;font-weight:600;color:#45464d;text-transform:uppercase">Pause Quality</span>
+              <span id="result-pauses-split" style="font-family:'Hanken Grotesk',sans-serif;font-size:13px;font-weight:500;color:#000000;line-height:1.4">— strategic<br>— hesitation</span>
+              <span id="result-pauses-label" style="font-size:10px;font-weight:700">—</span>
+            </div>
           </div>
         </div>
       </article>
@@ -169,17 +234,17 @@ a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
       <div style="display:flex;align-items:center;gap:16px;padding-left:24px;flex:1 1 auto;min-width:0;overflow:hidden">
         <div style="display:flex;flex-direction:column;flex:1 1 0;min-width:0">
           <span style="font-size:12px;font-weight:600;color:#7c839b;text-transform:uppercase">Topic</span>
-          <span style="font-size:14px;font-weight:500;letter-spacing:0.01em;color:#ffffff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Machine Learning Fundamentals</span>
+          <span id="result-bar-topic" style="font-size:14px;font-weight:500;letter-spacing:0.01em;color:#ffffff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Machine Learning Fundamentals</span>
         </div>
         <div style="width:1px;height:32px;background:rgba(124,131,155,0.3);flex-shrink:0"></div>
         <div style="display:flex;flex-direction:column;flex:1 1 0;min-width:0">
           <span style="font-size:12px;font-weight:600;color:#7c839b;text-transform:uppercase">Question</span>
-          <span style="font-size:14px;font-weight:500;letter-spacing:0.01em;color:#ffffff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Overfitting &amp; how to prevent it</span>
+          <span id="result-bar-question" style="font-size:14px;font-weight:500;letter-spacing:0.01em;color:#ffffff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Overfitting &amp; how to prevent it</span>
         </div>
         <div style="width:1px;height:32px;background:rgba(124,131,155,0.3);flex-shrink:0"></div>
         <div style="display:flex;flex-direction:column;flex:1 1 0;min-width:0">
           <span style="font-size:12px;font-weight:600;color:#7c839b;text-transform:uppercase">Difficulty</span>
-          <span style="font-size:14px;font-weight:500;letter-spacing:0.01em;color:#ceee93;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Intermediate</span>
+          <span id="result-bar-difficulty" style="font-size:14px;font-weight:500;letter-spacing:0.01em;color:#ceee93;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Intermediate</span>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:12px;padding-right:8px;flex-shrink:0">
@@ -367,8 +432,70 @@ class Component extends DCLogic {
     // Trigger bar animation with real score
     setTimeout(() => this.setState({ grown: true, score: rawScore || 0 }), 300);
 
+    // Save render data so componentDidUpdate can re-apply after every React reconciliation
+    this._renderData = { feedback, question, answer, topic, difficulty, score: rawScore };
     // Populate DOM with real data
-    this._render({ feedback, question, answer, topic, difficulty, score: rawScore });
+    this._render(this._renderData);
+
+    // ── Side-channel fetches (non-blocking) ────────────────────────────────
+    // 1. Answer Guide — free static content, cached in Redis
+    const questionId = stored.questionId || feedback.questionId;
+    if (questionId) {
+      fetch(`${window.DL.API}/practice/assist?questionId=${questionId}`, {
+        headers: window.DL.authHeaders()
+      })
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null)
+        .then(data => { if (data) this._renderAssist(data); });
+    }
+
+    // 2. Voice Analytics — enriched transcript + prosodic analysis (two async jobs).
+    //
+    // Two-phase polling:
+    //   Phase 1 — transcript: polls every 1s × 8 until the row appears (204 → retry).
+    //             transcript-service typically finishes within 1-3s of evaluate().
+    //   Phase 2 — audio: once the row exists, polls every 3s × 10 while audioStatus
+    //             is 'pending'. audio-service (ffmpeg + librosa) takes 10-30s.
+    //
+    // Awaiting the upload in Practice.dc.html ensures audio bytes reach the backend
+    // before navigation, so 'pending' → 'ok' should resolve within the phase-2 window.
+    const resultId = feedback.resultId;
+    if (resultId) {
+      const doFetch = () =>
+        fetch(`${window.DL.API}/practice/voice-analytics/${resultId}`, {
+          headers: window.DL.authHeaders()
+        })
+          .then(r => r.status === 200 ? r.json() : null)
+          .catch(() => null);
+
+      // Phase 2: poll for audio completion (called once transcript data is in hand)
+      const pollAudio = (attemptsLeft) => {
+        if (attemptsLeft <= 0) return;
+        doFetch().then(data => {
+          if (!data) return;
+          this._renderVoiceAnalytics(data);
+          if (data.audioStatus === 'pending') {
+            setTimeout(() => pollAudio(attemptsLeft - 1), 3000);
+          }
+        });
+      };
+
+      // Phase 1: poll for the row to appear, then hand off to phase 2
+      const pollTranscript = (attemptsLeft) => {
+        if (attemptsLeft <= 0) return;
+        doFetch().then(data => {
+          if (data) {
+            this._renderVoiceAnalytics(data);
+            if (data.audioStatus === 'pending') {
+              setTimeout(() => pollAudio(10), 3000);
+            }
+          } else {
+            setTimeout(() => pollTranscript(attemptsLeft - 1), 1000);
+          }
+        });
+      };
+      pollTranscript(8);
+    }
   }
 
   _showBanner(type, msg) {
@@ -391,23 +518,21 @@ class Component extends DCLogic {
   }
 
   _render({ feedback, question, answer, topic, difficulty, score }) {
-    // Prefer server-returned fields (authoritative) over the sessionStorage meta snapshot.
-    // feedback.questionText / transcribedAnswer are set by evaluate() and getResult().
     const qText = feedback.questionText    || question;
     const aText = feedback.transcribedAnswer || answer;
-    // “FREE” | “PRO” — what tier the user was on when they submitted this answer.
     const tier  = feedback.subscriptionTier || 'FREE';
     const isPro = tier === 'PRO';
 
-    // ── Question & answer
-    this._set('p[style*=”font-size:18px”][style*=”font-weight:600”]', qText);
-    const ansEl = document.querySelector('p[style*=”font-style:italic”][style*=”border-left”]');
-    if (ansEl) ansEl.textContent = '”' + (aText || '') + '”';
+    // ── Question & answer ─────────────────────────────────────────────────
+    const qEl = document.getElementById('result-question-text');
+    if (qEl) qEl.textContent = qText || '';
+    const aEl = document.getElementById('result-answer-text');
+    if (aEl) aEl.textContent = '”' + (aText || '') + '”';
 
-    // ── Score card
-    const scoreNumEl = document.querySelector('span[style*=”font-size:56px”]');
+    // ── Score card ────────────────────────────────────────────────────────
+    const scoreNumEl = document.getElementById('result-score-num');
     if (scoreNumEl) scoreNumEl.textContent = score != null ? score : '—';
-    const scoreLabelEl = document.querySelector('span[style*=”color:#364e03”][style*=”font-weight:700”]');
+    const scoreLabelEl = document.getElementById('result-score-label');
     if (scoreLabelEl) {
       if (score == null)      scoreLabelEl.textContent = 'N/A';
       else if (score >= 80)   scoreLabelEl.textContent = 'Excellent';
@@ -416,97 +541,258 @@ class Component extends DCLogic {
       else                    scoreLabelEl.textContent = 'Keep Practicing';
     }
 
-    // ── Inline AI brief (the eff4ff highlight box inside the results overview card)
-    const briefEl = document.querySelector('div[style*=”background:#eff4ff”] p[style*=”font-size:16px”]');
+    // ── Inline AI brief box ───────────────────────────────────────────────
+    const briefEl = document.getElementById('result-ai-brief');
     if (briefEl) {
       if (isPro && feedback.llmFeedBack) {
         const llm = feedback.llmFeedBack;
         briefEl.innerHTML = [llm.concepts, llm.accuracy].filter(Boolean).join(' ') +
           (llm.tip ? ` <strong style=”color:#000000”>${llm.tip}</strong>` : '');
       } else if (!isPro) {
-        // FREE users — replace the brief with an upgrade nudge
         briefEl.innerHTML = `AI analysis is a <strong>Pro</strong> feature. You still get your score, keywords, and voice analytics below. <a href=”Front.dc.html#pricing” style=”color:#0051d5;font-weight:600”>Upgrade to Pro</a> for concept-level feedback and coaching tips.`;
       }
     }
 
-    // ── AI Feedback sidebar article (identified by the blue top border)
-    const articles = document.querySelectorAll('article');
-    const feedArticle = Array.from(articles).find(a =>
-      a.getAttribute('style') && a.getAttribute('style').includes('border-top:4px solid')
-    );
-    if (feedArticle) {
-      if (isPro && feedback.llmFeedBack) {
-        const llm = feedback.llmFeedBack;
-        const p = feedArticle.querySelector('p[style*=”font-size:16px”]');
-        if (p) p.textContent = [llm.concepts, llm.accuracy, llm.missing, llm.tip].filter(Boolean).join(' ');
-      } else {
-        // FREE users — replace the entire article content with an upgrade card
-        feedArticle.innerHTML = `
-          <div style=”display:flex;align-items:center;gap:8px;margin-bottom:16px”>
-            <span class=”msi” style=”color:#c6c6cd;font-size:22px”>lock</span>
-            <h3 style=”font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin:0;color:#45464d”>AI Feedback</h3>
-          </div>
-          <p style=”font-size:14px;line-height:22px;color:#76777d;margin:0 0 20px”>Upgrade to Pro to unlock concept-level feedback, accuracy assessment, what you missed, and personalised coaching tips after every session.</p>
-          <a href=”Front.dc.html#pricing” style=”display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#131b2e;color:#ffffff;border-radius:8px;font-family:Inter,sans-serif;font-size:13px;font-weight:700;text-decoration:none”>
-            <span class=”msi msi-fill” style=”font-size:18px”>bolt</span>Upgrade to Pro
-          </a>`;
-      }
+    // ── AI Feedback sidebar article ───────────────────────────────────────
+    const proDiv     = document.getElementById('result-ai-feed-pro');
+    const upgradeDiv = document.getElementById('result-ai-feed-upgrade');
+    if (isPro && feedback.llmFeedBack) {
+      const llm = feedback.llmFeedBack;
+      const p = document.getElementById('result-ai-feed-p');
+      if (p) p.textContent = [llm.concepts, llm.accuracy, llm.missing, llm.tip].filter(Boolean).join(' ');
+      if (proDiv)     proDiv.style.display     = '';
+      if (upgradeDiv) upgradeDiv.style.display = 'none';
+    } else {
+      if (proDiv)     proDiv.style.display     = 'none';
+      if (upgradeDiv) upgradeDiv.style.display = '';
     }
 
-    // ── Keywords hit / miss
+    // ── Keywords hit / miss ───────────────────────────────────────────────
     const kwHit  = feedback.keyWordHit  || [];
     const kwMiss = feedback.keyWordMiss || [];
+    const noSpeech = score == null; // outlier / empty transcript
     const hitChip  = kw => `<span style=”padding:4px 12px;background:#e5eeff;border-radius:9999px;font-size:12px;font-weight:600;color:#45464d”>${kw}</span>`;
     const missChip = kw => `<span style=”padding:4px 12px;background:#eff4ff;border:1px solid rgba(186,26,26,0.2);border-radius:9999px;font-size:12px;font-weight:600;color:#ba1a1a”>${kw}</span>`;
+    const hitEl  = document.getElementById('result-kw-hit');
+    const missEl = document.getElementById('result-kw-miss');
+    if (hitEl)  hitEl.innerHTML  = noSpeech ? '<span style=”font-size:13px;color:#76777d”>No speech captured</span>'
+                                             : kwHit.length  ? kwHit.map(hitChip).join('') : '<span style=”font-size:13px;color:#76777d”>None detected</span>';
+    if (missEl) missEl.innerHTML = noSpeech ? '<span style=”font-size:13px;color:#76777d”>No speech captured</span>'
+                                             : kwMiss.length ? kwMiss.map(missChip).join('') : '<span style=”font-size:13px;color:#76777d”>None missed — great job!</span>';
 
-    document.querySelectorAll('div[style*=”padding:24px”][style*=”box-shadow”]').forEach(section => {
-      const label = section.querySelector('span[style*=”text-transform:uppercase”]');
-      if (!label) return;
-      const txt = label.textContent.trim().toUpperCase();
-      const chipWrap = section.querySelector('div[style*=”flex-wrap:wrap”]');
-      if (!chipWrap) return;
-      if (txt.includes('HIT') || txt.includes('KEYWORDS HIT')) {
-        chipWrap.innerHTML = kwHit.length ? kwHit.map(hitChip).join('') : '<span style=”font-size:13px;color:#76777d”>None detected</span>';
-      } else if (txt.includes('MISS') || txt.includes('OPPORTUNITIES')) {
-        chipWrap.innerHTML = kwMiss.length ? kwMiss.map(missChip).join('') : '<span style=”font-size:13px;color:#76777d”>None missed — great job!</span>';
-      }
-    });
-
-    // ── Voice analytics (available to all tiers)
+    // ── Voice metrics ─────────────────────────────────────────────────────
+    const wpmEl  = document.getElementById('result-vm-wpm');
+    const filEl  = document.getElementById('result-vm-filler');
+    // confidence metric removed — Chrome SpeechRecognition always returns ~1.0
+    const pauEl  = document.getElementById('result-vm-pauses');
     if (feedback.voiceMetrics) {
       const vm = feedback.voiceMetrics;
-      const voiceArt = Array.from(articles).find(a =>
-        Array.from(a.querySelectorAll('span')).some(s => s.textContent.trim() === 'graphic_eq')
-      );
+      if (wpmEl) wpmEl.textContent = vm.wordsPerMinute != null ? vm.wordsPerMinute : '—';
+      if (filEl) filEl.textContent = vm.fillerWordCount != null ? vm.fillerWordCount : '—';
+      if (pauEl) pauEl.textContent = vm.pauseCount != null ? vm.pauseCount : '—';
+    } else {
+      // No speech captured — clear template placeholders
+      if (wpmEl) wpmEl.textContent = '—';
+      if (filEl) filEl.textContent = '—';
+      if (pauEl) pauEl.textContent = '—';
+    }
+
+    // ── Ideal answer preview ──────────────────────────────────────────────
+    const idealEl = document.getElementById('result-ideal-text');
+    if (idealEl) {
+      idealEl.textContent = feedback.matchedIdealAnswerText || '';
+    }
+
+    // ── Bottom bar ────────────────────────────────────────────────────────
+    const topicEl = document.getElementById('result-bar-topic');
+    const qSnipEl = document.getElementById('result-bar-question');
+    const diffEl  = document.getElementById('result-bar-difficulty');
+    if (topicEl) topicEl.textContent = topic || 'Machine Learning';
+    if (qSnipEl) qSnipEl.textContent = qText ? (qText.length > 45 ? qText.slice(0, 45) + '…' : qText) : '';
+    if (diffEl)  diffEl.textContent  = difficulty || 'Medium';
+  }
+
+  _renderAssist(data) {
+    // Save so componentDidUpdate can re-apply after React reconciliation
+    this._assistData = data;
+    // data shape: { questionId, keyTerms: [{term,definition}], essentialPoints: [str], ... }
+    const card = document.getElementById('answer-guide-card');
+    if (!card) return;
+
+    // Key Terms chips
+    const terms = data.keyTerms || [];
+    if (terms.length) {
+      const termsWrap = document.getElementById('ag-terms-wrap');
+      const termsEl   = document.getElementById('ag-terms');
+      if (termsEl) {
+        termsEl.innerHTML = terms.map(t =>
+          `<span title="${(t.definition || '').replace(/"/g, '&quot;')}"
+                 style="padding:4px 12px;background:#e5f0d6;border-radius:9999px;font-size:12px;font-weight:600;color:#2e4a10;cursor:default">${t.term || t}</span>`
+        ).join('');
+      }
+      if (termsWrap) termsWrap.style.display = '';
+    }
+
+    // Essential points numbered list
+    const points = data.essentialPoints || data.conceptBridge || [];
+    if (points.length) {
+      const essWrap = document.getElementById('ag-essentials-wrap');
+      const essEl   = document.getElementById('ag-essentials');
+      if (essEl) {
+        essEl.innerHTML = points.map(p => `<li style="font-size:13px;line-height:20px;color:#1a2e05;margin-bottom:6px">${p}</li>`).join('');
+      }
+      if (essWrap) essWrap.style.display = '';
+    }
+
+    if (terms.length || points.length) card.style.display = '';
+  }
+
+  _renderVoiceAnalytics(data) {
+    // Save so componentDidUpdate can re-apply after React reconciliation
+    this._voiceData = data;
+    // data shape: VoiceAnalyticsResponse — transcriptStatus, fillerCounts, structureScore, etc.
+
+    // ── Structure score bar
+    const score = data.structureScore;
+    if (score != null) {
+      const section = document.getElementById('structure-section');
+      const numEl   = document.getElementById('structure-score-num');
+      const barEl   = document.getElementById('structure-bar');
+      const phasesEl= document.getElementById('structure-phases');
+      const feedEl  = document.getElementById('structure-feedback');
+
+      if (numEl)   numEl.textContent = score + '/100';
+      if (barEl)   setTimeout(() => { barEl.style.width = score + '%'; }, 100);
+      if (phasesEl && data.structurePhases && data.structurePhases.length) {
+        const phaseLabels = { definition: 'Definition', mechanism: 'Mechanism', example: 'Example', tradeoff: 'Trade-off' };
+        const allPhases   = ['definition', 'mechanism', 'example', 'tradeoff'];
+        phasesEl.innerHTML = allPhases.map(p => {
+          const hit = data.structurePhases.includes(p);
+          return `<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:9999px;font-size:11px;font-weight:600;${hit ? 'background:#e5f0d6;color:#2e4a10' : 'background:#f0f0f0;color:#9a9a9a'}">
+            <span class="msi" style="font-size:13px">${hit ? 'check_circle' : 'radio_button_unchecked'}</span>${phaseLabels[p] || p}
+          </span>`;
+        }).join('');
+      }
+      if (feedEl && data.structureFeedback) feedEl.textContent = data.structureFeedback;
+      if (section) section.style.display = '';
+    }
+
+    // ── Enrich filler word count with per-type breakdown
+    if (data.fillerCounts && Object.keys(data.fillerCounts).length) {
+      const voiceArt = document.getElementById('result-voice-art');
       if (voiceArt) {
-        const vals = voiceArt.querySelectorAll('span[style*=”font-size:24px”]');
-        if (vals[0]) vals[0].textContent = vm.wordsPerMinute || '—';
-        if (vals[1]) vals[1].textContent = vm.fillerWordCount != null ? vm.fillerWordCount : '—';
-        if (vals[2]) vals[2].textContent = vm.confidenceScore != null ? Math.round(vm.confidenceScore * 100) + '%' : '—';
-        if (vals[3]) vals[3].textContent = vm.pauseCount != null ? vm.pauseCount : '—';
+        // Update the Filler Words number with exact count from NLP (overrides the estimate)
+        const total = data.totalFillerCount != null ? data.totalFillerCount
+          : Object.values(data.fillerCounts).reduce((a, b) => a + b, 0);
+        const filEl = document.getElementById('result-vm-filler');
+        if (filEl) filEl.textContent = total;
+
+        // Append a compact per-type breakdown below the grid
+        const grid = voiceArt.querySelector('div[style*="grid-template-columns"]');
+        if (grid && !voiceArt.querySelector('#filler-breakdown')) {
+          const topFillers = Object.entries(data.fillerCounts)
+            .filter(([, v]) => v > 0)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 6);
+          if (topFillers.length) {
+            const breakdown = document.createElement('div');
+            breakdown.id = 'filler-breakdown';
+            breakdown.style.cssText = 'margin-top:16px;padding-top:16px;border-top:1px solid #dce9ff';
+            breakdown.innerHTML = `<span style="font-size:10px;font-weight:600;color:#45464d;text-transform:uppercase;display:block;margin-bottom:8px">Filler Breakdown</span>` +
+              `<div style="display:flex;flex-wrap:wrap;gap:6px">` +
+              topFillers.map(([word, count]) =>
+                `<span style="padding:3px 10px;background:#eff4ff;border-radius:9999px;font-size:12px;font-weight:600;color:#45464d">"${word}" ×${count}</span>`
+              ).join('') +
+              (data.fillerPerMinute != null
+                ? `</div><span style="font-size:10px;color:#76777d;display:block;margin-top:6px">${data.fillerPerMinute.toFixed(1)} fillers/min</span>`
+                : '</div>');
+            grid.parentNode.insertBefore(breakdown, grid.nextSibling);
+          }
+        }
       }
     }
 
-    // ── Ideal answer preview (available to all tiers — shows the best-match angle)
-    if (feedback.matchedIdealAnswerText) {
-      const idealArt = Array.from(articles).find(a =>
-        Array.from(a.querySelectorAll('span')).some(s => s.textContent.trim() === 'lightbulb')
-      );
-      if (idealArt) {
-        const p = idealArt.querySelector('p[style*=”-webkit-line-clamp”]') || idealArt.querySelector('p');
-        if (p) p.textContent = feedback.matchedIdealAnswerText;
+    // ── Technical terms used (append to voice card)
+    if (data.technicalTermsUsed && data.technicalTermsUsed.length) {
+      const voiceArt = document.getElementById('result-voice-art');
+      if (voiceArt && !voiceArt.querySelector('#tech-terms')) {
+        const techDiv = document.createElement('div');
+        techDiv.id = 'tech-terms';
+        techDiv.style.cssText = 'margin-top:16px;padding-top:16px;border-top:1px solid #dce9ff';
+        const densityPct = data.technicalDensity != null ? ` <span style="font-size:10px;font-weight:400;color:#76777d">(${Math.round(data.technicalDensity * 100)}% of words)</span>` : '';
+        techDiv.innerHTML = `<span style="font-size:10px;font-weight:600;color:#45464d;text-transform:uppercase;display:block;margin-bottom:8px">Technical Terms Used${densityPct}</span>` +
+          `<div style="display:flex;flex-wrap:wrap;gap:6px">` +
+          data.technicalTermsUsed.map(t =>
+            `<span style="padding:3px 10px;background:#e5eeff;border-radius:9999px;font-size:12px;font-weight:600;color:#000000">${t}</span>`
+          ).join('') +
+          `</div>`;
+        voiceArt.appendChild(techDiv);
       }
     }
 
-    // ── Bottom bar — topic / question snippet / difficulty
-    // Uses padding:8px to disambiguate from the 40x40 header avatar button
-    const bottomBar = document.querySelector('div[style*=”background:#131b2e”][style*=”padding:8px”]');
-    if (bottomBar) {
-      const spans = bottomBar.querySelectorAll('span[style*=”font-size:14px”][style*=”font-weight:500”]');
-      if (spans[0]) spans[0].textContent = topic || 'Machine Learning';
-      if (spans[1]) spans[1].textContent = qText ? (qText.length > 45 ? qText.slice(0, 45) + '…' : qText) : '';
-      if (spans[2]) spans[2].textContent = difficulty || 'Medium';
+    // ── Audio prosodic section (audio-service; arrives after upload) ──────────
+    const audioSection = document.getElementById('audio-section');
+    if (audioSection && data.audioStatus === 'ok' && data.pitchMeanHz != null) {
+      // Pitch
+      const pitchEl      = document.getElementById('result-pitch');
+      const pitchLabelEl = document.getElementById('result-pitch-label');
+      if (pitchEl) pitchEl.textContent = Math.round(data.pitchMeanHz) + ' Hz';
+      if (pitchLabelEl && data.pitchStdDevHz != null) {
+        // Higher std dev = more expressive pitch range
+        const std = data.pitchStdDevHz;
+        pitchLabelEl.textContent = std > 50 ? 'Highly expressive' : std > 25 ? 'Natural variation' : 'Monotone — vary your pitch';
+      }
+
+      // Uptalk
+      const uptalkEl      = document.getElementById('result-uptalk');
+      const uptalkLabelEl = document.getElementById('result-uptalk-label');
+      const u = data.uptalkCount != null ? data.uptalkCount : 0;
+      if (uptalkEl) {
+        uptalkEl.textContent = u;
+        uptalkEl.style.color = u >= 4 ? '#ba1a1a' : u >= 2 ? '#c65000' : '#000000';
+      }
+      if (uptalkLabelEl) {
+        uptalkLabelEl.textContent = u === 0 ? 'None — good' : u < 2 ? 'Minimal' : u < 4 ? 'Noticeable' : 'Excessive';
+        uptalkLabelEl.style.color = u === 0 ? '#364e03' : u < 2 ? '#718d3e' : u < 4 ? '#c65000' : '#ba1a1a';
+      }
+
+      // Voice energy (inverted fade: 0.0 = strong, 1.0 = trails off)
+      const energyEl      = document.getElementById('result-energy');
+      const energyLabelEl = document.getElementById('result-energy-label');
+      if (energyEl && data.energyFadeScore != null) {
+        const pct = Math.round((1 - data.energyFadeScore) * 100);
+        energyEl.textContent = pct + '%';
+        if (energyLabelEl) {
+          energyLabelEl.textContent = pct >= 75 ? 'Strong finish' : pct >= 50 ? 'Moderate' : 'Trailing off';
+          energyLabelEl.style.color = pct >= 75 ? '#364e03' : pct >= 50 ? '#c65000' : '#ba1a1a';
+        }
+      }
+
+      // Pause quality
+      const pausesSplitEl = document.getElementById('result-pauses-split');
+      const pausesLabelEl = document.getElementById('result-pauses-label');
+      const sp = data.strategicPauses  != null ? data.strategicPauses  : null;
+      const hp = data.hesitationPauses != null ? data.hesitationPauses : null;
+      if (pausesSplitEl) {
+        pausesSplitEl.innerHTML = (sp != null ? sp : '—') + ' strategic<br>' + (hp != null ? hp : '—') + ' hesitation';
+      }
+      if (pausesLabelEl && sp != null && hp != null) {
+        const ratio = sp / Math.max(1, sp + hp);
+        pausesLabelEl.textContent = ratio >= 0.6 ? 'Good control' : ratio >= 0.3 ? 'Moderate' : 'Many hesitations';
+        pausesLabelEl.style.color = ratio >= 0.6 ? '#364e03' : ratio >= 0.3 ? '#c65000' : '#ba1a1a';
+      }
+
+      audioSection.style.display = '';
     }
+  }
+
+  // Re-apply direct DOM updates after every React reconciliation.
+  // React re-renders on each setState (auth fetch, animation timer, etc.) and
+  // resets hardcoded template values — this hook puts the real data back.
+  componentDidUpdate() {
+    if (this._renderData)  this._render(this._renderData);
+    if (this._assistData)  this._renderAssist(this._assistData);
+    if (this._voiceData)   this._renderVoiceAnalytics(this._voiceData);
   }
 
   renderVals() {

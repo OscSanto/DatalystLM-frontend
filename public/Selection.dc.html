@@ -82,11 +82,11 @@ a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
                 <div style="width:4px;align-self:stretch;border-radius:9999px;background:{{ q.accent }};flex-shrink:0"></div>
                 <span class="msi msi-fill" style="color:{{ q.iconColor }};font-size:22px;flex-shrink:0">{{ q.icon }}</span>
                 <div style="flex:1;min-width:0">
-                  <div style="display:flex;align-items:center;gap:8px">
-                    <h4 style="font-size:15px;font-weight:700;margin:0;color:#0b1c30">{{ q.name }}</h4>
+                  <h4 style="font-size:15px;font-weight:700;margin:0 0 4px;color:#0b1c30;line-height:1.35">{{ q.name }}</h4>
+                  <div style="display:flex;align-items:center;gap:6px">
                     <span style="{{ q.tagStyle }}">{{ q.tag }}</span>
+                    <span style="font-size:12px;color:#76777d">{{ q.meta }}</span>
                   </div>
-                  <p style="font-size:12px;color:#76777d;margin:2px 0 0">{{ q.meta }}</p>
                 </div>
                 <span style="{{ q.scoreStyle }}">{{ q.score }}</span>
               </div>
@@ -394,9 +394,9 @@ renderVals() {
         // Score badge
         let scoreTxt   = '';
         let scoreStyle = 'display:none';
-        let metaText   = tag;
+        let metaText   = '';
         if (sd && sd.attempts > 0) {
-          metaText = tag + ' · ' + sd.attempts + (sd.attempts === 1 ? ' attempt' : ' attempts');
+          metaText = sd.attempts + (sd.attempts === 1 ? ' attempt' : ' attempts');
           if (sd.bestScore != null) {
             const sc = Math.round(sd.bestScore);
             const bg = sc >= 80 ? '#718d3e' : sc >= 60 ? '#c48a1a' : '#ba1a1a';
@@ -405,11 +405,21 @@ renderVals() {
           }
         }
 
-        // Row accent: blue if picked, green tick if completed (not picked), else default
-        const isCompleted = sd && sd.attempts > 0;
-        const icon      = isPicked ? 'check_circle' : (isCompleted ? 'task_alt' : 'radio_button_unchecked');
-        const iconColor = isPicked ? '#0051d5' : (isCompleted ? '#718d3e' : '#c6c6cd');
-        const accent    = isPicked ? '#0051d5' : (isCompleted ? '#718d3e' : 'transparent');
+        // Row accent: blue if picked, green if scored, amber if attempted but no score, grey if never tried
+        const isScored   = sd && sd.bestScore != null;
+        const isAttempted = sd && sd.attempts > 0 && !isScored;
+        const icon      = isPicked    ? 'check_circle'
+                        : isScored    ? 'task_alt'
+                        : isAttempted ? 'pending'
+                        :               'radio_button_unchecked';
+        const iconColor = isPicked    ? '#0051d5'
+                        : isScored    ? '#718d3e'
+                        : isAttempted ? '#c48a1a'
+                        :               '#c6c6cd';
+        const accent    = isPicked    ? '#0051d5'
+                        : isScored    ? '#718d3e'
+                        : isAttempted ? '#c48a1a'
+                        :               'transparent';
 
         return {
           name:       q.text.length > 90 ? q.text.slice(0, 87) + '…' : q.text,

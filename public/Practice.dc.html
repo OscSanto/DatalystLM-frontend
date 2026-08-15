@@ -54,18 +54,19 @@ a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
 
 <!-- ── Main ── -->
 <main style="padding:96px 64px 0;max-width:1280px;margin:0 auto">
+
+  <!-- Status row — sits above the two-column grid so the aside top aligns with Interview/Coach -->
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+    <span id="dl-badge" style="padding:4px 12px;border-radius:9999px;font-size:12px;font-weight:600;background:#76777d;color:#ffffff">READY</span>
+    <!-- Paused badge (only visible when paused) -->
+    <span id="dl-paused-badge" style="display:none;padding:4px 12px;border-radius:9999px;font-size:12px;font-weight:600;background:#f5a623;color:#ffffff">⏸ PAUSED</span>
+    <span id="dl-timer" style="color:#76777d;font-size:14px;font-weight:500;letter-spacing:0.01em">1:00 remaining</span>
+  </div>
+
   <div style="{{ gridStyle }}">
 
     <!-- Left: question + transcription -->
-    <section style="display:flex;flex-direction:column;gap:16px">
-
-      <!-- Status row -->
-      <div style="display:flex;align-items:center;gap:8px">
-        <span id="dl-badge" style="padding:4px 12px;border-radius:9999px;font-size:12px;font-weight:600;background:#76777d;color:#ffffff">READY</span>
-        <!-- Paused badge (only visible when paused) -->
-        <span id="dl-paused-badge" style="display:none;padding:4px 12px;border-radius:9999px;font-size:12px;font-weight:600;background:#f5a623;color:#ffffff">⏸ PAUSED</span>
-        <span id="dl-timer" style="color:#76777d;font-size:14px;font-weight:500;letter-spacing:0.01em">1:00 remaining</span>
-      </div>
+    <section style="flex:1;min-width:0;display:flex;flex-direction:column;gap:16px">
 
       <!-- Interview / Coach mode selector -->
       <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:#ffffff;border:1px solid #e5eeff;border-radius:12px;padding:10px 16px">
@@ -215,6 +216,11 @@ a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
         </div>
       </div>
 
+    </aside>
+
+    <!-- ── Below both columns: Assistance Ladder + Quick Hints ── -->
+    <div style="{{ belowStyle }}">
+
       <!-- ── Assistance Ladder ── -->
       <div style="{{ ladderCardStyle }}">
         <h3 style="font-size:14px;font-weight:700;letter-spacing:0.1em;color:#45464d;text-transform:uppercase;margin:0 0 4px">Assistance Ladder</h3>
@@ -313,7 +319,7 @@ a{color:#0051d5;text-decoration:none}a:hover{color:#003ea8}
         </div>
       </div>
 
-    </aside>
+    </div><!-- end below-both -->
   </div>
 </main>
 
@@ -527,6 +533,10 @@ class Component extends DCLogic {
     this._timeLeft     = 60;
     this._timerInterval = null;
     this._recog        = null;
+    this._mediaRecorder = null;  // captures raw audio alongside SpeechRecognition
+    this._audioChunks  = [];     // Blob chunks from ondataavailable
+    this._audioBlob    = null;   // final Blob, set when MediaRecorder fires onstop
+    this._audioStream  = null;   // getUserMedia stream (kept so we can stop tracks)
     this._started      = false;
     this._paused       = false;
     this._stopping     = false;
@@ -668,6 +678,7 @@ class Component extends DCLogic {
     this._setRecordingUI(true, false);
     this._startTimer();
     this._startVoice();
+    this._startMediaRecorder();
   }
 
   _setRecordingUI(active, paused) {
@@ -743,8 +754,14 @@ class Component extends DCLogic {
     this._setRecordingUI(true, this._paused);
     if (this._paused) {
       if (this._recog) { try { this._recog.stop(); } catch (e) {} }
+      if (this._mediaRecorder && this._mediaRecorder.state === 'recording') {
+        try { this._mediaRecorder.pause(); } catch (e) {}
+      }
     } else {
       try { if (this._recog) this._recog.start(); } catch (e) { this._startVoice(); }
+      if (this._mediaRecorder && this._mediaRecorder.state === 'paused') {
+        try { this._mediaRecorder.resume(); } catch (e) {}
+      }
     }
   }
 
@@ -753,6 +770,7 @@ class Component extends DCLogic {
     // Stop everything
     clearInterval(this._timerInterval);
     if (this._recog) { try { this._recog.abort(); } catch (e) {} }
+    this._stopMediaRecorder();
 
     // Reset all session state
     this._transcript   = '';
@@ -762,6 +780,8 @@ class Component extends DCLogic {
     this._pauseCount   = 0;
     this._confidences  = [];
     this._startTime    = null;
+    this._audioChunks  = [];
+    this._audioBlob    = null;
     this._started      = false;
     this._paused       = false;
     this._stopping     = false;
@@ -909,6 +929,22 @@ class Component extends DCLogic {
   // ── Evaluation ─────────────────────────────────────────────────────────────
 
   async _evaluate() {
+    // Stop MediaRecorder and wait for it to flush the last chunk into this._audioBlob.
+    // 2-second timeout guarantees we never hang here — audio upload is best-effort.
+    await new Promise(resolve => {
+      if (!this._mediaRecorder || this._mediaRecorder.state === 'inactive') {
+        resolve(); return;
+      }
+      const done = () => { clearTimeout(timer); resolve(); };
+      const timer = setTimeout(done, 2000);
+      const prevOnStop = this._mediaRecorder.onstop;
+      this._mediaRecorder.onstop = (e) => {
+        if (prevOnStop) try { prevOnStop(e); } catch (_) {}
+        done();
+      };
+      try { this._mediaRecorder.stop(); } catch (e) { done(); }
+    });
+
     // Use _transcript (includes interim) as primary — it's the most complete at stop time.
     // _finalText is the accumulated finalized text; _transcript = finalText + last interim chunk.
     const answer = (this._transcript || this._finalText || '').trim();
@@ -922,7 +958,8 @@ class Component extends DCLogic {
       answer,
       topic:      this._session.topicLabel     || this._session.topic      || 'Machine Learning',
       difficulty: this._session.difficultyLabel || this._session.difficulty || 'Medium',
-      durationSeconds
+      durationSeconds,
+      questionId: this._questionId   // needed by Results page to fetch /practice/assist
     };
 
     if (!answer || !this._questionId) {
@@ -953,6 +990,15 @@ class Component extends DCLogic {
       }
       const feedback = await res.json();
       sessionStorage.setItem('dl_feedback', JSON.stringify({ ...meta, feedback }));
+      // Await audio upload before navigating — Chrome cancels in-flight fetches on
+      // page navigation, so fire-and-forget loses the audio bytes. Cap wait at 10s
+      // so a slow network never strands the user.
+      if (feedback.resultId && this._audioBlob && this._audioBlob.size > 1000) {
+        await Promise.race([
+          this._uploadAudio(feedback.resultId, this._audioBlob),
+          new Promise(resolve => setTimeout(resolve, 10000))
+        ]);
+      }
       window.location.href = './Results.dc.html';
     } catch (e) {
       console.error('Evaluate error:', e);
@@ -960,6 +1006,82 @@ class Component extends DCLogic {
       sessionStorage.setItem('dl_feedback', JSON.stringify({ ...meta, evalError: true, evalErrorBody: e.message }));
       window.location.href = './Results.dc.html';
     }
+  }
+
+  // ── Audio capture (MediaRecorder alongside SpeechRecognition) ─────────────
+
+  _startMediaRecorder() {
+    if (typeof MediaRecorder === 'undefined' || !navigator.mediaDevices) return;
+    this._audioChunks = [];
+    this._audioBlob   = null;
+
+    // Pick best supported MIME type (WebM/Opus on Chrome; OGG/Opus on Firefox; fallback to any WebM)
+    const mimeType = ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus']
+      .find(t => MediaRecorder.isTypeSupported(t)) || '';
+
+    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+      .then(stream => {
+        this._audioStream = stream;
+        const opts = mimeType ? { mimeType } : {};
+        try {
+          this._mediaRecorder = new MediaRecorder(stream, opts);
+        } catch (e) {
+          // Fallback: let browser choose mimeType
+          this._mediaRecorder = new MediaRecorder(stream);
+        }
+
+        this._mediaRecorder.ondataavailable = ev => {
+          if (ev.data && ev.data.size > 0) this._audioChunks.push(ev.data);
+        };
+
+        this._mediaRecorder.onstop = () => {
+          const type = (this._mediaRecorder && this._mediaRecorder.mimeType) || mimeType || 'audio/webm';
+          this._audioBlob = new Blob(this._audioChunks, { type });
+          // Release mic
+          if (this._audioStream) {
+            this._audioStream.getTracks().forEach(t => t.stop());
+            this._audioStream = null;
+          }
+        };
+
+        // Collect data every second so we don't lose chunks on error
+        this._mediaRecorder.start(1000);
+      })
+      .catch(err => {
+        // Not fatal — SpeechRecognition transcript analysis still works
+        console.warn('Audio capture unavailable (no mic permission?):', err.message);
+      });
+  }
+
+  _stopMediaRecorder() {
+    if (this._mediaRecorder && this._mediaRecorder.state !== 'inactive') {
+      try { this._mediaRecorder.stop(); } catch (e) {}
+    }
+    this._mediaRecorder = null;
+    if (this._audioStream) {
+      this._audioStream.getTracks().forEach(t => t.stop());
+      this._audioStream = null;
+    }
+  }
+
+  _uploadAudio(resultId, audioBlob) {
+    // POST multipart to Spring Boot which forwards to audio-service.
+    // Fire-and-forget: we don't await this — navigation happens immediately after.
+    const formData = new FormData();
+    formData.append('audio', audioBlob, 'recording.webm');
+
+    // Strip Content-Type from authHeaders — browser must set it with multipart boundary
+    const authHeaders = window.DL.authHeaders() || {};
+    const headers = {};
+    Object.keys(authHeaders).forEach(k => {
+      if (k.toLowerCase() !== 'content-type') headers[k] = authHeaders[k];
+    });
+
+    return fetch(`${window.DL.API}/practice/audio-upload/${resultId}`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    }).catch(err => console.warn('Audio upload failed (non-fatal):', err.message));
   }
 
   // ── Assist data loader ────────────────────────────────────────────────────
@@ -1238,8 +1360,11 @@ class Component extends DCLogic {
       setCoach:     () => this.setState({ support: 'coach' }),
 
       // Layout
-      gridStyle:  'display:flex;flex-wrap:wrap;align-items:flex-start;gap:24px',
-      asideStyle: `flex:1 1 300px;min-width:0;max-width:none;flex-direction:column;gap:20px;display:${interview?'none':'flex'}`,
+      gridStyle:  'display:flex;flex-wrap:wrap;align-items:flex-start',
+      asideStyle: interview
+        ? 'flex:0 0 0%;min-width:0;overflow:hidden;opacity:0;pointer-events:none;display:flex;flex-direction:column;gap:20px;transition:flex-basis 0.4s cubic-bezier(0.4,0,0.2,1),opacity 0.3s ease,margin-left 0.4s cubic-bezier(0.4,0,0.2,1);margin-left:0'
+        : 'flex:0 0 40%;min-width:0;overflow:hidden;opacity:1;display:flex;flex-direction:column;gap:20px;transition:flex-basis 0.4s cubic-bezier(0.4,0,0.2,1),opacity 0.3s ease,margin-left 0.4s cubic-bezier(0.4,0,0.2,1);margin-left:24px',
+      belowStyle: `flex-basis:100%;flex-shrink:0;flex-direction:column;gap:20px;margin-top:24px;display:${interview?'none':'flex'}`,
 
       // Tabs
       isBridge: tab2 === 'bridge',
